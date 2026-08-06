@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { invoke, Channel } from "@tauri-apps/api/core";
 import { open as openDialog } from "@tauri-apps/plugin-dialog";
 import { getCurrentWebview } from "@tauri-apps/api/webview";
@@ -134,22 +135,23 @@ const defaultSettings: AppSettings = {
 
 type TabId = "scan" | "info" | "hex" | "disasm" | "demangle" | "sigs" | "yara" | "peid" | "online" | "memmap" | "archive" | "converter";
 
-const TABS: { id: TabId; label: string; icon: typeof FileSearch }[] = [
-  { id: "scan", label: "Scan", icon: ScanSearch },
-  { id: "info", label: "Info", icon: FileSearchIcon },
-  { id: "hex", label: "Hex", icon: Binary },
-  { id: "disasm", label: "Disasm", icon: Code2 },
-  { id: "demangle", label: "Demangle", icon: FileText },
-  { id: "sigs", label: "Signatures", icon: Tags },
-  { id: "yara", label: "YARA", icon: Shield },
-  { id: "peid", label: "PEID", icon: ScanSearch },
-  { id: "memmap", label: "MemMap", icon: Map },
-  { id: "archive", label: "Archive", icon: Archive },
-  { id: "converter", label: "Convert", icon: Repeat },
-  { id: "online", label: "Online", icon: Globe },
+const TAB_KEYS: { id: TabId; labelKey: string; icon: typeof FileSearch }[] = [
+  { id: "scan", labelKey: "tabs.scan", icon: ScanSearch },
+  { id: "info", labelKey: "tabs.info", icon: FileSearchIcon },
+  { id: "hex", labelKey: "tabs.hex", icon: Binary },
+  { id: "disasm", labelKey: "tabs.disasm", icon: Code2 },
+  { id: "demangle", labelKey: "tabs.demangle", icon: FileText },
+  { id: "sigs", labelKey: "tabs.signatures", icon: Tags },
+  { id: "yara", labelKey: "tabs.yara", icon: Shield },
+  { id: "peid", labelKey: "tabs.peid", icon: ScanSearch },
+  { id: "memmap", labelKey: "tabs.memmap", icon: Map },
+  { id: "archive", labelKey: "tabs.archive", icon: Archive },
+  { id: "converter", labelKey: "tabs.converter", icon: Repeat },
+  { id: "online", labelKey: "tabs.online", icon: Globe },
 ];
 
 export default function App() {
+  const { t, i18n } = useTranslation();
   const [filePath, setFilePath] = useState<string>("");
   const [result, setResult] = useState<ScanResultDto | null>(null);
   const [dirResults, setDirResults] = useState<ScanResultDto[]>([]);
@@ -175,11 +177,22 @@ export default function App() {
       .then((s) => {
         setSettings(s);
         setFlags(s.scan.flags);
+        // Apply saved language to i18n.
+        if (s.view.language) {
+          i18n.changeLanguage(s.view.language);
+        }
       })
       .catch(() => {});
-  }, []);
+  }, [i18n]);
 
-  // Register drag-drop event listener.
+  // React to language setting changes.
+  useEffect(() => {
+    if (settings.view.language && settings.view.language !== i18n.language) {
+      i18n.changeLanguage(settings.view.language);
+    }
+  }, [settings.view.language, i18n]);
+
+  // Register drag-drop event listener (Tauri only; silently ignored in browser).
   useEffect(() => {
     const webview = getCurrentWebview();
     const unlisten = webview.onDragDropEvent((event: { payload: { type: string; paths?: string[] } }) => {
@@ -197,9 +210,11 @@ export default function App() {
       } else if (event.payload.type === "leave") {
         setDragOver(false);
       }
+    }).catch(() => {
+      // Not in Tauri environment (e.g. browser dev mode) — drag-drop disabled.
     });
     return () => {
-      unlisten.then((fn: () => void) => fn());
+      unlisten.then((fn) => { if (typeof fn === "function") fn(); }).catch(() => {});
     };
   }, []);
 
@@ -543,46 +558,46 @@ export default function App() {
           type="text"
           value={filePath}
           onChange={(e) => setFilePath(e.target.value)}
-          placeholder="Select a file or directory to scan..."
+          placeholder={t("scan.select")}
           className="input flex-1 selectable"
         />
-        <button onClick={pickFile} className="btn" title="Open file">
-          <FileSearch size={14} /> File
+        <button onClick={pickFile} className="btn" title={t("toolbar.file")}>
+          <FileSearch size={14} /> {t("toolbar.file")}
         </button>
-        <button onClick={pickDirectory} className="btn" title="Open directory">
-          <FolderOpen size={14} /> Dir
+        <button onClick={pickDirectory} className="btn" title={t("toolbar.dir")}>
+          <FolderOpen size={14} /> {t("toolbar.dir")}
         </button>
         <div className="w-px h-5 bg-border-c mx-1" />
         <button
           onClick={scan}
           disabled={!filePath || scanning}
           className="btn btn-primary"
-          title="Scan file"
+          title={t("toolbar.scan")}
         >
-          <Play size={14} /> {scanning ? "Scanning..." : "Scan"}
+          <Play size={14} /> {scanning ? t("toolbar.scanning") : t("toolbar.scan")}
         </button>
         <button
           onClick={scanDirectory}
           disabled={!filePath || scanning}
           className="btn"
-          title="Scan directory"
+          title={t("toolbar.scanDir")}
         >
-          <FolderSearch size={14} /> Scan Dir
+          <FolderSearch size={14} /> {t("toolbar.scanDir")}
         </button>
         <button
           onClick={stopScan}
           disabled={!scanning}
           className="btn btn-danger"
-          title="Stop scan"
+          title={t("toolbar.stop")}
         >
-          <Square size={14} /> Stop
+          <Square size={14} /> {t("toolbar.stop")}
         </button>
         <div className="w-px h-5 bg-border-c mx-1" />
         <button
           onClick={copyResults}
           disabled={!result}
           className="btn"
-          title="Copy results (Ctrl+C)"
+          title={t("toolbar.copyResults") + " (Ctrl+C)"}
         >
           {copyFeedback ? <CheckCircle2 size={14} className="text-accent-green" /> : <Copy size={14} />}
         </button>
@@ -590,7 +605,7 @@ export default function App() {
           onClick={clearResults}
           disabled={!result && dirResults.length === 0}
           className="btn"
-          title="Clear results"
+          title={t("toolbar.clearResults")}
         >
           <Trash2 size={14} />
         </button>
@@ -598,7 +613,7 @@ export default function App() {
           onClick={saveResults}
           disabled={!result}
           className="btn"
-          title="Save results to file"
+          title={t("toolbar.saveResults")}
         >
           <Save size={14} />
         </button>
@@ -607,7 +622,7 @@ export default function App() {
           <button
             onClick={() => setShowRecent(!showRecent)}
             className="btn"
-            title="Recent files"
+            title={t("toolbar.recentFiles")}
             disabled={settings.file.recent_files.length === 0}
           >
             <History size={14} />
@@ -642,14 +657,14 @@ export default function App() {
         <button
           onClick={toggleFullscreen}
           className="btn"
-          title="Toggle fullscreen (F11)"
+          title={t("toolbar.fullscreen") + " (F11)"}
         >
           {isFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
         </button>
         <button
           onClick={() => setShowSettings(!showSettings)}
           className="btn"
-          title="Settings"
+          title={t("toolbar.settings")}
         >
           <SettingsIcon size={14} />
         </button>
@@ -661,7 +676,7 @@ export default function App() {
           className="px-3 py-2 border-b border-border-c space-y-2"
           style={{ background: "rgb(var(--bg-panel))" }}
         >
-          <div className="text-xs font-medium text-fg-secondary">Scan Flags</div>
+          <div className="text-xs font-medium text-fg-secondary">{t("settings.scanFlags")}</div>
           <div className="grid grid-cols-4 gap-1.5 text-xs">
             {(Object.keys(flags) as (keyof ScanFlagsDto)[]).map((key) => (
               <label key={key} className="flex items-center gap-1.5 cursor-pointer hover:text-fg-primary">
@@ -676,18 +691,18 @@ export default function App() {
             ))}
           </div>
           <div className="border-t border-border-c pt-2 space-y-1.5">
-            <div className="text-xs font-medium text-fg-secondary">View Options</div>
+            <div className="text-xs font-medium text-fg-secondary">{t("settings.viewOptions")}</div>
             <div className="flex items-center gap-2 text-xs">
-              <span className="text-fg-muted">Theme:</span>
+              <span className="text-fg-muted">{t("settings.theme")}:</span>
               <select
                 className="input py-0.5 px-1.5"
                 value={settings.view.theme}
                 onChange={(e) => setSettings({ ...settings, view: { ...settings.view, theme: e.target.value } })}
                 style={{ width: "100px" }}
               >
-                <option value="system">System</option>
-                <option value="dark">Dark</option>
-                <option value="light">Light</option>
+                <option value="system">{t("settings.system")}</option>
+                <option value="dark">{t("settings.dark")}</option>
+                <option value="light">{t("settings.light")}</option>
               </select>
               <select
                 className="input py-0.5 px-1.5"
@@ -709,12 +724,12 @@ export default function App() {
                 onChange={(e) => setSettings({ ...settings, view: { ...settings.view, advanced: e.target.checked } })}
                 className="accent-blue-500"
               />
-              Advanced mode (show signature source for selected detection)
+              {t("settings.advanced")}
             </label>
           </div>
           <div className="flex gap-2 pt-1">
-            <button onClick={saveSettings} className="btn btn-primary">Save</button>
-            <button onClick={() => setShowSettings(false)} className="btn">Cancel</button>
+            <button onClick={saveSettings} className="btn btn-primary">{t("settings.save")}</button>
+            <button onClick={() => setShowSettings(false)} className="btn">{t("settings.cancel")}</button>
           </div>
         </div>
       )}
@@ -724,7 +739,7 @@ export default function App() {
         className="flex items-center gap-0 px-1 border-b border-border-c"
         style={{ background: "rgb(var(--bg-panel))" }}
       >
-        {TABS.map((tab) => {
+        {TAB_KEYS.map((tab) => {
           const Icon = tab.icon;
           return (
             <button
@@ -735,7 +750,7 @@ export default function App() {
               }`}
             >
               <Icon size={13} />
-              {tab.label}
+              {t(tab.labelKey)}
             </button>
           );
         })}
@@ -858,7 +873,7 @@ export default function App() {
             {!result && dirResults.length === 0 && !scanning && !error && (
               <div className="flex flex-col items-center justify-center h-full text-fg-muted">
                 <FileSearch size={48} className="mb-3 opacity-40" />
-                <p className="text-sm">Open a file or drag & drop to begin scanning</p>
+                <p className="text-sm">{t("scan.openToBegin")}</p>
               </div>
             )}
           </div>
@@ -934,17 +949,17 @@ export default function App() {
         ) : result ? (
           <>
             <CheckCircle2 size={12} className="text-accent-green" />
-            <span>Ready — {totalDetections} detections</span>
+            <span>{t("scan.ready")} — {totalDetections} {t("scan.detections")}</span>
           </>
         ) : error ? (
           <>
             <XCircle size={12} className="text-accent-red" />
-            <span>Error</span>
+            <span>{t("scan.ready")}</span>
           </>
         ) : (
           <>
             <div className="w-2 h-2 rounded-full bg-fg-muted" />
-            <span>Ready</span>
+            <span>{t("scan.ready")}</span>
           </>
         )}
         {result && <span className="text-fg-muted">| {result.scan_time_ms} ms</span>}

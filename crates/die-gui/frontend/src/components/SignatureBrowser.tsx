@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 import {
   Search,
@@ -44,6 +45,7 @@ interface RunSignatureResultDto {
 }
 
 export function SignatureBrowser() {
+  const { t } = useTranslation();
   const [groups, setGroups] = useState<SignatureGroupDto[]>([]);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [selectedSig, setSelectedSig] = useState<string | null>(null);
@@ -162,8 +164,8 @@ export function SignatureBrowser() {
     <div className="flex flex-col h-full p-3">
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
-        <h3 className="text-sm font-medium">Signature Browser</h3>
-        <span className="text-xs text-fg-muted">{totalSigs} signatures</span>
+        <h3 className="text-sm font-medium">{t("sigBrowser.title")}</h3>
+        <span className="text-xs text-fg-muted">{totalSigs} {t("sigBrowser.signatures")}</span>
       </div>
 
       {error && (
@@ -186,7 +188,7 @@ export function SignatureBrowser() {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search signatures..."
+            placeholder={t("sigBrowser.search")}
             className="input pl-7 py-1 text-xs w-full"
           />
         </div>
@@ -198,7 +200,7 @@ export function SignatureBrowser() {
           type="text"
           value={targetFile}
           onChange={(e) => setTargetFile(e.target.value)}
-          placeholder="Target file path for Run/Debug..."
+          placeholder={t("sigBrowser.targetFile")}
           className="input flex-1 py-1 text-xs"
         />
         <button
@@ -207,15 +209,15 @@ export function SignatureBrowser() {
           className="btn btn-primary text-xs py-1"
           title="Run signature against target file"
         >
-          <Play size={12} /> Run
+          <Play size={12} /> {t("sigBrowser.run")}
         </button>
         <button
           onClick={() => runSignature(true)}
           disabled={!selectedSig || !targetFile || running}
           className="btn text-xs py-1"
-          title="Run with diagnostics"
+          title={t("sigBrowser.debug")}
         >
-          <Bug size={12} /> Debug
+          <Bug size={12} /> {t("sigBrowser.debug")}
         </button>
       </div>
 
@@ -265,7 +267,7 @@ export function SignatureBrowser() {
           })}
           {!loading && filteredGroups.length === 0 && (
             <div className="text-xs text-fg-muted p-2">
-              {searchQuery ? "No matches found." : "No signatures loaded."}
+              {searchQuery ? t("sigBrowser.noDetections") : t("sigBrowser.selectSig")}
             </div>
           )}
         </div>
@@ -281,16 +283,16 @@ export function SignatureBrowser() {
                   <span className="font-medium text-fg-primary">{selectedSig}</span>
                   <span className="text-fg-muted">{source.file_path}</span>
                   {isDirty && (
-                    <span className="text-accent-yellow">● unsaved</span>
+                    <span className="text-accent-yellow">● {t("sigBrowser.unsaved")}</span>
                   )}
                 </div>
                 <button
                   onClick={saveSource}
                   disabled={!isDirty}
                   className="btn text-xs py-0.5"
-                  title="Save changes"
+                  title={t("sigBrowser.save")}
                 >
-                  <Save size={11} /> Save
+                  <Save size={11} /> {t("sigBrowser.save")}
                 </button>
               </div>
 
@@ -313,7 +315,7 @@ export function SignatureBrowser() {
             </>
           ) : (
             <div className="flex items-center justify-center h-full text-xs text-fg-muted">
-              Select a signature to view its source.
+              {t("sigBrowser.selectSig")}
             </div>
           )}
         </div>
@@ -330,7 +332,7 @@ export function SignatureBrowser() {
               <Clock size={11} className="text-fg-muted" />
               {runResult.elapsed_ms} ms
               <span className="text-fg-muted ml-2">
-                {runResult.detections.length} detections
+                {runResult.detections.length} {t("sigBrowser.detections")}
               </span>
             </span>
             <span className="text-xs text-fg-muted mono">{runResult.signature_path}</span>
@@ -360,7 +362,7 @@ export function SignatureBrowser() {
           {showDiagnostics && runResult.diagnostics.length > 0 && (
             <div className="mt-1 pt-1 border-t border-border-c">
               <div className="text-xs font-medium text-accent-yellow mb-0.5">
-                Diagnostics
+                {t("sigBrowser.diagnostics")}
               </div>
               {runResult.diagnostics.map((d, i) => (
                 <div key={i} className="text-xs text-fg-secondary mono selectable">
@@ -371,7 +373,7 @@ export function SignatureBrowser() {
           )}
           {runResult.detections.length === 0 && (
             <div className="text-xs text-fg-muted">
-              No detections from this signature.
+              {t("sigBrowser.noDetections")}
             </div>
           )}
         </div>

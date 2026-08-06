@@ -4,6 +4,8 @@
 //! and managed state. It depends on `diec-engine` for scan logic and
 //! never duplicates detection branches. See `docs/design/phase8-gui.md`.
 
+// Hide the console window on Windows in release builds.
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 #![forbid(unsafe_code)]
 
 mod commands;

@@ -1,9 +1,11 @@
 import { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Repeat, Copy, CheckCircle2 } from "lucide-react";
 
 /** Data converter — convert between hex, decimal, binary, octal, base64, ASCII.
  *  Mirrors upstream XDataConverter widget. */
 export function DataConverter() {
+  const { t } = useTranslation();
   const [input, setInput] = useState("48656C6C6F");
   const [inputFormat, setInputFormat] = useState<"hex" | "dec" | "bin" | "oct" | "base64" | "ascii">("hex");
   const [copiedField, setCopiedField] = useState<string | null>(null);
@@ -144,13 +146,13 @@ export function DataConverter() {
     <div className="p-3 overflow-auto h-full">
       <div className="flex items-center gap-2 mb-3">
         <Repeat size={16} className="text-accent-blue" />
-        <h3 className="text-sm font-medium">Data Converter</h3>
+        <h3 className="text-sm font-medium">{t("converter.title")}</h3>
       </div>
 
       {/* Input section */}
       <div className="mb-4">
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-xs text-fg-muted">Input format:</span>
+          <span className="text-xs text-fg-muted">{t("converter.inputFormat")}</span>
           <select
             className="input py-0.5 px-1.5 text-xs"
             value={inputFormat}
@@ -162,7 +164,7 @@ export function DataConverter() {
             ))}
           </select>
           {!conversions.valid && input && (
-            <span className="text-xs text-accent-red">Invalid input</span>
+            <span className="text-xs text-accent-red">{t("converter.invalid")}</span>
           )}
         </div>
         <textarea
@@ -177,7 +179,7 @@ export function DataConverter() {
 
       {/* Output conversions */}
       <div className="space-y-2">
-        <div className="text-xs font-medium text-fg-secondary mb-1">Output</div>
+        <div className="text-xs font-medium text-fg-secondary mb-1">{t("converter.output")}</div>
         {outputFields.map((field) => (
           <div key={field.id} className="flex items-start gap-2">
             <div className="w-16 text-xs text-fg-muted pt-1 flex-shrink-0">{field.label}</div>
@@ -207,7 +209,7 @@ export function DataConverter() {
       {/* Byte info */}
       {conversions.valid && (
         <div className="mt-4 pt-2 border-t border-border-c text-xs text-fg-muted">
-          {rawBytes.length} bytes ({(rawBytes.length / 1024).toFixed(2)} KB)
+          {rawBytes.length} {t("converter.bytes")} ({(rawBytes.length / 1024).toFixed(2)} KB)
         </div>
       )}
     </div>

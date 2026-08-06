@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 import { Archive, AlertCircle, FileText, ChevronRight, ChevronDown } from "lucide-react";
 
@@ -19,6 +20,7 @@ interface ArchiveResult {
 /** Archive viewer — displays contents of archive files (ZIP, RAR, 7Z, TAR, etc.).
  *  Mirrors upstream XArchive widget showing file list with sizes. */
 export function ArchiveViewer({ filePath }: { filePath: string }) {
+  const { t } = useTranslation();
   const [result, setResult] = useState<ArchiveResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -58,8 +60,8 @@ export function ArchiveViewer({ filePath }: { filePath: string }) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-fg-muted">
         <Archive size={48} className="mb-3 opacity-40" />
-        <p className="text-sm">Open an archive file to view its contents.</p>
-        <p className="text-xs mt-1">Supports ZIP, RAR, 7Z, TAR, GZIP, ISO9660, CAB.</p>
+        <p className="text-sm">{t("archive.openArchive")}</p>
+        <p className="text-xs mt-1">{t("archive.supports")}</p>
       </div>
     );
   }
@@ -86,8 +88,8 @@ export function ArchiveViewer({ filePath }: { filePath: string }) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-fg-muted">
         <Archive size={48} className="mb-3 opacity-40" />
-        <p className="text-sm">No archive entries found.</p>
-        <p className="text-xs mt-1">This file may not be a supported archive format.</p>
+        <p className="text-sm">{t("archive.noEntries")}</p>
+        <p className="text-xs mt-1">{t("archive.noEntriesHint")}</p>
       </div>
     );
   }
@@ -99,19 +101,19 @@ export function ArchiveViewer({ filePath }: { filePath: string }) {
     <div className="p-3 overflow-auto h-full">
       <div className="flex items-center gap-2 mb-3">
         <Archive size={16} className="text-accent-blue" />
-        <h3 className="text-sm font-medium">Archive Contents</h3>
+        <h3 className="text-sm font-medium">{t("archive.title")}</h3>
         <span className="text-xs text-fg-muted">
-          {result.format} — {result.total_entries} entries
+          {result.format} — {result.total_entries} {t("archive.entries")}
         </span>
       </div>
 
       <table className="w-full text-xs selectable">
         <thead>
           <tr className="text-fg-muted border-b border-border-c">
-            <th className="text-left py-1 px-2">Name</th>
-            <th className="text-right py-1 px-2">Size</th>
-            <th className="text-right py-1 px-2">Compressed</th>
-            <th className="text-left py-1 px-2">Modified</th>
+            <th className="text-left py-1 px-2">{t("archive.name")}</th>
+            <th className="text-right py-1 px-2">{t("archive.size")}</th>
+            <th className="text-right py-1 px-2">{t("archive.compressed")}</th>
+            <th className="text-left py-1 px-2">{t("archive.modified")}</th>
           </tr>
         </thead>
         <tbody>

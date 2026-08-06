@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 import { Map, AlertCircle } from "lucide-react";
 
@@ -25,6 +26,7 @@ interface FileInfo {
  *  Mirrors upstream XMemoryMap widget showing PE/ELF/Mach-O sections
  *  as a visual memory map with address ranges. */
 export function MemoryMapViewer({ filePath }: { filePath: string }) {
+  const { t } = useTranslation();
   const [info, setInfo] = useState<FileInfo | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -46,7 +48,7 @@ export function MemoryMapViewer({ filePath }: { filePath: string }) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-fg-muted">
         <Map size={48} className="mb-3 opacity-40" />
-        <p className="text-sm">Open a file to view its memory map.</p>
+        <p className="text-sm">{t("memmap.openFile")}</p>
       </div>
     );
   }
@@ -73,8 +75,8 @@ export function MemoryMapViewer({ filePath }: { filePath: string }) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-fg-muted">
         <Map size={48} className="mb-3 opacity-40" />
-        <p className="text-sm">No sections found for {info?.file_name ?? "this file"}.</p>
-        <p className="text-xs mt-1">Memory map is available for PE, ELF, and Mach-O binaries.</p>
+        <p className="text-sm">{t("memmap.noSections")} for {info?.file_name ?? "this file"}.</p>
+        <p className="text-xs mt-1">{t("memmap.noSectionsHint")}</p>
       </div>
     );
   }
@@ -103,13 +105,13 @@ export function MemoryMapViewer({ filePath }: { filePath: string }) {
     <div className="p-3 overflow-auto h-full">
       <div className="flex items-center gap-2 mb-3">
         <Map size={16} className="text-accent-blue" />
-        <h3 className="text-sm font-medium">Memory Map — {info.file_name}</h3>
+        <h3 className="text-sm font-medium">{t("memmap.title")} — {info.file_name}</h3>
         <span className="text-xs text-fg-muted">{info.format}</span>
       </div>
 
       {/* Visual memory map bar */}
       <div className="mb-4">
-        <div className="text-xs text-fg-muted mb-1">Virtual Address Layout</div>
+        <div className="text-xs text-fg-muted mb-1">{t("memmap.virtualLayout")}</div>
         <div
           className="relative h-12 rounded border border-border-c overflow-hidden"
           style={{ background: "rgb(var(--bg-panel))" }}
@@ -143,12 +145,12 @@ export function MemoryMapViewer({ filePath }: { filePath: string }) {
       <table className="w-full text-xs selectable">
         <thead>
           <tr className="text-fg-muted border-b border-border-c">
-            <th className="text-left py-1 px-2">Name</th>
-            <th className="text-right py-1 px-2">VAddr</th>
-            <th className="text-right py-1 px-2">VSize</th>
-            <th className="text-right py-1 px-2">Raw Off</th>
-            <th className="text-right py-1 px-2">Raw Size</th>
-            <th className="text-right py-1 px-2">Entropy</th>
+            <th className="text-left py-1 px-2">{t("memmap.name")}</th>
+            <th className="text-right py-1 px-2">{t("memmap.vaddr")}</th>
+            <th className="text-right py-1 px-2">{t("memmap.vsize")}</th>
+            <th className="text-right py-1 px-2">{t("memmap.rawOff")}</th>
+            <th className="text-right py-1 px-2">{t("memmap.rawSize")}</th>
+            <th className="text-right py-1 px-2">{t("memmap.entropy")}</th>
           </tr>
         </thead>
         <tbody>

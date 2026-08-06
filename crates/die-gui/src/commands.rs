@@ -276,9 +276,32 @@ pub struct DatabaseInfoDto {
 
 /// Resolve the database directory by checking candidate paths in order.
 ///
-/// Candidates: user-configured path (TODO: from settings), then
-/// `./db`, then `upstream/Detect-It-Easy/db` (development layout).
+/// Candidates (checked in order):
+/// 1. Path relative to the executable directory (`<exe_dir>/db`)
+/// 2. Current working directory (`./db`)
+/// 3. Development layout (`upstream/Detect-It-Easy/db`)
+///
+/// The exe-relative path ensures the bundled application finds its
+/// database regardless of the current working directory.
 fn resolve_db_path() -> String {
+    // 1. Relative to the executable directory.
+    if let Ok(exe_path) = std::env::current_exe()
+        && let Some(exe_dir) = exe_path.parent()
+    {
+        let exe_db = exe_dir.join("db");
+        if exe_db.is_dir() {
+            return exe_db.to_string_lossy().to_string();
+        }
+        // Also check one level up (e.g. target/release/ -> target/db).
+        if let Some(project_dir) = exe_dir.parent() {
+            let project_db = project_dir.join("db");
+            if project_db.is_dir() {
+                return project_db.to_string_lossy().to_string();
+            }
+        }
+    }
+
+    // 2. Current working directory.
     let candidates = ["./db", "upstream/Detect-It-Easy/db"];
     for c in &candidates {
         if std::path::Path::new(c).is_dir() {
