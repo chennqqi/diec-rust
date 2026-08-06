@@ -4,7 +4,7 @@
 
 ## 当前阶段
 
-项目目前处于 Roadmap Phase 7（维护与上游同步）。Phase 0-6 已全部关闭：
+项目目前处于 Roadmap Phase 7（维护与上游同步）。Phase 0-6 及 Phase 8 已全部关闭：
 - Phase 0 设计门禁于 2026-07-31 评审通过并关闭。
 - Phase 1 工程骨架与兼容测试基础设施于 2026-07-31 关闭。
 - Phase 2 核心数据模型与格式识别于 2026-07-31 关闭（20 个格式 probe、211 个测试、3 个 fuzz targets、完整覆盖矩阵）。
@@ -12,6 +12,7 @@
 - Phase 4 CLI 功能对齐于 2026-08-01 关闭（24 个 CLI 集成测试，374 个测试全部通过）。
 - Phase 5 C ABI 与语言集成于 2026-08-01 关闭（35 个 FFI 测试、Go/cgo 绑定、Python ctypes 绑定、411 个测试全部通过）。
 - Phase 6 兼容性、性能与发布准备于 2026-08-05 关闭（v0.3.0 已发布，477 个测试，规则加载 100%，差分 0 引擎不匹配，database_load ~510ms）。
+- Phase 8 GUI（Tauri v2）于 2026-08-06 关闭（480 个测试，三平台 CI，GUI-CLI 差分 0 不匹配，ADR 0019 deferred）。
 
 Phase 7 在不破坏兼容基线的前提下持续跟进上游 DIE-engine 规则与 host API 变化，
 保持发布物健康度。当前进展：
@@ -40,13 +41,14 @@ Phase 7 在不破坏兼容基线的前提下持续跟进上游 DIE-engine 规则
   - 三个端点：/health、/scan/path、/scan/bytes
   - Windows 服务安装/卸载 + DEB/RPM/MSI 打包配置
   - API 文档含 curl/PowerShell/Python/Go 客户端示例
-- Phase 8 GUI 实现进行中：
+- Phase 8 GUI 已完成（2026-08-06）：
   - 上游 GUI 源码分析：`docs/research/upstream-gui-analysis.md`
   - ADR 0018：Tauri v2 GUI 框架选型（Accepted）
-  - Phase 8 设计文档：`docs/design/phase8-gui.md`
+  - Phase 8 设计文档：`docs/design/phase8-gui.md`（Accepted）
   - 功能对齐上游 `die` 完整 GUI（7A 核心 + 7B 高级 + 7C 扩展）
-  - 7A-0 已完成：`die-gui` crate 骨架（Tauri v2 + React 18 + TypeScript）
-  - 7A-1 已完成：前端依赖安装 + `cargo tauri build --no-bundle` 端到端构建通过
+  - 7A-0 至 7A-4、7B、7C 扩展、签名浏览器增强、i18n、三平台 CI 均已完成
+  - GUI-CLI 差分测试 2/2 通过（0 不匹配），`cargo test --workspace --all-features` 480 个测试通过
+  - ADR 0019：tauri-plugin-updater 自动更新 deferred 到 Phase 8 之后
   - GUI 构建步骤（fnm 环境）：
     1. `cd crates/die-gui/frontend && cnpm install`
     2. `npm run build`（生成 frontend/dist/）
