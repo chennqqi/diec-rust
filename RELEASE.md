@@ -114,6 +114,14 @@ for diec-rust. Every item must be verified before publishing a release.
 
 ## Release Sign-off
 
+### v0.4.1 — 2026-08-06
+
+- **Tag**: `v0.4.1` (annotated)
+- **Tests**: 480 pass, 0 failures (unchanged from v0.4.0)
+- **Fix**: fuzz/Cargo.lock version mismatch (0.3.0 → 0.4.1)
+- **No code changes**: only version numbers and lock files
+- **Artifacts**: identical to v0.4.0
+
 ### v0.4.0 — 2026-08-06
 
 - **Tag**: `v0.4.0` (annotated)

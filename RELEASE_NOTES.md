@@ -1,5 +1,22 @@
 # Release Notes
 
+## diec-rust v0.4.1
+
+Patch release fixing fuzz/Cargo.lock version mismatch that caused
+CI fuzz workflow to fail on v0.4.0 tag.
+
+### Fixes
+
+- **fuzz/Cargo.lock updated to 0.4.1**: The fuzz workspace Cargo.lock
+  was not updated when the workspace version was bumped, causing all
+  9 fuzz CI jobs (3 replay + 6 libFuzzer) to fail with exit code 101.
+  All 6 diec-* entries updated to match the workspace version.
+
+### No Code Changes
+
+No functional code changes — only version numbers and lock files.
+All features and artifacts are identical to v0.4.0.
+
 ## diec-rust v0.4.0
 
 Minor release adding the **die-gui** desktop application (Tauri v2 + React 18)
