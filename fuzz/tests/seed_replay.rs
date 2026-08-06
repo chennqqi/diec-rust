@@ -180,6 +180,7 @@ fn harness_output_render(data: &[u8]) {
             },
             version: Some("1.0".to_string()),
             options: None,
+            signature_path: None,
         });
         offset = type_end;
         if offset >= data.len() {

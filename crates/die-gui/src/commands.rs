@@ -109,6 +109,8 @@ pub struct ScanDetectionDto {
     pub version: Option<String>,
     /// Optional options/info string.
     pub options: Option<String>,
+    /// Path to the signature file that produced this detection (relative to db root).
+    pub signature_path: Option<String>,
 }
 
 impl From<ScanDetection> for ScanDetectionDto {
@@ -119,6 +121,7 @@ impl From<ScanDetection> for ScanDetectionDto {
             name: d.name,
             version: d.version,
             options: d.options,
+            signature_path: d.signature_path,
         }
     }
 }

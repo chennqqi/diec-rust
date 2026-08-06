@@ -32,6 +32,7 @@ mod tests {
                 name: "7-Zip".into(),
                 version: Some("0.4".into()),
                 options: None,
+                signature_path: None,
             }],
             diagnostics: vec![],
         }

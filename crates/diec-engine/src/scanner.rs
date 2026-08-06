@@ -258,6 +258,9 @@ pub struct ScanDetection {
     pub version: Option<String>,
     /// Optional options/info string.
     pub options: Option<String>,
+    /// Path to the signature file that produced this detection (relative to db root).
+    /// Used by the GUI Advanced mode to display the matching signature source.
+    pub signature_path: Option<String>,
 }
 
 /// The result of scanning a single file.
@@ -397,6 +400,7 @@ pub fn scan_bytes(
                             } else {
                                 Some(result.options)
                             },
+                            signature_path: Some(rule.path.clone()),
                         });
                     }
                 }
@@ -604,6 +608,7 @@ impl Scanner {
                                 } else {
                                     Some(result.options)
                                 },
+                                signature_path: Some(rule.path.clone()),
                             });
                         }
                     }

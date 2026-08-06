@@ -402,6 +402,7 @@ DIE-engine 规则与 host API 变化，并保持发布物健康度。
 - Options 对话框：扫描引擎/签名搜索/Hex/反汇编/在线工具/InfoDB 选项
 - 多语言：react-i18next，对齐上游 XTranslation 支持的语言
 - 主题样式：CSS 变量，light/dark/system + 自定义
+- 主题自动跟随系统（默认）：默认使用 `system` 主题，根据操作系统外观在亮色/暗色间自动切换
 - 快捷键：Open/Exit/Fullscreen 全局 + Hex/Disasm/Table 分组
 - 自动更新：tauri-plugin-updater，GitHub Releases 签名更新
 

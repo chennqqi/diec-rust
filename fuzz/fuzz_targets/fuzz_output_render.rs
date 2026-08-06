@@ -70,6 +70,7 @@ fuzz_target!(|data: &[u8]| {
             },
             version: Some("1.0".to_string()),
             options: None,
+            signature_path: None,
         });
 
         offset = type_end;

@@ -40,6 +40,7 @@ interface ScanDetectionDto {
   name: string;
   version: string | null;
   options: string | null;
+  signature_path: string | null;
 }
 
 interface ScanResultDto {
@@ -142,6 +143,7 @@ export default function App() {
   const [dirProgress, setDirProgress] = useState<{ current: number; total: number } | null>(null);
   const [activeTab, setActiveTab] = useState<TabId>("scan");
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
+  const [selectedDetection, setSelectedDetection] = useState<ScanDetectionDto | null>(null);
   const dragCounter = useRef(0);
 
   // Load settings on mount.
@@ -420,6 +422,18 @@ export default function App() {
               </label>
             ))}
           </div>
+          <div className="border-t border-border-c pt-2 space-y-1.5">
+            <div className="text-xs font-medium text-fg-secondary">View Options</div>
+            <label className="flex items-center gap-1.5 cursor-pointer text-xs hover:text-fg-primary">
+              <input
+                type="checkbox"
+                checked={settings.view.advanced}
+                onChange={(e) => setSettings({ ...settings, view: { ...settings.view, advanced: e.target.checked } })}
+                className="accent-blue-500"
+              />
+              Advanced mode (show signature source for selected detection)
+            </label>
+          </div>
           <div className="flex gap-2 pt-1">
             <button onClick={saveSettings} className="btn btn-primary">Save</button>
             <button onClick={() => setShowSettings(false)} className="btn">Cancel</button>
@@ -523,11 +537,18 @@ export default function App() {
                 result={result}
                 expandedNodes={expandedNodes}
                 onToggle={toggleNode}
+                selectedDetection={selectedDetection}
+                onSelect={setSelectedDetection}
               />
             )}
 
             {dirResults.length > 0 && (
               <DirectoryResultsView results={dirResults} />
+            )}
+
+            {/* Advanced mode: signature source split panel */}
+            {settings.view.advanced && selectedDetection && (
+              <SignatureSourcePanel detection={selectedDetection} />
             )}
 
             {/* Empty state */}
@@ -587,10 +608,14 @@ function DetectionTreeView({
   result,
   expandedNodes,
   onToggle,
+  selectedDetection,
+  onSelect,
 }: {
   result: ScanResultDto;
   expandedNodes: Set<string>;
   onToggle: (id: string) => void;
+  selectedDetection: ScanDetectionDto | null;
+  onSelect: (d: ScanDetectionDto) => void;
 }) {
   if (result.detections.length === 0) {
     return (
@@ -645,12 +670,19 @@ function DetectionTreeView({
                 const nodeId = `group-${gi}-${di}`;
                 const nodeExpanded = expandedNodes.has(nodeId);
                 const hasOptions = d.options && d.options.length > 0;
+                const isSelected =
+                  selectedDetection?.name === d.name &&
+                  selectedDetection?.type_name === d.type_name &&
+                  selectedDetection?.file_type === d.file_type;
                 return (
                   <div key={nodeId}>
                     <div
-                      className="tree-row text-xs"
+                      className={`tree-row text-xs ${isSelected ? "bg-accent-blue/20 border-l-2 border-accent-blue" : ""}`}
                       style={{ marginLeft: 20 }}
-                      onClick={() => hasOptions && onToggle(nodeId)}
+                      onClick={() => {
+                        onSelect(d);
+                        if (hasOptions) onToggle(nodeId);
+                      }}
                     >
                       <span className="w-6 flex justify-center">
                         {hasOptions ? (
@@ -747,6 +779,66 @@ function DirectoryResultsView({ results }: { results: ScanResultDto[] }) {
           </div>
         );
       })}
+    </div>
+  );
+}
+
+/** Advanced mode: signature source code panel for the selected detection. */
+function SignatureSourcePanel({ detection }: { detection: ScanDetectionDto }) {
+  const [source, setSource] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!detection.signature_path) {
+      setSource(null);
+      setError("No signature path associated with this detection.");
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    invoke<{ source: string; file_path: string }>("get_signature_source", {
+      fileType: detection.file_type,
+      name: detection.signature_path.split("/").pop() ?? detection.signature_path,
+    })
+      .then((res) => setSource(res.source))
+      .catch((e) => setError(String(e)))
+      .finally(() => setLoading(false));
+  }, [detection]);
+
+  return (
+    <div className="border-t border-border-c flex flex-col" style={{ height: "240px", background: "rgb(var(--bg-panel))" }}>
+      {/* Panel header */}
+      <div className="flex items-center justify-between px-3 py-1.5 border-b border-border-c">
+        <div className="flex items-center gap-2 text-xs">
+          <Code2 size={13} className="text-accent-blue" />
+          <span className="font-medium text-fg-primary">Signature Source</span>
+          <span className="text-fg-muted">
+            {detection.file_type} / {detection.name}
+          </span>
+        </div>
+        {detection.signature_path && (
+          <span className="text-xs text-fg-muted mono">{detection.signature_path}</span>
+        )}
+      </div>
+
+      {/* Source content */}
+      <div className="flex-1 overflow-auto">
+        {loading && (
+          <div className="flex items-center justify-center h-full text-xs text-fg-secondary">
+            <div className="w-3 h-3 border-2 border-accent-blue border-t-transparent rounded-full animate-spin mr-2" />
+            Loading signature source...
+          </div>
+        )}
+        {error && !loading && (
+          <div className="p-3 text-xs text-accent-yellow selectable">{error}</div>
+        )}
+        {source && !loading && (
+          <pre className="p-3 mono text-xs text-fg-primary selectable whitespace-pre overflow-x-auto">
+            {source}
+          </pre>
+        )}
+      </div>
     </div>
   );
 }
