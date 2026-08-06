@@ -24,4 +24,10 @@
 - 落地：SignatureBrowser 重写（搜索+编辑+Run/Debug+Profiling）、MemoryMapViewer（区段可视化）、ArchiveViewer（ZIP 树形浏览+list_archive 命令）、DataConverter（6种格式实时转换）；run_signature 从 stub 实现为全量扫描+过滤
 - 验证：Playwright 测试 DataConverter（"Hello" hex→6种格式全部正确）、MemMap/Archive 空状态正确、SignatureBrowser 搜索框+Run/Debug 按钮渲染正确
 
+## 2026-08-06: GUI BUG 修复（i18n + 规则路径 + 黑框 + favicon）
+- 需求：i18n 语言切换无效、release exe 找不到规则库、启动有黑框、favicon 404
+- 分析：i18n/config.ts 被导入但未调用 changeLanguage；resolve_db_path 仅检查 CWD 相对路径；缺少 windows_subsystem 属性；onDragDropEvent 在浏览器 reject；无 favicon
+- 落地：useTranslation 接入 App + 4 组件、en/zh-CN 全量翻译；resolve_db_path 优先 exe 相对路径；windows_subsystem = windows（release）；onDragDropEvent .catch()；favicon.png
+- 验证：Playwright 0 console 错误（原 3 个），zh-CN 翻译全部正确渲染（工具栏/标签页/Settings/状态栏/空状态）
+
 

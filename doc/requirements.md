@@ -919,4 +919,11 @@
 - 7C 数据转换器（DataConverter）：hex/dec/bin/oct/base64/ASCII 实时转换 + 复制
 - 3 个新标签页：MemMap、Archive、Convert（总计 12 个标签页）
 
+## 2026-08-06: GUI BUG 修复（i18n + 规则路径 + 黑框 + favicon）
+- i18n BUG：i18n 导入但从未调用 changeLanguage，语言下拉无效；现已接入 useTranslation + 全量 en/zh-CN 翻译
+- 规则加载路径：resolve_db_path 改为优先相对于 exe 目录解析（<exe_dir>/db, <exe_dir>/../db），release exe 可正确找到数据库
+- 启动黑框：添加 windows_subsystem = "windows"（release 模式隐藏控制台窗口）
+- drag-drop 错误：onDragDropEvent 在浏览器 dev 模式 reject 导致 console 错误，添加 .catch() 静默处理
+- favicon 404：添加 favicon.png + index.html link 引用
+
 
