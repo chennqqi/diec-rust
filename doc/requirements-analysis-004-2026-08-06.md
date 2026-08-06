@@ -4,3 +4,4 @@
 - 需求：die-gui 增加自动跟随系统主题，并设为默认
 - 分析：当前默认暗色，新增 `system` 主题后系统为亮色时显示亮色主题
 - 落地：在 ROADMAP.md Phase 8 7B 主题样式下新增条目
+- Phase 规划：7B-8 主题样式（与上游 1:1 对齐），7B-8-1 自动跟随系统（默认），对齐上游 QSS 主题 `orange_fix` / `Fusion` 与 `View` → `STYLE` 默认行为

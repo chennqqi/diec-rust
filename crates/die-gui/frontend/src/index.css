@@ -207,3 +207,82 @@ body {
   user-select: text;
   -webkit-user-select: text;
 }
+
+/* Splitter (horizontal drag divider) — mirrors QSplitter */
+.splitter-h {
+  height: 5px;
+  background: rgb(var(--border-color));
+  cursor: row-resize;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid rgb(var(--border-color));
+  border-bottom: 1px solid rgb(var(--border-color));
+}
+.splitter-h:hover {
+  background: rgb(var(--accent-blue));
+}
+.splitter-h-grip {
+  width: 32px;
+  height: 2px;
+  background: rgb(var(--fg-muted));
+  border-radius: 1px;
+}
+.splitter-h:hover .splitter-h-grip {
+  background: rgb(var(--fg-primary));
+}
+
+/* Syntax highlighting for DIE signature source */
+.syntax-container {
+  font-family: "Cascadia Code", "JetBrains Mono", "Consolas", "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  user-select: text;
+  -webkit-user-select: text;
+  padding: 8px 0;
+  background: rgb(var(--bg-input));
+}
+.syntax-line {
+  display: flex;
+  white-space: pre;
+}
+.syntax-line:hover {
+  background: rgba(var(--bg-hover), 0.5);
+}
+.syntax-gutter {
+  display: inline-block;
+  width: 40px;
+  text-align: right;
+  padding-right: 12px;
+  color: rgb(var(--fg-muted));
+  user-select: none;
+  flex-shrink: 0;
+}
+.syntax-content {
+  flex: 1;
+  overflow: visible;
+}
+.syntax-comment {
+  color: rgb(var(--fg-muted));
+  font-style: italic;
+}
+.syntax-string {
+  color: rgb(var(--accent-green));
+}
+.syntax-keyword {
+  color: rgb(var(--accent-blue));
+  font-weight: 600;
+}
+.syntax-builtin {
+  color: rgb(var(--accent-purple));
+}
+.syntax-number {
+  color: rgb(var(--accent-yellow));
+}
+.syntax-operator {
+  color: rgb(var(--fg-secondary));
+}
+.syntax-default {
+  color: rgb(var(--fg-primary));
+}

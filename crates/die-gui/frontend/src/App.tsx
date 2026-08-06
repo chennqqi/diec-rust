@@ -33,6 +33,8 @@ import { YaraScanner } from "./components/YaraScanner";
 import { PeidScanner } from "./components/PeidScanner";
 import { OnlineTools } from "./components/OnlineTools";
 import { FileInfoPanel } from "./components/FileInfoPanel";
+import { SplitPane } from "./components/SplitPane";
+import { SignatureHighlighter } from "./components/SignatureHighlighter";
 
 interface ScanDetectionDto {
   file_type: string;
@@ -503,6 +505,11 @@ export default function App() {
               </div>
             )}
 
+            {/* Advanced mode: Type/Flags toolbar (mirrors upstream comboBoxType/comboBoxFlags) */}
+            {settings.view.advanced && filePath && (
+              <AdvancedToolbar flags={flags} onFlagsChange={setFlags} />
+            )}
+
             {/* Progress bar during directory scan */}
             {dirProgress && (
               <div className="px-3 py-1.5">
@@ -533,22 +540,27 @@ export default function App() {
 
             {/* Results: TreeView for single file, list for directory */}
             {result && (
-              <DetectionTreeView
-                result={result}
-                expandedNodes={expandedNodes}
-                onToggle={toggleNode}
-                selectedDetection={selectedDetection}
-                onSelect={setSelectedDetection}
+              <SplitPane
+                showBottom={settings.view.advanced && !!selectedDetection}
+                top={
+                  <DetectionTreeView
+                    result={result}
+                    expandedNodes={expandedNodes}
+                    onToggle={toggleNode}
+                    selectedDetection={selectedDetection}
+                    onSelect={setSelectedDetection}
+                  />
+                }
+                bottom={
+                  selectedDetection ? (
+                    <SignatureSourcePanel detection={selectedDetection} />
+                  ) : null
+                }
               />
             )}
 
             {dirResults.length > 0 && (
               <DirectoryResultsView results={dirResults} />
-            )}
-
-            {/* Advanced mode: signature source split panel */}
-            {settings.view.advanced && selectedDetection && (
-              <SignatureSourcePanel detection={selectedDetection} />
             )}
 
             {/* Empty state */}
@@ -807,9 +819,9 @@ function SignatureSourcePanel({ detection }: { detection: ScanDetectionDto }) {
   }, [detection]);
 
   return (
-    <div className="border-t border-border-c flex flex-col" style={{ height: "240px", background: "rgb(var(--bg-panel))" }}>
+    <div className="flex flex-col h-full" style={{ background: "rgb(var(--bg-panel))" }}>
       {/* Panel header */}
-      <div className="flex items-center justify-between px-3 py-1.5 border-b border-border-c">
+      <div className="flex items-center justify-between px-3 py-1.5 border-b border-border-c flex-shrink-0">
         <div className="flex items-center gap-2 text-xs">
           <Code2 size={13} className="text-accent-blue" />
           <span className="font-medium text-fg-primary">Signature Source</span>
@@ -818,11 +830,11 @@ function SignatureSourcePanel({ detection }: { detection: ScanDetectionDto }) {
           </span>
         </div>
         {detection.signature_path && (
-          <span className="text-xs text-fg-muted mono">{detection.signature_path}</span>
+          <span className="text-xs text-fg-muted mono selectable">{detection.signature_path}</span>
         )}
       </div>
 
-      {/* Source content */}
+      {/* Source content with syntax highlighting */}
       <div className="flex-1 overflow-auto">
         {loading && (
           <div className="flex items-center justify-center h-full text-xs text-fg-secondary">
@@ -834,11 +846,93 @@ function SignatureSourcePanel({ detection }: { detection: ScanDetectionDto }) {
           <div className="p-3 text-xs text-accent-yellow selectable">{error}</div>
         )}
         {source && !loading && (
-          <pre className="p-3 mono text-xs text-fg-primary selectable whitespace-pre overflow-x-auto">
-            {source}
-          </pre>
+          <SignatureHighlighter source={source} />
         )}
       </div>
+    </div>
+  );
+}
+
+/** Advanced mode toolbar with Type and Flags dropdowns.
+ *  Mirrors upstream DIEWidgetAdvanced's comboBoxType + comboBoxFlags. */
+function AdvancedToolbar({
+  flags,
+  onFlagsChange,
+}: {
+  flags: ScanFlagsDto;
+  onFlagsChange: (f: ScanFlagsDto) => void;
+}) {
+  // Preset flag combinations matching upstream comboBoxFlags items.
+  const flagPresets: { label: string; apply: Partial<ScanFlagsDto> }[] = [
+    { label: "Default", apply: {} },
+    { label: "Deep", apply: { deep: true, heuristic: false, aggressive: false } },
+    { label: "Heuristic", apply: { deep: false, heuristic: true, aggressive: false } },
+    { label: "Aggressive", apply: { deep: true, heuristic: true, aggressive: true } },
+    { label: "All Types", apply: { alltypes: true } },
+  ];
+
+  // File type options matching upstream comboBoxType.
+  const typeOptions = ["Auto", "PE", "ELF", "Mach-O", "Archive", "Image", "Text"];
+
+  return (
+    <div
+      className="flex items-center gap-2 px-3 py-1 border-b border-border-c text-xs"
+      style={{ background: "rgb(var(--bg-panel))" }}
+    >
+      <span className="text-fg-muted">Type:</span>
+      <select className="input py-0.5 px-1.5" defaultValue="Auto" style={{ width: "90px" }}>
+        {typeOptions.map((t) => (
+          <option key={t} value={t}>{t}</option>
+        ))}
+      </select>
+
+      <div className="w-px h-3 bg-border-c" />
+
+      <span className="text-fg-muted">Flags:</span>
+      <select
+        className="input py-0.5 px-1.5"
+        defaultValue="Default"
+        style={{ width: "100px" }}
+        onChange={(e) => {
+          const preset = flagPresets.find((p) => p.label === e.target.value);
+          if (preset) onFlagsChange({ ...flags, ...preset.apply });
+        }}
+      >
+        {flagPresets.map((p) => (
+          <option key={p.label} value={p.label}>{p.label}</option>
+        ))}
+      </select>
+
+      <div className="w-px h-3 bg-border-c" />
+
+      {/* Quick flag toggles */}
+      <label className="flex items-center gap-1 cursor-pointer hover:text-fg-primary">
+        <input
+          type="checkbox"
+          checked={flags.deep}
+          onChange={(e) => onFlagsChange({ ...flags, deep: e.target.checked })}
+          className="accent-blue-500"
+        />
+        Deep
+      </label>
+      <label className="flex items-center gap-1 cursor-pointer hover:text-fg-primary">
+        <input
+          type="checkbox"
+          checked={flags.heuristic}
+          onChange={(e) => onFlagsChange({ ...flags, heuristic: e.target.checked })}
+          className="accent-blue-500"
+        />
+        Heuristic
+      </label>
+      <label className="flex items-center gap-1 cursor-pointer hover:text-fg-primary">
+        <input
+          type="checkbox"
+          checked={flags.alltypes}
+          onChange={(e) => onFlagsChange({ ...flags, alltypes: e.target.checked })}
+          className="accent-blue-500"
+        />
+        All Types
+      </label>
     </div>
   );
 }

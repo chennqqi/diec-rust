@@ -401,8 +401,8 @@ DIE-engine 规则与 host API 变化，并保持发布物健康度。
 - Demangle：C++ 符号 demangle（Itanium/MSVC ABI）
 - Options 对话框：扫描引擎/签名搜索/Hex/反汇编/在线工具/InfoDB 选项
 - 多语言：react-i18next，对齐上游 XTranslation 支持的语言
-- 主题样式：CSS 变量，light/dark/system + 自定义
-- 主题自动跟随系统（默认）：默认使用 `system` 主题，根据操作系统外观在亮色/暗色间自动切换
+- **7B-8 主题样式（与上游 1:1 对齐）**：CSS 变量，light/dark/system + 自定义；对齐上游 QSS 主题 `orange_fix` / `Fusion`
+- **7B-8-1 主题自动跟随系统（默认）**：默认使用 `system` 主题，根据操作系统外观在亮色/暗色间自动切换，与上游 `View` → `STYLE` 默认行为对齐
 - 快捷键：Open/Exit/Fullscreen 全局 + Hex/Disasm/Table 分组
 - 自动更新：tauri-plugin-updater，GitHub Releases 签名更新
 
