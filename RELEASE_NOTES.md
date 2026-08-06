@@ -1,5 +1,94 @@
 # Release Notes
 
+## diec-rust v0.4.0
+
+Minor release adding the **die-gui** desktop application (Tauri v2 + React 18)
+with full feature parity to the upstream DIE GUI, plus native installer
+packages and CLI auto-loading of extra rule databases.
+
+### New Features
+
+- **die-gui desktop application** (ADR 0018):
+  - Tauri v2 + React 18 + TypeScript GUI with dark/light theme
+  - Full feature parity to upstream `die` GUI:
+    - 7A core: file/dir scan, drag-drop, stop, settings persistence,
+      recent files, fullscreen, keyboard shortcuts
+    - 7B advanced: hex viewer, disassembler (Intel/GAS/NASM),
+      C++/Rust demangle, signature browser with source view/edit/run/debug
+    - 7C extensions: YARA scanner, PEID scanner, online lookup,
+      archive viewer, data converter, file info panel (hashes/entropy/
+      sections/symbols), memory map viewer
+  - Internationalization (i18n): English, Chinese (Simplified), Russian,
+    German, French — all UI strings externalized via react-i18next
+  - Windows Explorer context menu integration: one-click add/remove
+    "Scan with DIE" from Settings panel (HKCU registry, no admin needed)
+  - Single-instance support: launching from context menu focuses existing
+    window and auto-loads the right-clicked file
+
+- **Native installer packages** (MSI/NSIS/DEB/RPM/DMG):
+  - Windows: MSI (WiX, perMachine, ~14MB) + NSIS (~9.3MB)
+  - Linux: DEB + RPM + AppImage
+  - macOS: DMG + .app bundle
+  - All installers bundle the complete rule database (7 data directories)
+  - Portable archives (zip/tar.gz) also provided for each platform
+
+- **CLI auto-loading of db_extra/db_custom**:
+  - CLI now auto-discovers `db_extra/` and `db_custom/` alongside the
+    main `db/` directory, matching upstream DIE-engine behavior
+  - Rule count: 2037 → 2175 (+138 from db_extra)
+  - Users can still override with `--extradb`/`--customdb`
+
+- **Complete data directory bundling**:
+  - All 7 upstream data directories packaged: `db/`, `db_extra/`,
+    `db_custom/`, `dbs_min/`, `dbs_special/`, `peid_rules/`, `yara_rules/`
+  - GUI auto-loads db + db_extra + db_custom for scanning
+  - PEID scanner auto-loads `peid_rules/PE/userdb.txt`
+  - YARA scanner provides dropdown to load built-in `yara_rules/*.yar`
+
+- **GUI vs CLI differential tests**:
+  - `gui_cli_differential.rs`: 2 tests verifying GUI `scan_once` matches
+    CLI `scan_bytes` on 32 corpus files + flag combination consistency
+
+### Improvements
+
+- Test count: 480 tests (up from 477, +3 GUI differential tests)
+- Rule count: 2175 rules loaded (up from 2037, includes db_extra)
+- New crate: `die-gui` (Tauri v2 GUI adapter, no core-layer dependency)
+- Tri-platform GUI CI: Linux (webkit2gtk-4.1), macOS (arm64), Windows
+- ADR 0018 (Tauri v2 GUI framework), ADR 0019 (auto-update deferred)
+
+### Artifacts
+
+**CLI** (4 platforms, unchanged from v0.3.0):
+- `diec` / `diec.exe` — CLI binary
+- `died` / `died.exe` — HTTP/JSON scan service
+- `libdiec_ffi.*` — static and dynamic libraries
+- `include/diec.h` — C header
+- `db/` + `db_extra/` + `db_custom/` — rule databases
+- `bindings/python/diec.py` + `bindings/go/diec/diec.go`
+
+**GUI** (3 platforms, new in v0.4.0):
+- Portable: `die-gui-<version>-<platform>-portable.zip/.tar.gz`
+- Windows installers: MSI + NSIS exe
+- Linux installers: DEB + RPM + AppImage
+- macOS installers: DMG + .app bundle
+
+### Documentation
+
+- [docs/design/phase8-gui.md](docs/design/phase8-gui.md) — Phase 8 GUI design
+- ADR 0018 (Tauri v2 framework selection) — Accepted
+- ADR 0019 (auto-update deferred) — Accepted
+- NOTICES.md updated with die-gui dependencies (tauri, iced-x86,
+  cpp_demangle, yara-x, winreg, react, etc.)
+
+### Testing
+
+480 tests, 6 fuzz targets, 0 failures. Tri-platform GUI CI.
+
+### License
+
+MIT — see [LICENSE](LICENSE) and [NOTICES.md](NOTICES.md)
+
 ## diec-rust v0.3.0
 
 Minor release adding the died (die daemon) HTTP/JSON scan service and

@@ -189,5 +189,6 @@ These are NOT engine bugs:
 | Integration tests | 182 | ✅ all pass (+14 Scanner/Database version/Server) |
 | FFI tests | 35 | ✅ all pass |
 | Edge corpus tests | 3 | ✅ all pass |
+| GUI differential tests | 2 | ✅ all pass (v0.4.0) |
 | Fuzz targets | 6 | ✅ compile |
-| **Total** | **477** | ✅ 0 failures |
+| **Total** | **480** | ✅ 0 failures |

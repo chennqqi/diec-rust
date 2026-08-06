@@ -114,6 +114,19 @@ for diec-rust. Every item must be verified before publishing a release.
 
 ## Release Sign-off
 
+### v0.4.0 — 2026-08-06
+
+- **Tag**: `v0.4.0` (annotated)
+- **Tests**: 480 pass, 0 failures (+3 GUI differential tests)
+- **Rule count**: 2175 (db + db_extra + db_custom, was 2037 in v0.3.0)
+- **New**: die-gui desktop app (Tauri v2 + React 18), native installers
+  (MSI/NSIS/DEB/RPM/DMG), i18n (5 languages), Windows context menu,
+  CLI auto-loading of db_extra/db_custom
+- **Platforms**: Linux x86_64, Windows x86_64, macOS arm64 (GUI);
+  + macOS x86_64 (CLI only)
+- **GUI artifacts**: portable + installer per platform (6 products)
+- **GitHub Release**: artifacts uploaded after CI
+
 ### v0.3.0 — 2026-08-05
 
 - **Tag**: `v0.3.0` (annotated)

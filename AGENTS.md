@@ -41,7 +41,7 @@ Phase 7 在不破坏兼容基线的前提下持续跟进上游 DIE-engine 规则
   - 三个端点：/health、/scan/path、/scan/bytes
   - Windows 服务安装/卸载 + DEB/RPM/MSI 打包配置
   - API 文档含 curl/PowerShell/Python/Go 客户端示例
-- Phase 8 GUI 已完成（2026-08-06）：
+- Phase 8 GUI 已完成（2026-08-06，v0.4.0 发布）：
   - 上游 GUI 源码分析：`docs/research/upstream-gui-analysis.md`
   - ADR 0018：Tauri v2 GUI 框架选型（Accepted）
   - Phase 8 设计文档：`docs/design/phase8-gui.md`（Accepted）
@@ -49,6 +49,12 @@ Phase 7 在不破坏兼容基线的前提下持续跟进上游 DIE-engine 规则
   - 7A-0 至 7A-4、7B、7C 扩展、签名浏览器增强、i18n、三平台 CI 均已完成
   - GUI-CLI 差分测试 2/2 通过（0 不匹配），`cargo test --workspace --all-features` 480 个测试通过
   - ADR 0019：tauri-plugin-updater 自动更新 deferred 到 Phase 8 之后
+  - v0.4.0 新增：原生安装包（MSI/NSIS/DEB/RPM/DMG）+ 便携版
+  - v0.4.0 新增：Windows 右键菜单集成（HKCU 注册表，一键添加/取消）
+  - v0.4.0 新增：i18n 全量接入（en/zh-CN/ru/de/fr）
+  - v0.4.0 新增：完整数据目录打包（db/db_extra/db_custom/dbs_min/dbs_special/peid_rules/yara_rules）
+  - v0.4.0 新增：CLI 自动加载 db_extra/db_custom（与上游 DIE-engine 行为一致，规则数 2037→2175）
+  - v0.4.0 新增：PEID/YARA 内置规则加载（前端下拉选择内置 .yar/.userdb 文件）
   - GUI 构建步骤（fnm 环境）：
     1. `cd crates/die-gui/frontend && cnpm install`
     2. `npm run build`（生成 frontend/dist/）

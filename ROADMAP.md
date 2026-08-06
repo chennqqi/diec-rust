@@ -159,7 +159,7 @@ rquickjs 后端 + Binary host API bridge + 签名解析器 + 完整 PE/ELF/Mach-
 
 退出条件：目标规则集全部可加载；代表性语料的规则结果达到已定义的兼容标准；剩余差异均有精确记录和回归用例。
 
-## Phase 4：CLI — IN PROGRESS
+## Phase 4：CLI — DONE (2026-08-01)
 
 - 实现薄 CLI 层，不复制核心扫描逻辑。
 - 支持稳定的结构化输出和人类可读输出。
