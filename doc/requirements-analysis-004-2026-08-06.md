@@ -30,4 +30,10 @@
 - 落地：useTranslation 接入 App + 4 组件、en/zh-CN 全量翻译；resolve_db_path 优先 exe 相对路径；windows_subsystem = windows（release）；onDragDropEvent .catch()；favicon.png
 - 验证：Playwright 0 console 错误（原 3 个），zh-CN 翻译全部正确渲染（工具栏/标签页/Settings/状态栏/空状态）
 
+## 2026-08-06: Phase 8 退出条件达成
+- 需求：三平台 CI + GUI vs CLI 差分测试 + 自动更新决策
+- 分析：CI 仅 Windows；无 GUI-CLI 差分测试；自动更新需签名基础设施
+- 落地：release.yml 添加 Linux（webkit2gtk）+ macOS die-gui 构建；gui_cli_differential.rs 2 测试验证 scan_once vs scan_bytes 一致性；ADR 0019 deferred 自动更新
+- 验证：480 个测试全部通过（+2 GUI 差分），cargo fmt/clippy 零警告，Phase 8 退出条件全部达成
+
 

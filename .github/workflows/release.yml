@@ -186,8 +186,7 @@ jobs:
 
   # Build die-gui (Tauri v2) desktop application.
   # Requires Node.js for frontend build + Rust for backend.
-  # Currently Windows-only; Linux/macOS require additional system
-  # dependencies (webkit2gtk, etc.) that can be added later.
+  # Three platforms: Windows, Linux (webkit2gtk), macOS (system WebKit).
   build-gui:
     name: Build GUI (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
@@ -199,6 +198,12 @@ jobs:
           - os: windows-2022
             artifact_name: die-gui-windows-x86_64
             archive_ext: zip
+          - os: ubuntu-24.04
+            artifact_name: die-gui-linux-x86_64
+            archive_ext: tar.gz
+          - os: macos-14
+            artifact_name: die-gui-macos-arm64
+            archive_ext: tar.gz
 
     steps:
       - name: Check out
@@ -207,11 +212,32 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
-      - name: Install Rust target
+      - name: Install system dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            build-essential \
+            curl \
+            wget \
+            file \
+            libxdo-dev \
+            libssl-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev
+
+      - name: Install Rust toolchain
         shell: bash
         run: |
-          rustup target add x86_64-pc-windows-msvc
           rustup component add clippy
+          if [ "${{ runner.os }}" = "Windows" ]; then
+            rustup target add x86_64-pc-windows-msvc
+          elif [ "${{ runner.os }}" = "Linux" ]; then
+            rustup target add x86_64-unknown-linux-gnu
+          elif [ "${{ runner.os }}" = "macOS" ]; then
+            rustup target add aarch64-apple-darwin
+          fi
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
@@ -255,6 +281,54 @@ jobs:
 
           Compress-Archive -Path "$staging" -DestinationPath "$staging.zip"
           "GUI_ARTIFACT=$staging.zip" >> $env:GITHUB_ENV
+
+      - name: Prepare GUI artifacts (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          version="${{ inputs.version || github.ref_name }}"
+          staging="die-gui-$version-linux-x86_64"
+          mkdir -p "$staging"
+
+          # GUI binary.
+          cp "target/release/die" "$staging/"
+
+          # Rule database.
+          if [ -d "upstream/Detect-It-Easy/db" ]; then
+            mkdir -p "$staging/db"
+            cp -r "upstream/Detect-It-Easy/db/"* "$staging/db/"
+          fi
+
+          # Documentation.
+          cp README.md "$staging/"
+          cp LICENSE "$staging/"
+
+          tar czf "$staging.tar.gz" "$staging"
+          echo "GUI_ARTIFACT=$staging.tar.gz" >> $GITHUB_ENV
+
+      - name: Prepare GUI artifacts (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          version="${{ inputs.version || github.ref_name }}"
+          staging="die-gui-$version-macos-arm64"
+          mkdir -p "$staging"
+
+          # GUI binary.
+          cp "target/release/die" "$staging/"
+
+          # Rule database.
+          if [ -d "upstream/Detect-It-Easy/db" ]; then
+            mkdir -p "$staging/db"
+            cp -r "upstream/Detect-It-Easy/db/"* "$staging/db/"
+          fi
+
+          # Documentation.
+          cp README.md "$staging/"
+          cp LICENSE "$staging/"
+
+          tar czf "$staging.tar.gz" "$staging"
+          echo "GUI_ARTIFACT=$staging.tar.gz" >> $GITHUB_ENV
 
       - name: Upload GUI artifact
         uses: actions/upload-artifact@v5

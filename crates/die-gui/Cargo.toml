@@ -38,6 +38,10 @@ hex = "0.4"
 goblin = { version = "0.9" }
 zip = { version = "8.6", default-features = false, features = ["deflate"] }
 
+[dev-dependencies]
+diec-engine = { workspace = true }
+diec-core = { workspace = true }
+
 [build-dependencies]
 tauri-build = { version = "2", features = [] }
 

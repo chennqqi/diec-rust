@@ -926,4 +926,11 @@
 - drag-drop 错误：onDragDropEvent 在浏览器 dev 模式 reject 导致 console 错误，添加 .catch() 静默处理
 - favicon 404：添加 favicon.png + index.html link 引用
 
+## 2026-08-06: Phase 8 退出条件达成
+- 三平台 CI：release.yml 添加 Linux（ubuntu-24.04 + webkit2gtk）和 macOS（macos-14）die-gui 构建
+- GUI vs CLI 差分测试：gui_cli_differential.rs 2 个测试（scan_results_match + flags_mapping_consistent），验证 GUI scan_once 与 CLI scan_bytes 结果一致
+- ADR 0019：tauri-plugin-updater 自动更新 deferred 到 Phase 8 之后（属于发布基础设施，需签名密钥管理）
+- 测试统计：480 个测试全部通过（+2 个 GUI 差分测试），cargo fmt/clippy 零警告
+- Phase 8 退出条件全部达成，标记为 DONE
+
 

@@ -60,3 +60,6 @@
 - [`0018-tauri-gui-framework.md`](0018-tauri-gui-framework.md)：
   Tauri v2 作为 diec-rust GUI 框架，新增 `die-gui` crate 作为薄适配层，
   Web 前端 + Rust 后端直接调用 `diec-engine`（Accepted, 2026-08-05）。
+- [`0019-defer-gui-auto-update.md`](0019-defer-gui-auto-update.md)：
+  将 tauri-plugin-updater 自动更新功能 deferred 到 Phase 8 之后，
+  理由：属于发布基础设施而非核心 GUI 功能，需签名密钥管理（Accepted, 2026-08-06）。
