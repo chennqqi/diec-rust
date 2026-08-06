@@ -2,6 +2,8 @@
 **/target/
 __pycache__/
 *.py[cod]
+# Exception: fuzz corpus .pyc files are test seeds, not Python bytecode
+!fuzz/corpus/**/*.pyc
 /aqtinstall.log
 # die-gui: copied data dirs for installer bundling (not source-controlled)
 /crates/die-gui/db/
