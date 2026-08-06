@@ -893,3 +893,20 @@
 ## 2026-08-06: GUI 主题跟随系统
 - die-gui 主题增加自动跟随系统（默认），当系统为亮色时使用亮色主题，暗色时使用暗色主题
 - 在 ROADMAP.md Phase 8 功能范围 7B 主题样式下新增对应条目
+
+## 2026-08-06: GUI Advanced 模式完善（分割条+语法高亮+Type/Flags下拉）
+- 可拖拽分割条（SplitPane.tsx）：替代固定240px高度，QSplitter等价
+- 签名语法高亮（SignatureHighlighter.tsx）：regex tokenizer，comment/keyword/builtin/number/string/operator
+- Advanced 工具栏：Type下拉（Auto/PE/ELF/Mach-O/Archive/Image/Text）+ Flags下拉（Default/Deep/Heuristic/Aggressive/All Types）+ 快速复选框
+
+## 2026-08-06: GUI 7A/7B 功能对齐（Recent files + 全屏 + 上下文菜单 + 主题 + 快捷键）
+- Recent files：最近10个文件下拉，点击重新打开，自动添加
+- 全屏：F11快捷键或工具栏按钮切换窗口全屏
+- 复制结果：工具栏按钮 + Ctrl+C快捷键，复制扫描结果到剪贴板
+- 清除结果：工具栏按钮清除所有结果
+- 保存结果：工具栏按钮保存结果到文本文件（新增 write_text_file 后端命令）
+- 上下文菜单：右键检测项显示 Copy detection / View signature source / Copy as path
+- Databases 下拉：文件信息栏 Main/Extra/Custom 数据库选择
+- 主题系统（7B-8 + 7B-8-1）：Settings 中 Theme 下拉（System/Dark/Light，默认System自动跟随OS）+ Language 下拉（5种语言）
+- 快捷键：Ctrl+O/Ctrl+Shift+O/Ctrl+Enter/F11/Ctrl+C/Escape
+
