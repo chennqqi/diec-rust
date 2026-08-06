@@ -32,6 +32,9 @@ import {
   Save,
   History,
   Database,
+  Map,
+  Archive,
+  Repeat,
 } from "lucide-react";
 import { HexViewer } from "./components/HexViewer";
 import { Disassembler } from "./components/Disassembler";
@@ -43,6 +46,9 @@ import { OnlineTools } from "./components/OnlineTools";
 import { FileInfoPanel } from "./components/FileInfoPanel";
 import { SplitPane } from "./components/SplitPane";
 import { SignatureHighlighter } from "./components/SignatureHighlighter";
+import { MemoryMapViewer } from "./components/MemoryMapViewer";
+import { ArchiveViewer } from "./components/ArchiveViewer";
+import { DataConverter } from "./components/DataConverter";
 
 interface ScanDetectionDto {
   file_type: string;
@@ -126,7 +132,7 @@ const defaultSettings: AppSettings = {
   engine: { die_enabled: true, nfd_enabled: false, peid_enabled: false, yara_enabled: false },
 };
 
-type TabId = "scan" | "info" | "hex" | "disasm" | "demangle" | "sigs" | "yara" | "peid" | "online";
+type TabId = "scan" | "info" | "hex" | "disasm" | "demangle" | "sigs" | "yara" | "peid" | "online" | "memmap" | "archive" | "converter";
 
 const TABS: { id: TabId; label: string; icon: typeof FileSearch }[] = [
   { id: "scan", label: "Scan", icon: ScanSearch },
@@ -137,6 +143,9 @@ const TABS: { id: TabId; label: string; icon: typeof FileSearch }[] = [
   { id: "sigs", label: "Signatures", icon: Tags },
   { id: "yara", label: "YARA", icon: Shield },
   { id: "peid", label: "PEID", icon: ScanSearch },
+  { id: "memmap", label: "MemMap", icon: Map },
+  { id: "archive", label: "Archive", icon: Archive },
+  { id: "converter", label: "Convert", icon: Repeat },
   { id: "online", label: "Online", icon: Globe },
 ];
 
@@ -276,13 +285,12 @@ export default function App() {
       const res = await invoke<ScanResultDto>("scan_file", { path: filePath, flags });
       setResult(res);
       // Auto-expand all group nodes.
-      const groups = new Map<string, ScanDetectionDto[]>();
+      const groupMap: Record<string, ScanDetectionDto[]> = {};
       for (const d of res.detections) {
-        const arr = groups.get(d.file_type) ?? [];
-        arr.push(d);
-        groups.set(d.file_type, arr);
+        if (!groupMap[d.file_type]) groupMap[d.file_type] = [];
+        groupMap[d.file_type].push(d);
       }
-      setExpandedNodes(new Set(Array.from(groups.keys()).map((_, i) => `group-${i}`)));
+      setExpandedNodes(new Set(Object.keys(groupMap).map((_, i) => `group-${i}`)));
     } catch (e) {
       const err = e as GuiError;
       setError(err.message ?? String(e));
@@ -864,6 +872,15 @@ export default function App() {
         {activeTab === "yara" && filePath && <YaraScanner path={filePath} />}
         {activeTab === "peid" && filePath && <PeidScanner path={filePath} />}
         {activeTab === "online" && <OnlineTools hash="" />}
+
+        {/* Memory map tab */}
+        {activeTab === "memmap" && <MemoryMapViewer filePath={filePath} />}
+
+        {/* Archive viewer tab */}
+        {activeTab === "archive" && <ArchiveViewer filePath={filePath} />}
+
+        {/* Data converter tab */}
+        {activeTab === "converter" && <DataConverter />}
       </div>
 
       {/* Context menu for detection items */}
@@ -965,12 +982,12 @@ function DetectionTreeView({
   }
 
   // Group detections by file_type (upstream groups by type in tree).
-  const groups = new Map<string, ScanDetectionDto[]>();
+  const groupMap: Record<string, ScanDetectionDto[]> = {};
   for (const d of result.detections) {
-    const arr = groups.get(d.file_type) ?? [];
-    arr.push(d);
-    groups.set(d.file_type, arr);
+    if (!groupMap[d.file_type]) groupMap[d.file_type] = [];
+    groupMap[d.file_type].push(d);
   }
+  const groupEntries = Object.entries(groupMap);
 
   return (
     <div className="selectable p-1">
@@ -986,7 +1003,7 @@ function DetectionTreeView({
       </div>
 
       {/* Tree rows */}
-      {Array.from(groups.entries()).map(([fileType, dets], gi) => {
+      {groupEntries.map(([fileType, dets], gi) => {
         const groupId = `group-${gi}`;
         const expanded = expandedNodes.has(groupId);
         return (

@@ -39,7 +39,6 @@ fn main() {
             commands::stop_scan,
             commands::list_signatures,
             commands::get_signature_source,
-            commands::run_signature,
             commands::scan_directory,
             commands::demangle,
             commands::read_hex,
@@ -52,6 +51,9 @@ fn main() {
             commands::get_file_info,
             commands::get_entropy_graph,
             commands::write_text_file,
+            commands::save_signature_source,
+            commands::run_signature,
+            commands::list_archive,
         ])
         .run(tauri::generate_context!())
         .expect("error while running DIE application");

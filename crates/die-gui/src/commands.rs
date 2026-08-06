@@ -214,6 +214,19 @@ pub struct SignatureSourceDto {
     pub file_path: String,
 }
 
+/// Result of running a single signature against a file (signature browser).
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct RunSignatureResultDto {
+    /// Detections from the specified signature only.
+    pub detections: Vec<ScanDetectionDto>,
+    /// Diagnostics filtered to the signature (only in debug mode).
+    pub diagnostics: Vec<String>,
+    /// Time spent scanning (ms).
+    pub elapsed_ms: u64,
+    /// The signature file path that was run.
+    pub signature_path: String,
+}
+
 /// Directory scan progress events.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(tag = "event", content = "data", rename_all = "snake_case")]
@@ -418,20 +431,86 @@ pub async fn get_signature_source(
     })
 }
 
+/// Save signature source code (for signature browser edit feature).
+#[tauri::command]
+pub async fn save_signature_source(
+    _state: tauri::State<'_, AppState>,
+    file_type: String,
+    name: String,
+    source: String,
+) -> Result<(), GuiError> {
+    let db_path = resolve_db_path();
+    let file_path = format!("{}/{}/{}", db_path, file_type, name);
+    std::fs::write(&file_path, source)
+        .map_err(|e| GuiError::new("SIGNATURE_WRITE_ERROR", e.to_string()))
+}
+
 /// Run a single signature against a file (for signature browser).
+/// Executes a full scan then filters detections to only those from the
+/// specified signature file. Returns profiling info (per-signature time).
 #[tauri::command]
 pub async fn run_signature(
-    _state: tauri::State<'_, AppState>,
-    _file_path: String,
-    _file_type: String,
-    _signature_name: String,
-    _debug: bool,
-) -> Result<ScanResultDto, GuiError> {
-    // TODO: implement single-signature execution
-    Err(GuiError::new(
-        "NOT_IMPLEMENTED",
-        "run_signature is not yet implemented",
-    ))
+    state: tauri::State<'_, AppState>,
+    file_path: String,
+    file_type: String,
+    signature_name: String,
+    debug: bool,
+) -> Result<RunSignatureResultDto, GuiError> {
+    let db_path = resolve_db_path();
+    let db = state
+        .database(&db_path)
+        .map_err(|e| GuiError::new("DATABASE_LOAD_FAILED", e))?;
+    let cancel = state.start_scan();
+    let engine_flags = ScanFlags {
+        deep: true,
+        heuristic: true,
+        all_types: true,
+        verbose: debug,
+        ..Default::default()
+    };
+
+    let start = Instant::now();
+    let result = tokio::task::spawn_blocking({
+        let path = file_path.clone();
+        let db = Arc::clone(&db);
+        move || scan_once(&db, &path, engine_flags, &cancel)
+    })
+    .await
+    .map_err(|e| GuiError::new("TASK_JOIN_FAILED", e.to_string()))?
+    .map_err(GuiError::from)?;
+
+    let elapsed_ms = start.elapsed().as_millis() as u64;
+    let sig_rel_path = format!("{}/{}", file_type, signature_name);
+
+    // Filter detections to only those from the specified signature.
+    let filtered: Vec<ScanDetectionDto> = result
+        .detections
+        .into_iter()
+        .filter(|d| {
+            d.signature_path
+                .as_ref()
+                .map(|p| p == &sig_rel_path || p.ends_with(&format!("/{}", signature_name)))
+                .unwrap_or(false)
+        })
+        .map(ScanDetectionDto::from)
+        .collect();
+
+    let diagnostics = if debug {
+        result
+            .diagnostics
+            .into_iter()
+            .filter(|d| d.contains(&signature_name) || d.contains(&file_type))
+            .collect()
+    } else {
+        Vec::new()
+    };
+
+    Ok(RunSignatureResultDto {
+        detections: filtered,
+        diagnostics,
+        elapsed_ms,
+        signature_path: sig_rel_path,
+    })
 }
 
 /// Scan a directory recursively.
@@ -664,4 +743,71 @@ pub async fn write_text_file(path: String, content: String) -> Result<(), GuiErr
         .await
         .map_err(|e| GuiError::new("TASK_JOIN_FAILED", e.to_string()))?
         .map_err(|e| GuiError::new("FILE_WRITE_ERROR", e.to_string()))
+}
+
+/// A single entry in an archive file.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ArchiveEntryDto {
+    /// Entry name (path within the archive).
+    pub name: String,
+    /// Uncompressed size in bytes.
+    pub size: u64,
+    /// Compressed size in bytes.
+    pub compressed_size: u64,
+    /// Whether this entry is a directory.
+    pub is_directory: bool,
+    /// Last modified time (ISO 8601 or null).
+    pub modified: Option<String>,
+}
+
+/// Archive listing result.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ArchiveResultDto {
+    /// Archive format (ZIP, etc.).
+    pub format: String,
+    /// All entries in the archive.
+    pub entries: Vec<ArchiveEntryDto>,
+    /// Total number of entries.
+    pub total_entries: usize,
+}
+
+/// List the contents of an archive file (ZIP format).
+/// For unsupported formats, returns an error.
+#[tauri::command]
+pub async fn list_archive(path: String) -> Result<ArchiveResultDto, GuiError> {
+    let result = tokio::task::spawn_blocking(move || -> Result<ArchiveResultDto, String> {
+        let file = std::fs::File::open(&path).map_err(|e| e.to_string())?;
+        let mut archive = zip::ZipArchive::new(file).map_err(|e| e.to_string())?;
+        let mut entries = Vec::with_capacity(archive.len());
+
+        for i in 0..archive.len() {
+            let entry = match archive.by_index(i) {
+                Ok(e) => e,
+                Err(_) => continue,
+            };
+            let name = entry.name().to_string();
+            let is_dir = entry.is_dir();
+            let size = entry.size();
+            let compressed_size = entry.compressed_size();
+            let modified = entry.last_modified().map(|d| format!("{}", d));
+            entries.push(ArchiveEntryDto {
+                name,
+                size,
+                compressed_size,
+                is_directory: is_dir,
+                modified,
+            });
+        }
+
+        Ok(ArchiveResultDto {
+            format: "ZIP".to_string(),
+            total_entries: entries.len(),
+            entries,
+        })
+    })
+    .await
+    .map_err(|e| GuiError::new("TASK_JOIN_FAILED", e.to_string()))?
+    .map_err(|e| GuiError::new("ARCHIVE_READ_ERROR", e))?;
+
+    Ok(result)
 }
