@@ -630,3 +630,26 @@ pub async fn peid_scan(
     crate::peid_scanner::scan_with_peid(&userdb_path, &file_path)
         .map_err(|e| GuiError::new("PEID_ERROR", e))
 }
+
+/// Get file information: size, hashes, entropy, format, sections, symbols.
+#[tauri::command]
+pub async fn get_file_info(path: String) -> Result<crate::file_info::FileInfo, GuiError> {
+    let result = tokio::task::spawn_blocking(move || crate::file_info::gather_file_info(&path))
+        .await
+        .map_err(|e| GuiError::new("TASK_JOIN_FAILED", e.to_string()))?;
+    result.map_err(|e| GuiError::new("FILE_INFO_ERROR", e))
+}
+
+/// Get entropy graph data for a file (block-level entropy for plotting).
+#[tauri::command]
+pub async fn get_entropy_graph(
+    path: String,
+    block_size: Option<u64>,
+) -> Result<crate::file_info::EntropyGraph, GuiError> {
+    let result = tokio::task::spawn_blocking(move || {
+        crate::file_info::compute_entropy_graph(&path, block_size)
+    })
+    .await
+    .map_err(|e| GuiError::new("TASK_JOIN_FAILED", e.to_string()))?;
+    result.map_err(|e| GuiError::new("ENTROPY_ERROR", e))
+}

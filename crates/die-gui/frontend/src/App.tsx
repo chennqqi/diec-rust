@@ -23,6 +23,7 @@ import {
   Clock,
   CheckCircle2,
   XCircle,
+  FileSearch as FileSearchIcon,
 } from "lucide-react";
 import { HexViewer } from "./components/HexViewer";
 import { Disassembler } from "./components/Disassembler";
@@ -31,6 +32,7 @@ import { SignatureBrowser } from "./components/SignatureBrowser";
 import { YaraScanner } from "./components/YaraScanner";
 import { PeidScanner } from "./components/PeidScanner";
 import { OnlineTools } from "./components/OnlineTools";
+import { FileInfoPanel } from "./components/FileInfoPanel";
 
 interface ScanDetectionDto {
   file_type: string;
@@ -113,10 +115,11 @@ const defaultSettings: AppSettings = {
   engine: { die_enabled: true, nfd_enabled: false, peid_enabled: false, yara_enabled: false },
 };
 
-type TabId = "scan" | "hex" | "disasm" | "demangle" | "sigs" | "yara" | "peid" | "online";
+type TabId = "scan" | "info" | "hex" | "disasm" | "demangle" | "sigs" | "yara" | "peid" | "online";
 
 const TABS: { id: TabId; label: string; icon: typeof FileSearch }[] = [
   { id: "scan", label: "Scan", icon: ScanSearch },
+  { id: "info", label: "Info", icon: FileSearchIcon },
   { id: "hex", label: "Hex", icon: Binary },
   { id: "disasm", label: "Disasm", icon: Code2 },
   { id: "demangle", label: "Demangle", icon: FileText },
@@ -537,6 +540,7 @@ export default function App() {
           </div>
         )}
 
+        {activeTab === "info" && filePath && <FileInfoPanel path={filePath} />}
         {activeTab === "hex" && filePath && <HexViewer path={filePath} />}
         {activeTab === "disasm" && filePath && <Disassembler path={filePath} />}
         {activeTab === "demangle" && <DemangleTool />}

@@ -9,6 +9,7 @@
 mod commands;
 mod demangle;
 mod disassembler;
+mod file_info;
 mod hex_viewer;
 mod peid_scanner;
 mod settings;
@@ -48,6 +49,8 @@ fn main() {
             commands::get_database_info,
             commands::yara_scan,
             commands::peid_scan,
+            commands::get_file_info,
+            commands::get_entropy_graph,
         ])
         .run(tauri::generate_context!())
         .expect("error while running DIE application");
