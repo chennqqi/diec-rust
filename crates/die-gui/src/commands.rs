@@ -656,3 +656,12 @@ pub async fn get_entropy_graph(
     .map_err(|e| GuiError::new("TASK_JOIN_FAILED", e.to_string()))?;
     result.map_err(|e| GuiError::new("ENTROPY_ERROR", e))
 }
+
+/// Write text content to a file (for "Save results" feature).
+#[tauri::command]
+pub async fn write_text_file(path: String, content: String) -> Result<(), GuiError> {
+    tokio::task::spawn_blocking(move || std::fs::write(&path, content))
+        .await
+        .map_err(|e| GuiError::new("TASK_JOIN_FAILED", e.to_string()))?
+        .map_err(|e| GuiError::new("FILE_WRITE_ERROR", e.to_string()))
+}

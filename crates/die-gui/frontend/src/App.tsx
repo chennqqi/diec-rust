@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { invoke, Channel } from "@tauri-apps/api/core";
 import { open as openDialog } from "@tauri-apps/plugin-dialog";
 import { getCurrentWebview } from "@tauri-apps/api/webview";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 import {
   FileSearch,
   FolderOpen,
@@ -24,6 +25,13 @@ import {
   CheckCircle2,
   XCircle,
   FileSearch as FileSearchIcon,
+  Maximize2,
+  Minimize2,
+  Copy,
+  Trash2,
+  Save,
+  History,
+  Database,
 } from "lucide-react";
 import { HexViewer } from "./components/HexViewer";
 import { Disassembler } from "./components/Disassembler";
@@ -111,7 +119,7 @@ const defaultFlags: ScanFlagsDto = {
 };
 
 const defaultSettings: AppSettings = {
-  view: { theme: "dark", language: "en", stay_on_top: false, advanced: false },
+  view: { theme: "system", language: "en", stay_on_top: false, advanced: false },
   file: { last_directory: "", recent_files: [], save_backup: true },
   scan: { scan_after_open: true, hide_unknown: false, sort: false, log_profiling: false, flags: defaultFlags },
   database: { main_path: "", extra_path: "", custom_path: "", extra_enabled: false, custom_enabled: false },
@@ -146,6 +154,10 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<TabId>("scan");
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
   const [selectedDetection, setSelectedDetection] = useState<ScanDetectionDto | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showRecent, setShowRecent] = useState(false);
+  const [contextMenu, setContextMenu] = useState<{ x: number; y: number; detection: ScanDetectionDto } | null>(null);
+  const [copyFeedback, setCopyFeedback] = useState(false);
   const dragCounter = useRef(0);
 
   // Load settings on mount.
@@ -214,6 +226,16 @@ export default function App() {
     };
   }, []);
 
+  // Add a file path to recent files list (max 10, deduplicated).
+  const addToRecent = useCallback((path: string) => {
+    setSettings((prev) => {
+      const recent = [path, ...prev.file.recent_files.filter((p) => p !== path)].slice(0, 10);
+      return { ...prev, file: { ...prev.file, recent_files: recent } };
+    });
+  }, []);
+
+  const fileName = filePath.split(/[\\/]/).pop() || filePath;
+
   const pickFile = useCallback(async () => {
     try {
       const selected = await openDialog({ multiple: false });
@@ -222,11 +244,12 @@ export default function App() {
         setResult(null);
         setDirResults([]);
         setError(null);
+        addToRecent(selected);
       }
     } catch (e) {
       setError(String(e));
     }
-  }, []);
+  }, [addToRecent]);
 
   const pickDirectory = useCallback(async () => {
     try {
@@ -236,11 +259,12 @@ export default function App() {
         setResult(null);
         setDirResults([]);
         setError(null);
+        addToRecent(selected);
       }
     } catch (e) {
       setError(String(e));
     }
-  }, []);
+  }, [addToRecent]);
 
   const scan = useCallback(async () => {
     if (!filePath) return;
@@ -251,8 +275,14 @@ export default function App() {
     try {
       const res = await invoke<ScanResultDto>("scan_file", { path: filePath, flags });
       setResult(res);
-      // Auto-expand all nodes.
-      setExpandedNodes(new Set(res.detections.map((_, i) => `node-${i}`)));
+      // Auto-expand all group nodes.
+      const groups = new Map<string, ScanDetectionDto[]>();
+      for (const d of res.detections) {
+        const arr = groups.get(d.file_type) ?? [];
+        arr.push(d);
+        groups.set(d.file_type, arr);
+      }
+      setExpandedNodes(new Set(Array.from(groups.keys()).map((_, i) => `group-${i}`)));
     } catch (e) {
       const err = e as GuiError;
       setError(err.message ?? String(e));
@@ -323,6 +353,152 @@ export default function App() {
     }
   }, [settings, flags]);
 
+  // Toggle fullscreen mode.
+  const toggleFullscreen = useCallback(async () => {
+    try {
+      const win = getCurrentWindow();
+      const newFs = !isFullscreen;
+      await win.setFullscreen(newFs);
+      setIsFullscreen(newFs);
+    } catch {
+      setIsFullscreen(!isFullscreen);
+    }
+  }, [isFullscreen]);
+
+  // Open a file from recent files list.
+  const openRecent = useCallback((path: string) => {
+    setFilePath(path);
+    setResult(null);
+    setDirResults([]);
+    setError(null);
+    setShowRecent(false);
+  }, []);
+
+  // Copy scan results as text to clipboard.
+  const copyResults = useCallback(() => {
+    if (!result) return;
+    const lines: string[] = [`File: ${result.path}`, `Time: ${result.scan_time_ms} ms`, ""];
+    for (const d of result.detections) {
+      const parts = [d.type_name, d.name, d.version ?? "", d.options ?? ""].filter(Boolean);
+      lines.push(parts.join(" | "));
+    }
+    navigator.clipboard.writeText(lines.join("\n"));
+    setCopyFeedback(true);
+    setTimeout(() => setCopyFeedback(false), 1500);
+  }, [result]);
+
+  // Clear all results.
+  const clearResults = useCallback(() => {
+    setResult(null);
+    setDirResults([]);
+    setError(null);
+    setSelectedDetection(null);
+  }, []);
+
+  // Save results to file (via Tauri dialog).
+  const saveResults = useCallback(async () => {
+    if (!result) return;
+    try {
+      const savePath = await openDialog({ save: true, defaultPath: `${fileName}_results.txt` });
+      if (typeof savePath === "string") {
+        const lines: string[] = [`File: ${result.path}`, `Time: ${result.scan_time_ms} ms`, ""];
+        for (const d of result.detections) {
+          const parts = [d.type_name, d.name, d.version ?? "", d.options ?? ""].filter(Boolean);
+          lines.push(parts.join(" | "));
+        }
+        await invoke("write_text_file", { path: savePath, content: lines.join("\n") });
+      }
+    } catch (e) {
+      setError(String(e));
+    }
+  }, [result, fileName]);
+
+  // Close context menu on click anywhere.
+  useEffect(() => {
+    if (!contextMenu) return;
+    const close = () => setContextMenu(null);
+    window.addEventListener("click", close);
+    return () => window.removeEventListener("click", close);
+  }, [contextMenu]);
+
+  // Global keyboard shortcuts.
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      // Ctrl+O: Open file.
+      if (e.ctrlKey && e.key === "o" && !e.shiftKey) {
+        e.preventDefault();
+        pickFile();
+      }
+      // Ctrl+Shift+O: Open directory.
+      if (e.ctrlKey && e.shiftKey && e.key === "O") {
+        e.preventDefault();
+        pickDirectory();
+      }
+      // F11: Toggle fullscreen.
+      if (e.key === "F11") {
+        e.preventDefault();
+        toggleFullscreen();
+      }
+      // Ctrl+Enter: Scan.
+      if (e.ctrlKey && e.key === "Enter") {
+        e.preventDefault();
+        if (filePath && !scanning) scan();
+      }
+      // Escape: Close settings/recent/context menu.
+      if (e.key === "Escape") {
+        setShowSettings(false);
+        setShowRecent(false);
+        setContextMenu(null);
+      }
+      // Ctrl+C (when no text selected): Copy results.
+      if (e.ctrlKey && e.key === "c" && !window.getSelection()?.toString()) {
+        if (result) copyResults();
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [pickFile, pickDirectory, toggleFullscreen, filePath, scanning, scan, result, copyResults]);
+
+  // Apply theme to document root.
+  useEffect(() => {
+    const applyTheme = (theme: string) => {
+      if (theme === "light") {
+        document.documentElement.classList.remove("dark");
+        document.documentElement.classList.add("light");
+      } else if (theme === "dark") {
+        document.documentElement.classList.remove("light");
+        document.documentElement.classList.add("dark");
+      }
+      // "system" theme: detect OS preference.
+      if (theme === "system") {
+        const mq = window.matchMedia("(prefers-color-scheme: dark)");
+        if (mq.matches) {
+          document.documentElement.classList.remove("light");
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+          document.documentElement.classList.add("light");
+        }
+      }
+    };
+    applyTheme(settings.view.theme);
+    // Listen for OS theme changes when in system mode.
+    if (settings.view.theme === "system") {
+      const mq = window.matchMedia("(prefers-color-scheme: dark)");
+      const onChange = (e: MediaQueryListEvent) => {
+        if (e.matches) {
+          document.documentElement.classList.remove("light");
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+          document.documentElement.classList.add("light");
+        }
+      };
+      mq.addEventListener("change", onChange);
+      return () => mq.removeEventListener("change", onChange);
+    }
+  }, [settings.view.theme]);
+
   const toggleNode = (id: string) => {
     setExpandedNodes((prev) => {
       const next = new Set(prev);
@@ -332,7 +508,6 @@ export default function App() {
     });
   };
 
-  const fileName = filePath.split(/[\\/]/).pop() || filePath;
   const totalDetections = result?.detections.length ?? 0;
   const totalDiags = result?.diagnostics.length ?? 0;
 
@@ -394,7 +569,75 @@ export default function App() {
         >
           <Square size={14} /> Stop
         </button>
+        <div className="w-px h-5 bg-border-c mx-1" />
+        <button
+          onClick={copyResults}
+          disabled={!result}
+          className="btn"
+          title="Copy results (Ctrl+C)"
+        >
+          {copyFeedback ? <CheckCircle2 size={14} className="text-accent-green" /> : <Copy size={14} />}
+        </button>
+        <button
+          onClick={clearResults}
+          disabled={!result && dirResults.length === 0}
+          className="btn"
+          title="Clear results"
+        >
+          <Trash2 size={14} />
+        </button>
+        <button
+          onClick={saveResults}
+          disabled={!result}
+          className="btn"
+          title="Save results to file"
+        >
+          <Save size={14} />
+        </button>
         <div className="flex-1" />
+        <div className="relative">
+          <button
+            onClick={() => setShowRecent(!showRecent)}
+            className="btn"
+            title="Recent files"
+            disabled={settings.file.recent_files.length === 0}
+          >
+            <History size={14} />
+          </button>
+          {showRecent && (
+            <div
+              className="absolute right-0 top-full mt-1 panel z-50 min-w-64 max-h-80 overflow-auto"
+              style={{ background: "rgb(var(--bg-panel))" }}
+            >
+              <div className="text-xs font-medium text-fg-secondary px-3 py-1.5 border-b border-border-c">
+                Recent Files
+              </div>
+              {settings.file.recent_files.map((p, i) => {
+                const name = p.split(/[\\/]/).pop() || p;
+                return (
+                  <button
+                    key={i}
+                    onClick={() => openRecent(p)}
+                    className="w-full text-left px-3 py-1.5 text-xs hover:bg-hover flex items-center gap-2"
+                  >
+                    <FileText size={12} className="text-fg-muted flex-shrink-0" />
+                    <div className="flex-1 overflow-hidden">
+                      <div className="text-fg-primary truncate">{name}</div>
+                      <div className="text-fg-muted truncate mono" style={{ fontSize: "10px" }}>{p}</div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+        <button
+          onClick={toggleFullscreen}
+          className="btn"
+          title="Toggle fullscreen (F11)"
+        >
+          {isFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
+        </button>
         <button
           onClick={() => setShowSettings(!showSettings)}
           className="btn"
@@ -426,6 +669,31 @@ export default function App() {
           </div>
           <div className="border-t border-border-c pt-2 space-y-1.5">
             <div className="text-xs font-medium text-fg-secondary">View Options</div>
+            <div className="flex items-center gap-2 text-xs">
+              <span className="text-fg-muted">Theme:</span>
+              <select
+                className="input py-0.5 px-1.5"
+                value={settings.view.theme}
+                onChange={(e) => setSettings({ ...settings, view: { ...settings.view, theme: e.target.value } })}
+                style={{ width: "100px" }}
+              >
+                <option value="system">System</option>
+                <option value="dark">Dark</option>
+                <option value="light">Light</option>
+              </select>
+              <select
+                className="input py-0.5 px-1.5"
+                value={settings.view.language}
+                onChange={(e) => setSettings({ ...settings, view: { ...settings.view, language: e.target.value } })}
+                style={{ width: "100px" }}
+              >
+                <option value="en">English</option>
+                <option value="zh-CN">中文</option>
+                <option value="ru">Русский</option>
+                <option value="de">Deutsch</option>
+                <option value="fr">Français</option>
+              </select>
+            </div>
             <label className="flex items-center gap-1.5 cursor-pointer text-xs hover:text-fg-primary">
               <input
                 type="checkbox"
@@ -502,6 +770,20 @@ export default function App() {
                     </span>
                   </>
                 )}
+                <div className="w-px h-3 bg-border-c" />
+                <div className="flex items-center gap-1 text-fg-muted">
+                  <Database size={11} />
+                  <select
+                    className="input py-0 px-1"
+                    style={{ width: "80px", fontSize: "11px" }}
+                    defaultValue="main"
+                    title="Database selection"
+                  >
+                    <option value="main">Main</option>
+                    <option value="extra">Extra</option>
+                    <option value="custom">Custom</option>
+                  </select>
+                </div>
               </div>
             )}
 
@@ -549,6 +831,7 @@ export default function App() {
                     onToggle={toggleNode}
                     selectedDetection={selectedDetection}
                     onSelect={setSelectedDetection}
+                    onContextMenu={(x, y, d) => setContextMenu({ x, y, detection: d })}
                   />
                 }
                 bottom={
@@ -582,6 +865,47 @@ export default function App() {
         {activeTab === "peid" && filePath && <PeidScanner path={filePath} />}
         {activeTab === "online" && <OnlineTools hash="" />}
       </div>
+
+      {/* Context menu for detection items */}
+      {contextMenu && (
+        <div
+          className="fixed z-50 panel py-1 min-w-48"
+          style={{ left: contextMenu.x, top: contextMenu.y, background: "rgb(var(--bg-panel))" }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button
+            className="w-full text-left px-3 py-1.5 text-xs hover:bg-hover flex items-center gap-2"
+            onClick={() => {
+              const d = contextMenu.detection;
+              const text = [d.type_name, d.name, d.version ?? "", d.options ?? ""].filter(Boolean).join(" | ");
+              navigator.clipboard.writeText(text);
+              setContextMenu(null);
+            }}
+          >
+            <Copy size={12} /> Copy detection
+          </button>
+          <button
+            className="w-full text-left px-3 py-1.5 text-xs hover:bg-hover flex items-center gap-2"
+            onClick={() => {
+              setSelectedDetection(contextMenu.detection);
+              setContextMenu(null);
+            }}
+          >
+            <Code2 size={12} /> View signature source
+          </button>
+          <button
+            className="w-full text-left px-3 py-1.5 text-xs hover:bg-hover flex items-center gap-2"
+            onClick={() => {
+              const d = contextMenu.detection;
+              const text = `${d.file_type}/${d.type_name}/${d.name}`;
+              navigator.clipboard.writeText(text);
+              setContextMenu(null);
+            }}
+          >
+            <FileText size={12} /> Copy as path
+          </button>
+        </div>
+      )}
 
       {/* Status bar */}
       <div className="statusbar">
@@ -622,12 +946,14 @@ function DetectionTreeView({
   onToggle,
   selectedDetection,
   onSelect,
+  onContextMenu,
 }: {
   result: ScanResultDto;
   expandedNodes: Set<string>;
   onToggle: (id: string) => void;
   selectedDetection: ScanDetectionDto | null;
   onSelect: (d: ScanDetectionDto) => void;
+  onContextMenu: (x: number, y: number, d: ScanDetectionDto) => void;
 }) {
   if (result.detections.length === 0) {
     return (
@@ -694,6 +1020,10 @@ function DetectionTreeView({
                       onClick={() => {
                         onSelect(d);
                         if (hasOptions) onToggle(nodeId);
+                      }}
+                      onContextMenu={(e) => {
+                        e.preventDefault();
+                        onContextMenu(e.clientX, e.clientY, d);
                       }}
                     >
                       <span className="w-6 flex justify-center">

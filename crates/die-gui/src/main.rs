@@ -51,6 +51,7 @@ fn main() {
             commands::peid_scan,
             commands::get_file_info,
             commands::get_entropy_graph,
+            commands::write_text_file,
         ])
         .run(tauri::generate_context!())
         .expect("error while running DIE application");
