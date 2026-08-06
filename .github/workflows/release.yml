@@ -255,14 +255,16 @@ jobs:
         working-directory: crates/die-gui/frontend
         run: npm run build
 
-      # --- Copy rule database for bundling into installers ---
-      - name: Copy rule database for bundling
+      # --- Copy all data directories for bundling into installers ---
+      - name: Copy data directories for bundling
         shell: bash
         run: |
-          mkdir -p crates/die-gui/db
-          if [ -d "upstream/Detect-It-Easy/db" ]; then
-            cp -r upstream/Detect-It-Easy/db/* crates/die-gui/db/
-          fi
+          for dir in db db_extra db_custom dbs_min dbs_special peid_rules yara_rules; do
+            mkdir -p "crates/die-gui/$dir"
+            if [ -d "upstream/Detect-It-Easy/$dir" ]; then
+              cp -r "upstream/Detect-It-Easy/$dir/"* "crates/die-gui/$dir/" 2>/dev/null || true
+            fi
+          done
 
       # --- Build portable binary (no bundling) ---
       - name: Build portable binary (release)
@@ -299,13 +301,15 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          $version = "${{ inputs.version || github.ref_name }}"
           $staging = "${{ matrix.portable_name }}"
           New-Item -ItemType Directory -Force -Path "$staging" | Out-Null
           Copy-Item "target/release/die.exe" "$staging/"
-          if (Test-Path "upstream/Detect-It-Easy/db") {
-            New-Item -ItemType Directory -Force -Path "$staging/db" | Out-Null
-            Copy-Item "upstream/Detect-It-Easy/db/*" "$staging/db/" -Recurse -Force
+          # Copy all data directories.
+          foreach ($dir in @("db","db_extra","db_custom","dbs_min","dbs_special","peid_rules","yara_rules")) {
+            if (Test-Path "upstream/Detect-It-Easy/$dir") {
+              New-Item -ItemType Directory -Force -Path "$staging/$dir" | Out-Null
+              Copy-Item "upstream/Detect-It-Easy/$dir/*" "$staging/$dir/" -Recurse -Force
+            }
           }
           Copy-Item "README.md" "$staging/"
           Copy-Item "LICENSE" "$staging/"
@@ -319,10 +323,13 @@ jobs:
           staging="${{ matrix.portable_name }}"
           mkdir -p "$staging"
           cp "target/release/die" "$staging/"
-          if [ -d "upstream/Detect-It-Easy/db" ]; then
-            mkdir -p "$staging/db"
-            cp -r "upstream/Detect-It-Easy/db/"* "$staging/db/"
-          fi
+          # Copy all data directories.
+          for dir in db db_extra db_custom dbs_min dbs_special peid_rules yara_rules; do
+            if [ -d "upstream/Detect-It-Easy/$dir" ]; then
+              mkdir -p "$staging/$dir"
+              cp -r "upstream/Detect-It-Easy/$dir/"* "$staging/$dir/"
+            fi
+          done
           cp README.md "$staging/"
           cp LICENSE "$staging/"
           tar czf "$staging.tar.gz" "$staging"

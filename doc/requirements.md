@@ -950,4 +950,18 @@
   - .gitignore 排除 crates/die-gui/db/（构建时复制，不入库）
 - 验证：本地 cargo tauri build --bundles msi 生成 14MB MSI，--bundles nsis 生成 8.5MB NSIS exe，db 目录正确打包
 
+## 2026-08-06: GUI 完整数据目录打包 + PEID/YARA 内置规则
+- 需求：不止 db 目录，还有 db_extra、db_custom、dbs_min、dbs_special、peid_rules、yara_rules 共 7 个数据目录需要打包
+- 落地：
+  - tauri.conf.json resources 添加全部 7 个数据目录
+  - 后端 resolve_data_root() + resolve_db_paths() 重构：返回主 db + db_extra + db_custom 路径列表
+  - AppState::database() 改为接受 &[String] 多路径，使用 DatabaseBuilder::with_extra() 合并额外规则
+  - 新增 get_data_paths 命令：返回所有数据目录路径 + yara_rule_files + peid_userdb_files 列表
+  - 新增 read_data_file 命令：安全读取内置数据文件（路径遍历防护）
+  - 前端 PeidScanner：自动加载 peid_rules/PE/userdb.txt，下拉选择内置 userdb
+  - 前端 YaraScanner：下拉选择并加载内置 yara_rules/*.yar 规则文件
+  - CI release.yml：复制全部 7 个数据目录到 crates/die-gui/，便携版也包含全部目录
+  - .gitignore：排除全部 7 个构建时复制的数据目录
+- 验证：NSIS 9.3MB（含全部数据目录），installer.nsi 确认 db_extra/peid_rules/yara_rules/dbs_min 均已打包
+
 

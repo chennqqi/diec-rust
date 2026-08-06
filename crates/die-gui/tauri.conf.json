@@ -36,7 +36,13 @@
       "icons/icon.ico"
     ],
     "resources": {
-      "db/": "db/"
+      "db/": "db/",
+      "db_extra/": "db_extra/",
+      "db_custom/": "db_custom/",
+      "dbs_min/": "dbs_min/",
+      "dbs_special/": "dbs_special/",
+      "peid_rules/": "peid_rules/",
+      "yara_rules/": "yara_rules/"
     },
     "windows": {
       "nsis": {

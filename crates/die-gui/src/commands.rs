@@ -283,32 +283,78 @@ pub struct DatabaseInfoDto {
 ///
 /// The exe-relative path ensures the bundled application finds its
 /// database regardless of the current working directory.
-fn resolve_db_path() -> String {
+/// Resolve the data root directory (where db/, db_extra/, peid_rules/,
+/// yara_rules/ etc. live). Checks exe-adjacent, exe-parent, cwd, and
+/// upstream dev paths in order.
+fn resolve_data_root() -> std::path::PathBuf {
     // 1. Relative to the executable directory.
     if let Ok(exe_path) = std::env::current_exe()
         && let Some(exe_dir) = exe_path.parent()
     {
         let exe_db = exe_dir.join("db");
         if exe_db.is_dir() {
-            return exe_db.to_string_lossy().to_string();
+            return exe_dir.to_path_buf();
+        }
+        // macOS .app bundle: exe is in Contents/MacOS/, resources in Contents/Resources/
+        #[cfg(target_os = "macos")]
+        {
+            if let Some(contents_dir) = exe_dir.parent() {
+                let resources_db = contents_dir.join("Resources").join("db");
+                if resources_db.is_dir() {
+                    return contents_dir.join("Resources");
+                }
+            }
         }
         // Also check one level up (e.g. target/release/ -> target/db).
         if let Some(project_dir) = exe_dir.parent() {
             let project_db = project_dir.join("db");
             if project_db.is_dir() {
-                return project_db.to_string_lossy().to_string();
+                return project_dir.to_path_buf();
             }
         }
     }
 
-    // 2. Current working directory.
-    let candidates = ["./db", "upstream/Detect-It-Easy/db"];
+    // 2. Current working directory / upstream dev paths.
+    let candidates = [".", "upstream/Detect-It-Easy"];
     for c in &candidates {
-        if std::path::Path::new(c).is_dir() {
-            return c.to_string();
+        let p = std::path::Path::new(c);
+        if p.join("db").is_dir() {
+            return p.to_path_buf();
         }
     }
-    "./db".to_string()
+
+    std::path::PathBuf::from(".")
+}
+
+/// Resolve the main database path (db/) and any extra database paths
+/// (db_extra/, db_custom/) that exist alongside it.
+fn resolve_db_paths() -> Vec<String> {
+    let root = resolve_data_root();
+    let mut paths = Vec::new();
+
+    // Main database (required).
+    let main_db = root.join("db");
+    paths.push(main_db.to_string_lossy().to_string());
+
+    // Extra database (optional, merged into scan results).
+    let extra_db = root.join("db_extra");
+    if extra_db.is_dir() {
+        paths.push(extra_db.to_string_lossy().to_string());
+    }
+
+    // Custom database (optional, user-defined rules).
+    let custom_db = root.join("db_custom");
+    if custom_db.is_dir() {
+        paths.push(custom_db.to_string_lossy().to_string());
+    }
+
+    paths
+}
+
+/// Backward-compatible single-path resolver (used by commands that only
+/// need the main db path for source file reading).
+fn resolve_db_path() -> String {
+    resolve_data_root().join("db").to_string_lossy().to_string()
 }
 
 /// Scan a file by path.
@@ -318,9 +364,9 @@ pub async fn scan_file(
     path: String,
     flags: ScanFlagsDto,
 ) -> Result<ScanResultDto, GuiError> {
-    let db_path = resolve_db_path();
+    let db_paths = resolve_db_paths();
     let db = state
-        .database(&db_path)
+        .database(&db_paths)
         .map_err(|e| GuiError::new("DATABASE_LOAD_FAILED", e))?;
     let cancel = state.start_scan();
     let engine_flags: ScanFlags = flags.into();
@@ -348,9 +394,9 @@ pub async fn scan_bytes_cmd(
     data: Vec<u8>,
     flags: ScanFlagsDto,
 ) -> Result<ScanResultDto, GuiError> {
-    let db_path = resolve_db_path();
+    let db_paths = resolve_db_paths();
     let db = state
-        .database(&db_path)
+        .database(&db_paths)
         .map_err(|e| GuiError::new("DATABASE_LOAD_FAILED", e))?;
     let cancel = state.start_scan();
     let engine_flags: ScanFlags = flags.into();
@@ -479,9 +525,9 @@ pub async fn run_signature(
     signature_name: String,
     debug: bool,
 ) -> Result<RunSignatureResultDto, GuiError> {
-    let db_path = resolve_db_path();
+    let db_paths = resolve_db_paths();
     let db = state
-        .database(&db_path)
+        .database(&db_paths)
         .map_err(|e| GuiError::new("DATABASE_LOAD_FAILED", e))?;
     let cancel = state.start_scan();
     let engine_flags = ScanFlags {
@@ -545,9 +591,9 @@ pub async fn scan_directory(
     subdirectories: bool,
     on_progress: tauri::ipc::Channel<DirectoryScanProgress>,
 ) -> Result<Vec<ScanResultDto>, GuiError> {
-    let db_path = resolve_db_path();
+    let db_paths = resolve_db_paths();
     let db = state
-        .database(&db_path)
+        .database(&db_paths)
         .map_err(|e| GuiError::new("DATABASE_LOAD_FAILED", e))?;
     let cancel = state.start_scan();
     let engine_flags: ScanFlags = flags.into();
@@ -698,13 +744,13 @@ pub async fn save_settings(app: tauri::AppHandle, settings: AppSettings) -> Resu
 pub async fn get_database_info(
     state: tauri::State<'_, AppState>,
 ) -> Result<DatabaseInfoDto, GuiError> {
-    let db_path = resolve_db_path();
+    let db_paths = resolve_db_paths();
     let db = state
-        .database(&db_path)
+        .database(&db_paths)
         .map_err(|e| GuiError::new("DATABASE_LOAD_FAILED", e))?;
     let version = db.version();
     Ok(DatabaseInfoDto {
-        path: db_path.to_string(),
+        path: db_paths.join(";"),
         rule_count: db.rule_count(),
         commit: version.commit,
         synced_at: version.synced_at,
@@ -833,6 +879,168 @@ pub async fn list_archive(path: String) -> Result<ArchiveResultDto, GuiError> {
     .map_err(|e| GuiError::new("ARCHIVE_READ_ERROR", e))?;
 
     Ok(result)
+}
+
+// ---------------------------------------------------------------------------
+// Data paths — expose bundled data directories to the frontend
+// ---------------------------------------------------------------------------
+
+/// DTO describing available bundled data directories.
+#[derive(Debug, Clone, Serialize)]
+pub struct DataPathsDto {
+    /// Main rule database directory (db/).
+    pub db: String,
+    /// Extra rule database directory (db_extra/), if present.
+    pub db_extra: Option<String>,
+    /// Custom rule database directory (db_custom/), if present.
+    pub db_custom: Option<String>,
+    /// PEID rules directory (peid_rules/), if present.
+    pub peid_rules: Option<String>,
+    /// YARA rules directory (yara_rules/), if present.
+    pub yara_rules: Option<String>,
+    /// List of available YARA rule files (relative paths under yara_rules/).
+    pub yara_rule_files: Vec<String>,
+    /// List of available PEID userdb files (relative paths under peid_rules/).
+    pub peid_userdb_files: Vec<String>,
+}
+
+/// Get the paths to all bundled data directories (db, db_extra, peid_rules,
+/// yara_rules, etc.). The frontend uses this to provide default file
+/// locations for PEID and YARA scanners.
+#[tauri::command]
+pub async fn get_data_paths() -> Result<DataPathsDto, GuiError> {
+    let root = resolve_data_root();
+
+    let db = root.join("db").to_string_lossy().to_string();
+    let db_extra = {
+        let p = root.join("db_extra");
+        if p.is_dir() {
+            Some(p.to_string_lossy().to_string())
+        } else {
+            None
+        }
+    };
+    let db_custom = {
+        let p = root.join("db_custom");
+        if p.is_dir() {
+            Some(p.to_string_lossy().to_string())
+        } else {
+            None
+        }
+    };
+    let peid_rules = {
+        let p = root.join("peid_rules");
+        if p.is_dir() {
+            Some(p.to_string_lossy().to_string())
+        } else {
+            None
+        }
+    };
+    let yara_rules = {
+        let p = root.join("yara_rules");
+        if p.is_dir() {
+            Some(p.to_string_lossy().to_string())
+        } else {
+            None
+        }
+    };
+
+    // Enumerate YARA rule files (top-level only).
+    let yara_rule_files = yara_rules
+        .as_ref()
+        .map(|dir| {
+            let base = std::path::Path::new(dir);
+            std::fs::read_dir(base)
+                .into_iter()
+                .flatten()
+                .flatten()
+                .filter_map(|e| {
+                    if e.file_type().ok()?.is_file() {
+                        let path = e.path();
+                        let rel = path.strip_prefix(base).ok()?;
+                        let ext = rel.extension()?.to_string_lossy().to_lowercase();
+                        if ext == "yar" || ext == "yara" {
+                            return Some(rel.to_string_lossy().to_string());
+                        }
+                    }
+                    None
+                })
+                .collect::<Vec<_>>()
+        })
+        .unwrap_or_default();
+
+    // Enumerate PEID userdb files (up to 2 levels deep).
+    let peid_userdb_files = peid_rules
+        .as_ref()
+        .map(|dir| {
+            let base = std::path::Path::new(dir);
+            let mut files = Vec::new();
+            if let Ok(entries) = std::fs::read_dir(base) {
+                for entry in entries.flatten() {
+                    let path = entry.path();
+                    if path.is_file() {
+                        if let Ok(rel) = path.strip_prefix(base) {
+                            let name = rel.to_string_lossy().to_string();
+                            if name.ends_with(".txt") {
+                                files.push(name);
+                            }
+                        }
+                    } else if path.is_dir() {
+                        // One level deeper (e.g. peid_rules/PE/userdb.txt).
+                        if let Ok(sub_entries) = std::fs::read_dir(&path) {
+                            for sub in sub_entries.flatten() {
+                                let sub_path = sub.path();
+                                if sub_path.is_file()
+                                    && let Ok(rel) = sub_path.strip_prefix(base)
+                                {
+                                    let name = rel.to_string_lossy().to_string();
+                                    if name.ends_with(".txt") {
+                                        files.push(name);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            files.sort();
+            files
+        })
+        .unwrap_or_default();
+
+    Ok(DataPathsDto {
+        db,
+        db_extra,
+        db_custom,
+        peid_rules,
+        yara_rules,
+        yara_rule_files,
+        peid_userdb_files,
+    })
+}
+
+/// Read a bundled data file by relative path (e.g. "yara_rules/packer.yar").
+/// This allows the frontend to load built-in YARA/PEID rules without
+/// needing direct filesystem access permissions.
+#[tauri::command]
+pub async fn read_data_file(relative_path: String) -> Result<String, GuiError> {
+    let root = resolve_data_root();
+    let full_path = root.join(&relative_path);
+
+    // Security: ensure the resolved path is within the data root.
+    let canonical_root = root.canonicalize().unwrap_or(root.clone());
+    let canonical_full = full_path
+        .canonicalize()
+        .map_err(|e| GuiError::new("FILE_NOT_FOUND", format!("{}: {}", relative_path, e)))?;
+    if !canonical_full.starts_with(&canonical_root) {
+        return Err(GuiError::new(
+            "PATH_TRAVERSAL",
+            "Relative path escapes data root",
+        ));
+    }
+
+    std::fs::read_to_string(&full_path)
+        .map_err(|e| GuiError::new("FILE_READ_ERROR", format!("{}: {}", relative_path, e)))
 }
 
 // ---------------------------------------------------------------------------

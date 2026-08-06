@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 import { open as openDialog } from "@tauri-apps/plugin-dialog";
@@ -14,6 +14,16 @@ interface YaraScanResult {
   matches: YaraMatch[];
 }
 
+interface DataPathsDto {
+  db: string;
+  db_extra: string | null;
+  db_custom: string | null;
+  peid_rules: string | null;
+  yara_rules: string | null;
+  yara_rule_files: string[];
+  peid_userdb_files: string[];
+}
+
 export function YaraScanner({ path }: { path: string }) {
   const { t } = useTranslation();
   const [rules, setRules] = useState(
@@ -22,6 +32,18 @@ export function YaraScanner({ path }: { path: string }) {
   const [result, setResult] = useState<YaraScanResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [builtinRules, setBuiltinRules] = useState<string[]>([]);
+
+  // Load bundled YARA rule file list on mount.
+  useEffect(() => {
+    invoke<DataPathsDto>("get_data_paths")
+      .then((paths) => {
+        setBuiltinRules(paths.yara_rule_files);
+      })
+      .catch(() => {
+        // Not in Tauri environment — no bundled rules.
+      });
+  }, []);
 
   async function loadRules() {
     try {
@@ -36,6 +58,22 @@ export function YaraScanner({ path }: { path: string }) {
       }
     } catch (e) {
       setError(String(e));
+    }
+  }
+
+  // Load a built-in YARA rule file from the bundled yara_rules/ directory.
+  async function loadBuiltinRule(relPath: string) {
+    setLoading(true);
+    setError(null);
+    try {
+      const content = await invoke<string>("read_data_file", {
+        relativePath: `yara_rules/${relPath}`,
+      });
+      setRules(content);
+    } catch (e) {
+      setError(String(e));
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -63,6 +101,21 @@ export function YaraScanner({ path }: { path: string }) {
       <div className="flex items-center gap-2 mb-2">
         <h3 className="text-sm font-medium">{t("yara.title")}</h3>
         <div className="flex-1" />
+        {builtinRules.length > 0 && (
+          <select
+            className="text-xs border border-border rounded px-1 py-0.5"
+            onChange={(e) => {
+              if (e.target.value) loadBuiltinRule(e.target.value);
+              e.target.value = "";
+            }}
+            value=""
+          >
+            <option value="">— {t("yara.loadBuiltin")} —</option>
+            {builtinRules.map((f) => (
+              <option key={f} value={f}>{f}</option>
+            ))}
+          </select>
+        )}
         <button
           onClick={loadRules}
           className="px-2 py-0.5 text-xs border border-border rounded"
@@ -93,9 +146,9 @@ export function YaraScanner({ path }: { path: string }) {
             <table className="w-full text-xs">
               <thead>
                 <tr className="text-left text-muted-foreground border-b border-border">
-                  <th className="py-1">Rule</th>
-                  <th className="py-1">Namespace</th>
-                  <th className="py-1">Tags</th>
+                  <th className="py-1">{t("yara.rule")}</th>
+                  <th className="py-1">{t("yara.namespace")}</th>
+                  <th className="py-1">{t("yara.tags")}</th>
                 </tr>
               </thead>
               <tbody>

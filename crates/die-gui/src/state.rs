@@ -15,8 +15,8 @@ pub struct AppState {
     database: Mutex<Option<Arc<Database>>>,
     /// The current scan's cancellation token, if a scan is running.
     cancel_token: Mutex<Option<CancellationToken>>,
-    /// The database path configured by the user (defaults to `./db`).
-    db_path: Mutex<String>,
+    /// The database path key (joined paths) for cache invalidation.
+    db_path_key: Mutex<String>,
 }
 
 impl AppState {
@@ -25,29 +25,40 @@ impl AppState {
         Self {
             database: Mutex::new(None),
             cancel_token: Mutex::new(None),
-            db_path: Mutex::new(String::new()),
+            db_path_key: Mutex::new(String::new()),
         }
     }
 
     /// Get or load the database, returning an `Arc` clone.
     ///
     /// The database is loaded on first call and cached for subsequent
-    /// scans. If the `db_path` changes, the cached database is discarded
-    /// and reloaded.
-    pub fn database(&self, db_path: &str) -> Result<Arc<Database>, String> {
+    /// scans. If the `db_paths` key changes, the cached database is
+    /// discarded and reloaded.
+    ///
+    /// # Arguments
+    /// * `db_paths` - One or more database directory paths. The first is
+    ///   the main database; subsequent paths are merged as extra databases.
+    pub fn database(&self, db_paths: &[String]) -> Result<Arc<Database>, String> {
+        let key = db_paths.join(";");
         let mut guard = self.database.lock().expect("database mutex poisoned");
-        let mut cached_path = self.db_path.lock().expect("db_path mutex poisoned");
+        let mut cached_key = self.db_path_key.lock().expect("db_path_key mutex poisoned");
         if let Some(ref db) = *guard
-            && *cached_path == db_path
+            && *cached_key == key
         {
             return Ok(Arc::clone(db));
         }
 
-        let builder = DatabaseBuilder::new(db_path);
+        if db_paths.is_empty() {
+            return Err("No database path provided".to_string());
+        }
+        let mut builder = DatabaseBuilder::new(&db_paths[0]);
+        for extra in &db_paths[1..] {
+            builder = builder.with_extra(extra);
+        }
         let db = builder.build().map_err(|e| e.to_string())?;
         let arc = Arc::new(db);
         *guard = Some(Arc::clone(&arc));
-        *cached_path = db_path.to_string();
+        *cached_key = key;
         Ok(arc)
     }
 

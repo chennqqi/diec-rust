@@ -3,8 +3,14 @@
 __pycache__/
 *.py[cod]
 /aqtinstall.log
-# die-gui: copied db for installer bundling (not source-controlled)
+# die-gui: copied data dirs for installer bundling (not source-controlled)
 /crates/die-gui/db/
+/crates/die-gui/db_extra/
+/crates/die-gui/db_custom/
+/crates/die-gui/dbs_min/
+/crates/die-gui/dbs_special/
+/crates/die-gui/peid_rules/
+/crates/die-gui/yara_rules/
 
 # Upstream DIE binary (downloaded for differential testing, not committed)
 /tools/upstream-die/

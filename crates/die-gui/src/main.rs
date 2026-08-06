@@ -75,6 +75,8 @@ fn main() {
             commands::save_signature_source,
             commands::run_signature,
             commands::list_archive,
+            commands::get_data_paths,
+            commands::read_data_file,
             commands::get_context_menu_status,
             commands::add_context_menu,
             commands::remove_context_menu,
