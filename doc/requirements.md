@@ -910,3 +910,13 @@
 - 主题系统（7B-8 + 7B-8-1）：Settings 中 Theme 下拉（System/Dark/Light，默认System自动跟随OS）+ Language 下拉（5种语言）
 - 快捷键：Ctrl+O/Ctrl+Shift+O/Ctrl+Enter/F11/Ctrl+C/Escape
 
+## 2026-08-06: GUI 7B 签名浏览器增强 + 7C 扩展功能
+- 签名浏览器增强：搜索框、源码编辑（textarea overlay + 语法高亮）、Run/Debug 单签名执行、签名 Profiling（耗时显示）
+- run_signature 后端命令实现（原为 stub）：全量扫描后按 signature_path 过滤，debug 模式含诊断
+- save_signature_source 后端命令：保存签名源码到文件
+- 7C 内存映射视图（MemoryMapViewer）：PE/ELF/Mach-O 区段虚拟地址布局可视化 + 区段表
+- 7C 归档视图（ArchiveViewer）：ZIP 归档内容树形浏览，新增 list_archive 后端命令（zip 8.6 crate）
+- 7C 数据转换器（DataConverter）：hex/dec/bin/oct/base64/ASCII 实时转换 + 复制
+- 3 个新标签页：MemMap、Archive、Convert（总计 12 个标签页）
+
+
