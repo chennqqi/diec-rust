@@ -964,4 +964,10 @@
   - .gitignore：排除全部 7 个构建时复制的数据目录
 - 验证：NSIS 9.3MB（含全部数据目录），installer.nsi 确认 db_extra/peid_rules/yara_rules/dbs_min 均已打包
 
+## 2026-08-06: CLI 自动加载 db_extra/db_custom
+- 问题：CLI 打包了 db_extra/ 和 db_custom/ 目录到发布物中，但不会自动加载，用户必须手动传 --extradb/--customdb 参数
+- 修复：CLI 在找到主 db 目录后，自动检查同级的 db_extra/ 和 db_custom/ 目录（仅当用户未显式指定 --extradb/--customdb 时）
+- 行为：与 GUI 一致，与上游 DIE-engine 一致（三个目录一起加载）
+- 规则数对比：db only = 2037，db + db_extra + db_custom = 2175（+138 条）
+
 

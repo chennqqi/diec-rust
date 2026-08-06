@@ -402,6 +402,29 @@ fn main() -> ExitCode {
         }
     }
 
+    // Auto-discover db_extra/ and db_custom/ alongside the main db/ directory
+    // if the user did not explicitly specify --extradb or --customdb.
+    // This matches the upstream DIE-engine behavior where all three
+    // directories are loaded together from the same data root.
+    if extra_db_path.is_empty() {
+        let db_parent = std::path::Path::new(&db_path)
+            .parent()
+            .unwrap_or(std::path::Path::new("."));
+        let auto_extra = db_parent.join("db_extra");
+        if auto_extra.is_dir() {
+            extra_db_path = auto_extra.to_string_lossy().to_string();
+        }
+    }
+    if custom_db_path.is_empty() {
+        let db_parent = std::path::Path::new(&db_path)
+            .parent()
+            .unwrap_or(std::path::Path::new("."));
+        let auto_custom = db_parent.join("db_custom");
+        if auto_custom.is_dir() {
+            custom_db_path = auto_custom.to_string_lossy().to_string();
+        }
+    }
+
     // Build the database (main + optional extra/custom databases).
     let mut builder = DatabaseBuilder::new(&db_path);
     if !extra_db_path.is_empty() {
