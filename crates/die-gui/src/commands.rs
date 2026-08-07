@@ -1085,7 +1085,10 @@ pub async fn get_context_menu_status() -> Result<ContextMenuStatus, GuiError> {
         "unsupported"
     };
 
-    let installed = cfg!(windows) && is_context_menu_installed();
+    #[cfg(windows)]
+    let installed = is_context_menu_installed();
+    #[cfg(not(windows))]
+    let installed = false;
 
     Ok(ContextMenuStatus {
         installed,
