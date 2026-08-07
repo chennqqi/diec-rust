@@ -207,6 +207,7 @@ export default function App() {
   const [dirResults, setDirResults] = useState<ScanResultDto[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [scanning, setScanning] = useState(false);
+  const [scanPhase, setScanPhase] = useState<string>("");
   const [dragOver, setDragOver] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [settings, setSettings] = useState<AppSettings>(defaultSettings);
@@ -239,6 +240,19 @@ export default function App() {
       })
       .catch(() => {});
   }, [i18n]);
+
+  // Listen for scan progress events from the backend.
+  useEffect(() => {
+    const unlisten = listen<{ phase: string; path?: string; elapsed_ms?: number }>(
+      "scan_progress",
+      (e) => {
+        setScanPhase(e.payload.phase);
+      },
+    );
+    return () => {
+      unlisten.then((fn) => fn());
+    };
+  }, []);
 
   // React to language setting changes.
   useEffect(() => {
@@ -1008,7 +1022,13 @@ export default function App() {
             {scanning && !dirProgress && (
               <div className="px-3 py-2 text-xs text-fg-secondary flex items-center gap-2">
                 <div className="w-3 h-3 border-2 border-accent-blue border-t-transparent rounded-full animate-spin" />
-                Scanning...
+                {scanPhase === "loading_database"
+                  ? t("scan.phaseLoadingDb")
+                  : scanPhase === "scanning"
+                    ? t("scan.phaseScanning")
+                    : scanPhase === "complete"
+                      ? t("scan.phaseComplete")
+                      : t("scan.ready")}
               </div>
             )}
 

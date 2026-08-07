@@ -52,6 +52,9 @@ i18n.use(initReactI18next).init({
           line: "Line",
           message: "Message",
           elapsedMs: "Elapsed (ms)",
+          phaseLoadingDb: "Loading database...",
+          phaseScanning: "Scanning...",
+          phaseComplete: "Complete",
         },
         settings: {
           scanFlags: "Scan Flags",
@@ -304,6 +307,9 @@ i18n.use(initReactI18next).init({
           line: "行号",
           message: "消息",
           elapsedMs: "耗时(ms)",
+          phaseLoadingDb: "加载数据库...",
+          phaseScanning: "扫描中...",
+          phaseComplete: "完成",
         },
         settings: {
           scanFlags: "扫描标志",

@@ -10,6 +10,7 @@ use diec_engine::{ScanDetection, ScanError, ScanFlags, ScanResult, scan_bytes, s
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use std::time::Instant;
+use tauri::Emitter;
 
 /// Structured error DTO for all IPC commands.
 ///
@@ -468,16 +469,28 @@ fn resolve_db_path() -> String {
 #[tauri::command]
 pub async fn scan_file(
     state: tauri::State<'_, AppState>,
+    app: tauri::AppHandle,
     path: String,
     flags: ScanFlagsDto,
     database_paths: Option<Vec<String>>,
 ) -> Result<ScanResultDto, GuiError> {
     let db_paths = database_paths.unwrap_or_else(resolve_db_paths);
+
+    let _ = app.emit(
+        "scan_progress",
+        serde_json::json!({ "phase": "loading_database" }),
+    );
+
     let db = state
         .database(&db_paths)
         .map_err(|e| GuiError::new("DATABASE_LOAD_FAILED", e))?;
     let cancel = state.start_scan();
     let engine_flags: ScanFlags = flags.into();
+
+    let _ = app.emit(
+        "scan_progress",
+        serde_json::json!({ "phase": "scanning", "path": &path }),
+    );
 
     let start = Instant::now();
     let result = tokio::task::spawn_blocking({
@@ -489,8 +502,14 @@ pub async fn scan_file(
     .map_err(|e| GuiError::new("TASK_JOIN_FAILED", e.to_string()))?
     .map_err(GuiError::from)?;
 
+    let elapsed = start.elapsed().as_millis() as u64;
+    let _ = app.emit(
+        "scan_progress",
+        serde_json::json!({ "phase": "complete", "elapsed_ms": elapsed }),
+    );
+
     let mut dto: ScanResultDto = result.into();
-    dto.scan_time_ms = start.elapsed().as_millis() as u64;
+    dto.scan_time_ms = elapsed;
     Ok(dto)
 }
 
@@ -501,17 +520,29 @@ pub async fn scan_file(
 #[tauri::command]
 pub async fn scan_bytes_cmd(
     state: tauri::State<'_, AppState>,
+    app: tauri::AppHandle,
     file_name: String,
     data: Vec<u8>,
     flags: ScanFlagsDto,
     database_paths: Option<Vec<String>>,
 ) -> Result<ScanResultDto, GuiError> {
     let db_paths = database_paths.unwrap_or_else(resolve_db_paths);
+
+    let _ = app.emit(
+        "scan_progress",
+        serde_json::json!({ "phase": "loading_database" }),
+    );
+
     let db = state
         .database(&db_paths)
         .map_err(|e| GuiError::new("DATABASE_LOAD_FAILED", e))?;
     let cancel = state.start_scan();
     let engine_flags: ScanFlags = flags.into();
+
+    let _ = app.emit(
+        "scan_progress",
+        serde_json::json!({ "phase": "scanning", "path": &file_name }),
+    );
 
     let start = Instant::now();
     let result = tokio::task::spawn_blocking({
@@ -522,6 +553,12 @@ pub async fn scan_bytes_cmd(
     .await
     .map_err(|e| GuiError::new("TASK_JOIN_FAILED", e.to_string()))?
     .map_err(GuiError::from)?;
+
+    let elapsed = start.elapsed().as_millis() as u64;
+    let _ = app.emit(
+        "scan_progress",
+        serde_json::json!({ "phase": "complete", "elapsed_ms": elapsed }),
+    );
 
     let mut dto: ScanResultDto = result.into();
     dto.scan_time_ms = start.elapsed().as_millis() as u64;
