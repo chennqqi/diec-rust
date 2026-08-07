@@ -1,5 +1,31 @@
 # Release Notes
 
+## diec-rust v0.4.2
+
+Patch release fixing fuzz CI failure caused by .gitignore excluding
+.pyc seed files from the repository.
+
+### Fixes
+
+- **Track .pyc fuzz seed files**: The `.gitignore` rule `*.py[cod]`
+  was matching `fuzz/corpus/*/minimal.pyc` seed files, causing them
+  to be excluded from git. CI fresh checkout got only 162 seeds
+  instead of 165, failing `replay_seed_count_matches_release`.
+  Added negation rule `!fuzz/corpus/**/*.pyc` and committed the 3
+  missing .pyc files (format_probe, scan_engine, scan_ffi).
+
+### Verification (Docker CI simulation)
+
+- ubuntu:24.04 + stable Rust + clean git archive checkout
+- Seed count: 165 (was 162 in v0.4.0/v0.4.1 CI)
+- `cargo test --no-default-features --features replay`: 7/7 pass
+- `replay_seed_count_matches_release`: ok
+
+### No Functional Code Changes
+
+Only .gitignore fix + 3 seed files + version bump.
+All features identical to v0.4.0.
+
 ## diec-rust v0.4.1
 
 Patch release fixing fuzz/Cargo.lock version mismatch that caused

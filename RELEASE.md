@@ -114,6 +114,15 @@ for diec-rust. Every item must be verified before publishing a release.
 
 ## Release Sign-off
 
+### v0.4.2 — 2026-08-07
+
+- **Tag**: `v0.4.2` (annotated)
+- **Tests**: 480 pass, 0 failures (unchanged from v0.4.0)
+- **Fuzz replay**: 7/7 pass in Docker CI simulation (ubuntu:24.04)
+- **Fix**: .gitignore excluded 3 .pyc seed files (165→162 in CI)
+- **No code changes**: only .gitignore + seed files + version bump
+- **Artifacts**: identical to v0.4.0
+
 ### v0.4.1 — 2026-08-06
 
 - **Tag**: `v0.4.1` (annotated)
