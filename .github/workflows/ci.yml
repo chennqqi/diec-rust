@@ -41,6 +41,16 @@ jobs:
             librsvg2-dev libglib2.0-dev \
             build-essential pkg-config libssl-dev
 
+      - name: Copy data directories for die-gui build
+        shell: bash
+        run: |
+          for dir in db db_extra db_custom dbs_min dbs_special peid_rules yara_rules; do
+            mkdir -p "crates/die-gui/$dir"
+            if [ -d "upstream/Detect-It-Easy/$dir" ]; then
+              cp -r "upstream/Detect-It-Easy/$dir/"* "crates/die-gui/$dir/" 2>/dev/null || true
+            fi
+          done
+
       - name: Verify rust-toolchain.toml resolves to 1.97.1
         shell: bash
         run: |
@@ -100,6 +110,16 @@ jobs:
             libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev \
             librsvg2-dev libglib2.0-dev \
             build-essential pkg-config libssl-dev
+
+      - name: Copy data directories for die-gui build
+        shell: bash
+        run: |
+          for dir in db db_extra db_custom dbs_min dbs_special peid_rules yara_rules; do
+            mkdir -p "crates/die-gui/$dir"
+            if [ -d "upstream/Detect-It-Easy/$dir" ]; then
+              cp -r "upstream/Detect-It-Easy/$dir/"* "crates/die-gui/$dir/" 2>/dev/null || true
+            fi
+          done
 
       - name: Install Rust 1.88.0
         shell: bash
