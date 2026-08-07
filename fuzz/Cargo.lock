@@ -68,11 +68,11 @@ checksum = "c2ea6706d74fca54e15f1d40b5cf7fe7f764aaec61352a9fcec58fe27e042fc8"
 
 [[package]]
 name = "diec-core"
-version = "0.4.2"
+version = "0.4.3"
 
 [[package]]
 name = "diec-engine"
-version = "0.4.2"
+version = "0.4.3"
 dependencies = [
  "diec-core",
  "diec-formats",
@@ -81,7 +81,7 @@ dependencies = [
 
 [[package]]
 name = "diec-ffi"
-version = "0.4.2"
+version = "0.4.3"
 dependencies = [
  "diec-core",
  "diec-engine",
@@ -90,7 +90,7 @@ dependencies = [
 
 [[package]]
 name = "diec-formats"
-version = "0.4.2"
+version = "0.4.3"
 dependencies = [
  "diec-core",
 ]
@@ -110,7 +110,7 @@ dependencies = [
 
 [[package]]
 name = "diec-output"
-version = "0.4.2"
+version = "0.4.3"
 dependencies = [
  "diec-core",
  "diec-engine",
@@ -118,7 +118,7 @@ dependencies = [
 
 [[package]]
 name = "diec-rules"
-version = "0.4.2"
+version = "0.4.3"
 dependencies = [
  "capstone",
  "diec-core",

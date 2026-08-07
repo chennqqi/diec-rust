@@ -1,5 +1,35 @@
 # Release Notes
 
+## diec-rust v0.4.3
+
+Patch release fixing libFuzzer CI jobs that had been failing since
+v0.3.0 due to missing cargo-fuzz metadata.
+
+### Fixes
+
+- **cargo-fuzz metadata**: Added `[package.metadata] cargo-fuzz = true`
+  to fuzz/Cargo.toml. Without this, cargo-fuzz searched for
+  `fuzz/fuzz/Cargo.toml` (double nesting) and failed with
+  "No such file or directory".
+- **fuzz.yml path fix**: Run cargo-fuzz from repo root instead of
+  `cd fuzz` first, since cargo-fuzz auto-discovers the fuzz/ directory
+  via the metadata marker.
+- **Independent workspace**: Added `[workspace] members = ["."]` to
+  fuzz/Cargo.toml for proper independent workspace declaration.
+
+### Verification (Docker CI simulation)
+
+- ubuntu:24.04 + nightly Rust + cargo-fuzz v0.13.2
+- `cargo fuzz list` correctly shows all 6 targets:
+  fuzz_byte_source, fuzz_byte_view_subview, fuzz_format_probe,
+  fuzz_output_render, fuzz_scan_engine, fuzz_scan_ffi
+- Seed replay: 7/7 pass (165 seeds)
+
+### No Functional Code Changes
+
+Only fuzz/Cargo.toml metadata + fuzz.yml CI config + version bump.
+All features identical to v0.4.0.
+
 ## diec-rust v0.4.2
 
 Patch release fixing fuzz CI failure caused by .gitignore excluding

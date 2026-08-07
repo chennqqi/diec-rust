@@ -114,6 +114,16 @@ for diec-rust. Every item must be verified before publishing a release.
 
 ## Release Sign-off
 
+### v0.4.3 — 2026-08-07
+
+- **Tag**: `v0.4.3` (annotated)
+- **Tests**: 480 pass, 0 failures (unchanged from v0.4.0)
+- **Fuzz replay**: 7/7 pass (165 seeds, Docker CI simulation)
+- **Fuzz libFuzzer**: cargo-fuzz list shows all 6 targets (Docker sim)
+- **Fix**: cargo-fuzz metadata missing since v0.3.0
+- **No code changes**: only fuzz metadata + CI config + version bump
+- **Artifacts**: identical to v0.4.0
+
 ### v0.4.2 — 2026-08-07
 
 - **Tag**: `v0.4.2` (annotated)
