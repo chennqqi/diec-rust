@@ -137,10 +137,15 @@ jobs:
 
       - name: cargo +1.88.0 build
         shell: bash
-        run: cargo +1.88.0 build --workspace --all-targets --locked
+        run: |
+          # die-gui (Tauri) deps (wasmtime 43, yara-x 1.19) require rustc 1.91+.
+          # MSRV 1.88 applies to core crates only.
+          cargo +1.88.0 build --workspace --exclude die-gui --all-targets --locked
 
       - name: cargo +1.88.0 test
         shell: bash
+        run: |
+          cargo +1.88.0 test --workspace --exclude die-gui --all-targets --locked
         run: cargo +1.88.0 test --workspace --all-features --locked
 
       - name: cargo +1.88.0 clippy
