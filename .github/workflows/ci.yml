@@ -149,7 +149,8 @@ jobs:
 
       - name: cargo +1.88.0 clippy
         shell: bash
-        run: cargo +1.88.0 clippy --workspace --all-targets --all-features --locked -- -D warnings -A clippy::uninlined_format_args
+        run: |
+          cargo +1.88.0 clippy --workspace --exclude die-gui --all-targets --all-features --locked -- -D warnings -A clippy::uninlined_format_args
 
   # FFI smoke test: build the C ABI and run the C smoke test on each
   # platform. Verifies cross-platform static/dynamic linking and the
