@@ -43,6 +43,8 @@ mod tests {
                 original_name: None,
             }],
             diagnostics: vec![],
+            structured_diagnostics: vec![],
+            profiling: vec![],
         }
     }
 
@@ -79,6 +81,8 @@ mod tests {
             path: "empty.bin".into(),
             detections: vec![],
             diagnostics: vec![],
+            structured_diagnostics: vec![],
+            profiling: vec![],
         };
         let json = render_json(&result);
         assert!(json.contains("empty.bin"));
@@ -127,6 +131,8 @@ mod tests {
                 original_name: None,
             }],
             diagnostics: vec![],
+            structured_diagnostics: vec![],
+            profiling: vec![],
         };
         let json = render_json(&result);
         assert!(json.contains("\"id\":\"abc-123\""));

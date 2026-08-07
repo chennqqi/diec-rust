@@ -46,6 +46,12 @@ i18n.use(initReactI18next).init({
           unknownError: "Unknown error",
           more: "more",
           scanTime: "Scan time",
+          profiling: "Profiling",
+          file: "File",
+          kind: "Kind",
+          line: "Line",
+          message: "Message",
+          elapsedMs: "Elapsed (ms)",
         },
         settings: {
           scanFlags: "Scan Flags",
@@ -144,6 +150,8 @@ i18n.use(initReactI18next).init({
           copied: "Copied!",
           clickToCopy: "Click line to copy",
           invalidOffset: "Invalid offset",
+          followInDisasm: "Follow in Disasm",
+          inspector: "Data Inspector",
         },
         disasm: {
           title: "Disassembler",
@@ -283,6 +291,12 @@ i18n.use(initReactI18next).init({
           unknownError: "未知错误",
           more: "更多",
           scanTime: "扫描耗时",
+          profiling: "性能分析",
+          file: "文件",
+          kind: "类型",
+          line: "行号",
+          message: "消息",
+          elapsedMs: "耗时(ms)",
         },
         settings: {
           scanFlags: "扫描标志",
@@ -381,6 +395,8 @@ i18n.use(initReactI18next).init({
           copied: "已复制！",
           clickToCopy: "点击行复制",
           invalidOffset: "无效偏移",
+          followInDisasm: "在反汇编中跟进",
+          inspector: "数据检查器",
         },
         disasm: {
           title: "反汇编器",

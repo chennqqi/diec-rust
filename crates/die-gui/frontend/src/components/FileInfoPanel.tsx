@@ -189,31 +189,31 @@ export function FileInfoPanel({ path }: { path: string }) {
             {info.symbols.length === 0 ? (
               <p className="text-fg-muted">{t("fileInfo.symbols")} — N/A</p>
             ) : (
-              <table className="w-full mono">
-                <thead>
-                  <tr className="text-left text-fg-secondary border-b border-border-c">
-                    <th className="py-1 pr-3">{t("fileInfo.address")}</th>
-                    <th className="py-1 pr-3">{t("fileInfo.kind")}</th>
-                    <th className="py-1 pr-3">{t("fileInfo.size")}</th>
-                    <th className="py-1">{t("fileInfo.name")}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {info.symbols.slice(0, 500).map((s, i) => (
-                    <tr key={i} className="border-b border-border-c hover:bg-hover">
-                      <td className="py-0.5 pr-3 text-fg-muted">0x{s.address.toString(16).padStart(8, "0")}</td>
-                      <td className="py-0.5 pr-3 text-fg-secondary">{s.kind}</td>
-                      <td className="py-0.5 pr-3 text-fg-muted">{s.size > 0 ? `0x${s.size.toString(16)}` : "-"}</td>
-                      <td className="py-0.5 text-fg-primary">{s.name}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-            {info.symbols.length > 500 && (
-              <p className="mt-2 text-fg-muted">
-                Showing first 500 of {info.symbols.length} symbols.
-              </p>
+              <>
+                <p className="text-fg-muted mb-1">{info.symbols.length} {t("fileInfo.symbols")}</p>
+                <div style={{ maxHeight: "400px", overflowY: "auto" }}>
+                  <table className="w-full mono">
+                    <thead className="sticky top-0 bg-bg-panel">
+                      <tr className="text-left text-fg-secondary border-b border-border-c">
+                        <th className="py-1 pr-3">{t("fileInfo.address")}</th>
+                        <th className="py-1 pr-3">{t("fileInfo.kind")}</th>
+                        <th className="py-1 pr-3">{t("fileInfo.size")}</th>
+                        <th className="py-1">{t("fileInfo.name")}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {info.symbols.map((s, i) => (
+                        <tr key={i} className="border-b border-border-c hover:bg-hover">
+                          <td className="py-0.5 pr-3 text-fg-muted">0x{s.address.toString(16).padStart(8, "0")}</td>
+                          <td className="py-0.5 pr-3 text-fg-secondary">{s.kind}</td>
+                          <td className="py-0.5 pr-3 text-fg-muted">{s.size > 0 ? `0x${s.size.toString(16)}` : "-"}</td>
+                          <td className="py-0.5 text-fg-primary">{s.name}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
             )}
           </div>
         )}

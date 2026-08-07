@@ -97,6 +97,24 @@ pub struct HealthResponse {
     pub db_version: DatabaseVersionResponse,
 }
 
+/// A structured diagnostic entry.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct StructuredDiagnosticResponse {
+    pub file: String,
+    pub line: Option<u32>,
+    pub message: String,
+    pub kind: String,
+}
+
+/// Per-signature profiling entry.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct SignatureProfileResponse {
+    pub file: String,
+    pub elapsed_ms: u64,
+}
+
 /// Scan result response (used by both `/scan/path` and `/scan/bytes`).
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -104,6 +122,8 @@ pub struct ScanResponse {
     pub path: String,
     pub detections: Vec<DetectionResponse>,
     pub diagnostics: Vec<String>,
+    pub structured_diagnostics: Vec<StructuredDiagnosticResponse>,
+    pub profiling: Vec<SignatureProfileResponse>,
     pub program_version: String,
     pub db_version: DatabaseVersionResponse,
 }
@@ -287,6 +307,24 @@ fn build_scan_response(
             })
             .collect(),
         diagnostics: result.diagnostics,
+        structured_diagnostics: result
+            .structured_diagnostics
+            .iter()
+            .map(|d| StructuredDiagnosticResponse {
+                file: d.file.clone(),
+                line: d.line,
+                message: d.message.clone(),
+                kind: d.kind.clone(),
+            })
+            .collect(),
+        profiling: result
+            .profiling
+            .iter()
+            .map(|p| SignatureProfileResponse {
+                file: p.file.clone(),
+                elapsed_ms: p.elapsed_ms,
+            })
+            .collect(),
         program_version: env!("CARGO_PKG_VERSION").to_string(),
         db_version: DatabaseVersionResponse {
             commit: db_version.commit.clone(),

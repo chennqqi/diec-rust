@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
-import { Search, ArrowRight, Copy, Check } from "lucide-react";
+import { Search, ArrowRight, Copy, Check, Code } from "lucide-react";
 
 interface HexLine {
   offset: string;
@@ -29,7 +29,13 @@ const LINE_HEIGHT = 20;
 const VISIBLE_LINES = 30;
 const CHUNK_BYTES = LINE_BYTES * VISIBLE_LINES; // 480 bytes per chunk
 
-export function HexViewer({ path }: { path: string }) {
+export function HexViewer({
+  path,
+  onFollowInDisasm,
+}: {
+  path: string;
+  onFollowInDisasm?: (offset: number) => void;
+}) {
   const { t } = useTranslation();
   const [fileSize, setFileSize] = useState(0);
   const [scrollTop, setScrollTop] = useState(0);
@@ -42,6 +48,9 @@ export function HexViewer({ path }: { path: string }) {
   const [jumpOffset, setJumpOffset] = useState("");
   const [copied, setCopied] = useState(false);
   const [selectedLine, setSelectedLine] = useState<number | null>(null);
+  const [selectedByteOffset, setSelectedByteOffset] = useState<number | null>(null);
+  const [inspectorBytes, setInspectorBytes] = useState<Uint8Array>(new Uint8Array(0));
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   // Total number of lines in the file (for virtual scroll height).
   const totalLines = useMemo(() => Math.ceil(fileSize / LINE_BYTES), [fileSize]);
@@ -188,6 +197,37 @@ export function HexViewer({ path }: { path: string }) {
     }
   }
 
+  // Load bytes at a given offset for the data inspector (32 bytes).
+  async function loadInspectorData(offset: number) {
+    if (!path || offset >= fileSize) {
+      setInspectorBytes(new Uint8Array(0));
+      return;
+    }
+    const len = Math.min(32, fileSize - offset);
+    try {
+      const dump = await invoke<HexDump>("read_hex", { path, offset, maxBytes: len });
+      // Parse the hex bytes from the lines.
+      const bytes: number[] = [];
+      for (const line of dump.lines) {
+        for (const h of line.hex.split(" ")) {
+          bytes.push(parseInt(h, 16));
+        }
+      }
+      setInspectorBytes(new Uint8Array(bytes));
+    } catch {
+      setInspectorBytes(new Uint8Array(0));
+    }
+  }
+
+  // Handle line click: select line, copy, and load inspector data.
+  async function handleLineClick(lineIndex: number, line: HexLine) {
+    setSelectedLine(lineIndex);
+    const byteOffset = lineIndex * LINE_BYTES;
+    setSelectedByteOffset(byteOffset);
+    await copyLine(line);
+    await loadInspectorData(byteOffset);
+  }
+
   if (!path) return null;
 
   // Render visible lines.
@@ -216,10 +256,7 @@ export function HexViewer({ path }: { path: string }) {
           key={i}
           style={{ height: LINE_HEIGHT, lineHeight: `${LINE_HEIGHT}px` }}
           className={`flex gap-2 cursor-pointer hover:bg-accent-blue/10 ${selectedLine === i ? "bg-accent-blue/20" : ""} ${hasHit ? "bg-yellow-500/20" : ""}`}
-          onClick={() => {
-            setSelectedLine(i);
-            copyLine(line);
-          }}
+          onClick={() => handleLineClick(i, line)}
         >
           <span className="text-fg-muted w-24">{line.offset}</span>
           <span className="text-fg-primary w-[360px]">{line.hex}</span>
@@ -337,7 +374,172 @@ export function HexViewer({ path }: { path: string }) {
         </span>
         <Copy size={10} />
         <span>{t("hex.clickToCopy")}</span>
+        {selectedByteOffset != null && onFollowInDisasm && (
+          <button
+            onClick={() => onFollowInDisasm(selectedByteOffset)}
+            className="ml-auto flex items-center gap-1 px-2 py-0.5 text-xs border border-border rounded hover:bg-hover"
+          >
+            <Code size={11} />
+            {t("hex.followInDisasm")}
+          </button>
+        )}
       </div>
+
+      {/* Data inspector — shows multiple interpretations of selected bytes */}
+      {selectedByteOffset != null && inspectorBytes.length > 0 && (
+        <div className="mt-2 border border-border rounded p-2 text-xs">
+          <div className="text-fg-secondary font-medium mb-1">
+            {t("hex.inspector")} @ 0x{selectedByteOffset.toString(16).toUpperCase()}
+          </div>
+          <div className="grid grid-cols-2 gap-x-4 gap-y-0.5 mono">
+            <InspectorRow label="uint8" value={inspectorBytes[0]?.toString() ?? "-"} />
+            <InspectorRow
+              label="int8"
+              value={
+                inspectorBytes[0] != null
+                  ? (inspectorBytes[0] > 127 ? inspectorBytes[0] - 256 : inspectorBytes[0]).toString()
+                  : "-"
+              }
+            />
+            <InspectorRow
+              label="uint16 LE"
+              value={
+                inspectorBytes.length >= 2
+                  ? "0x" + (inspectorBytes[0] | (inspectorBytes[1] << 8)).toString(16).toUpperCase()
+                  : "-"
+              }
+            />
+            <InspectorRow
+              label="uint16 BE"
+              value={
+                inspectorBytes.length >= 2
+                  ? "0x" + ((inspectorBytes[0] << 8) | inspectorBytes[1]).toString(16).toUpperCase()
+                  : "-"
+              }
+            />
+            <InspectorRow
+              label="uint32 LE"
+              value={
+                inspectorBytes.length >= 4
+                  ? "0x" + readUint32LE(inspectorBytes).toString(16).toUpperCase()
+                  : "-"
+              }
+            />
+            <InspectorRow
+              label="uint32 BE"
+              value={
+                inspectorBytes.length >= 4
+                  ? "0x" + readUint32BE(inspectorBytes).toString(16).toUpperCase()
+                  : "-"
+              }
+            />
+            <InspectorRow
+              label="uint64 LE"
+              value={
+                inspectorBytes.length >= 8
+                  ? "0x" + readUint64LE(inspectorBytes).toString(16).toUpperCase()
+                  : "-"
+              }
+            />
+            <InspectorRow
+              label="uint64 BE"
+              value={
+                inspectorBytes.length >= 8
+                  ? "0x" + readUint64BE(inspectorBytes).toString(16).toUpperCase()
+                  : "-"
+              }
+            />
+            <InspectorRow
+              label="float32 LE"
+              value={
+                inspectorBytes.length >= 4
+                  ? readFloat32LE(inspectorBytes).toFixed(6)
+                  : "-"
+              }
+            />
+            <InspectorRow
+              label="float64 LE"
+              value={
+                inspectorBytes.length >= 8
+                  ? readFloat64LE(inspectorBytes).toFixed(6)
+                  : "-"
+              }
+            />
+            <InspectorRow
+              label="ASCII"
+              value={
+                Array.from(inspectorBytes.slice(0, 16))
+                  .map((b) => (b >= 32 && b <= 126 ? String.fromCharCode(b) : "."))
+                  .join("")
+              }
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
+}
+
+/** Inspector row: label + value. */
+function InspectorRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex gap-2">
+      <span className="text-fg-muted w-20">{label}</span>
+      <span className="text-fg-primary">{value}</span>
+    </div>
+  );
+}
+
+/** Read a little-endian uint32 from a Uint8Array. */
+function readUint32LE(bytes: Uint8Array): number {
+  return (
+    bytes[0] |
+    (bytes[1] << 8) |
+    (bytes[2] << 16) |
+    (bytes[3] << 24)
+  ) >>> 0;
+}
+
+/** Read a big-endian uint32 from a Uint8Array. */
+function readUint32BE(bytes: Uint8Array): number {
+  return (
+    (bytes[0] << 24) |
+    (bytes[1] << 16) |
+    (bytes[2] << 8) |
+    bytes[3]
+  ) >>> 0;
+}
+
+/** Read a little-endian uint64 from a Uint8Array (as BigInt). */
+function readUint64LE(bytes: Uint8Array): bigint {
+  let result = 0n;
+  for (let i = 7; i >= 0; i--) {
+    result = (result << 8n) | BigInt(bytes[i]);
+  }
+  return result;
+}
+
+/** Read a big-endian uint64 from a Uint8Array (as BigInt). */
+function readUint64BE(bytes: Uint8Array): bigint {
+  let result = 0n;
+  for (let i = 0; i < 8; i++) {
+    result = (result << 8n) | BigInt(bytes[i]);
+  }
+  return result;
+}
+
+/** Read a little-endian float32 from a Uint8Array. */
+function readFloat32LE(bytes: Uint8Array): number {
+  const buf = new ArrayBuffer(4);
+  const view = new DataView(buf);
+  for (let i = 0; i < 4; i++) view.setUint8(i, bytes[i]);
+  return view.getFloat32(0, true);
+}
+
+/** Read a little-endian float64 from a Uint8Array. */
+function readFloat64LE(bytes: Uint8Array): number {
+  const buf = new ArrayBuffer(8);
+  const view = new DataView(buf);
+  for (let i = 0; i < 8; i++) view.setUint8(i, bytes[i]);
+  return view.getFloat64(0, true);
 }

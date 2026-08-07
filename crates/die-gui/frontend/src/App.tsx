@@ -69,10 +69,24 @@ interface ScanDetectionDto {
   original_name: string | null;
 }
 
+interface StructuredDiagnosticDto {
+  file: string;
+  line: number | null;
+  message: string;
+  kind: string;
+}
+
+interface SignatureProfileDto {
+  file: string;
+  elapsed_ms: number;
+}
+
 interface ScanResultDto {
   path: string;
   detections: ScanDetectionDto[];
   diagnostics: string[];
+  structured_diagnostics: StructuredDiagnosticDto[];
+  profiling: SignatureProfileDto[];
   scan_time_ms: number;
 }
 
@@ -202,6 +216,7 @@ export default function App() {
   const [ctxMenuStatus, setCtxMenuStatus] = useState<"installed" | "not_installed" | "checking" | "unsupported">("checking");
   const [ctxMenuMsg, setCtxMenuMsg] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabId>("scan");
+  const [disasmJumpOffset, setDisasmJumpOffset] = useState<number | null>(null);
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
   const [selectedDetection, setSelectedDetection] = useState<ScanDetectionDto | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -1033,8 +1048,18 @@ export default function App() {
         )}
 
         {activeTab === "info" && filePath && <FileInfoPanel path={filePath} />}
-        {activeTab === "hex" && filePath && <HexViewer path={filePath} />}
-        {activeTab === "disasm" && filePath && <Disassembler path={filePath} />}
+        {activeTab === "hex" && filePath && (
+          <HexViewer
+            path={filePath}
+            onFollowInDisasm={(off) => {
+              setDisasmJumpOffset(off);
+              setActiveTab("disasm");
+            }}
+          />
+        )}
+        {activeTab === "disasm" && filePath && (
+          <Disassembler path={filePath} initialOffset={disasmJumpOffset} />
+        )}
         {activeTab === "demangle" && <DemangleTool />}
         {activeTab === "sigs" && <SignatureBrowser />}
         {activeTab === "yara" && filePath && <YaraScanner path={filePath} />}
@@ -1291,11 +1316,39 @@ function DetectionTreeView({
         );
       })}
 
-      {/* Diagnostics */}
-      {result.diagnostics.length > 0 && (
+      {/* Structured Diagnostics */}
+      {result.structured_diagnostics && result.structured_diagnostics.length > 0 ? (
         <details className="mt-3 mx-2">
           <summary className="cursor-pointer text-xs text-accent-yellow flex items-center gap-1">
-            <AlertCircle size={12} /> Diagnostics ({result.diagnostics.length})
+            <AlertCircle size={12} /> {t("scan.diagnostics")} ({result.structured_diagnostics.length})
+          </summary>
+          <div className="mt-1 rounded overflow-y-auto" style={{ maxHeight: "200px", overflowY: "auto" }}>
+            <table className="w-full mono text-xs">
+              <thead className="sticky top-0 bg-bg-panel">
+                <tr className="text-left text-fg-secondary border-b border-border-c">
+                  <th className="py-1 px-2">{t("scan.file")}</th>
+                  <th className="py-1 px-2">{t("scan.kind")}</th>
+                  <th className="py-1 px-2">{t("scan.line")}</th>
+                  <th className="py-1 px-2">{t("scan.message")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {result.structured_diagnostics.map((d, i) => (
+                  <tr key={i} className="border-b border-border-c">
+                    <td className="py-0.5 px-2 text-fg-muted truncate" style={{ maxWidth: "200px" }}>{d.file}</td>
+                    <td className={`py-0.5 px-2 ${d.kind === "error" ? "text-red-400" : "text-yellow-400"}`}>{d.kind}</td>
+                    <td className="py-0.5 px-2 text-fg-muted">{d.line ?? "-"}</td>
+                    <td className="py-0.5 px-2 text-fg-secondary">{d.message}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </details>
+      ) : result.diagnostics.length > 0 && (
+        <details className="mt-3 mx-2">
+          <summary className="cursor-pointer text-xs text-accent-yellow flex items-center gap-1">
+            <AlertCircle size={12} /> {t("scan.diagnostics")} ({result.diagnostics.length})
           </summary>
           <pre
             className="mt-1 p-2 rounded mono text-xs text-fg-secondary overflow-x-auto"
@@ -1303,6 +1356,33 @@ function DetectionTreeView({
           >
             {result.diagnostics.join("\n")}
           </pre>
+        </details>
+      )}
+
+      {/* Profiling data */}
+      {result.profiling && result.profiling.length > 0 && (
+        <details className="mt-1 mx-2">
+          <summary className="cursor-pointer text-xs text-fg-muted flex items-center gap-1">
+            <Clock size={12} /> {t("scan.profiling")} ({result.profiling.length})
+          </summary>
+          <div className="mt-1 rounded overflow-y-auto" style={{ maxHeight: "200px", overflowY: "auto" }}>
+            <table className="w-full mono text-xs">
+              <thead className="sticky top-0 bg-bg-panel">
+                <tr className="text-left text-fg-secondary border-b border-border-c">
+                  <th className="py-1 px-2">{t("scan.file")}</th>
+                  <th className="py-1 px-2 text-right">{t("scan.elapsedMs")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {result.profiling.map((p, i) => (
+                  <tr key={i} className="border-b border-border-c">
+                    <td className="py-0.5 px-2 text-fg-muted truncate" style={{ maxWidth: "300px" }}>{p.file}</td>
+                    <td className="py-0.5 px-2 text-right text-fg-secondary">{p.elapsed_ms}ms</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </details>
       )}
     </div>

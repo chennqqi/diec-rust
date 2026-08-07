@@ -109,6 +109,35 @@ pub fn render_xml(result: &ScanResult) -> String {
         out.push_str("  </Diagnostics>\n");
     }
 
+    if !result.structured_diagnostics.is_empty() {
+        out.push_str("  <StructuredDiagnostics>\n");
+        for diag in &result.structured_diagnostics {
+            out.push_str("    <DiagnosticEntry");
+            out.push_str(" file=\"");
+            out.push_str(&escape_xml(&diag.file));
+            out.push_str("\" kind=\"");
+            out.push_str(&escape_xml(&diag.kind));
+            out.push('"');
+            if let Some(line) = diag.line {
+                out.push_str(&format!(" line=\"{}\"", line));
+            }
+            out.push('>');
+            out.push_str(&escape_xml(&diag.message));
+            out.push_str("</DiagnosticEntry>\n");
+        }
+        out.push_str("  </StructuredDiagnostics>\n");
+    }
+
+    if !result.profiling.is_empty() {
+        out.push_str("  <Profiling>\n");
+        for prof in &result.profiling {
+            out.push_str("    <Signature file=\"");
+            out.push_str(&escape_xml(&prof.file));
+            out.push_str(&format!("\" elapsed_ms=\"{}\"/>\n", prof.elapsed_ms));
+        }
+        out.push_str("  </Profiling>\n");
+    }
+
     out.push_str("</Result>\n");
     out
 }

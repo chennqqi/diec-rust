@@ -283,6 +283,28 @@ pub struct ScanDetection {
     pub original_name: Option<String>,
 }
 
+/// A structured diagnostic entry with file/line context.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Diagnostic {
+    /// The signature file that produced the diagnostic (e.g. "PE/compiler.1.sg").
+    pub file: String,
+    /// Line number in the signature file, if known.
+    pub line: Option<u32>,
+    /// The diagnostic message.
+    pub message: String,
+    /// The kind: "error", "warning", "info".
+    pub kind: String,
+}
+
+/// Per-signature profiling data.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct SignatureProfile {
+    /// The signature file path.
+    pub file: String,
+    /// Elapsed time in milliseconds.
+    pub elapsed_ms: u64,
+}
+
 /// The result of scanning a single file.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ScanResult {
@@ -291,7 +313,12 @@ pub struct ScanResult {
     /// All detections found.
     pub detections: Vec<ScanDetection>,
     /// Diagnostics (errors, warnings) encountered during scanning.
+    /// Kept as strings for backward compatibility with JSON consumers.
     pub diagnostics: Vec<String>,
+    /// Structured diagnostics with file/line/kind separation.
+    pub structured_diagnostics: Vec<Diagnostic>,
+    /// Per-signature profiling data (elapsed time per rule file).
+    pub profiling: Vec<SignatureProfile>,
 }
 
 /// Convert a `DetectionResult` from the rule runtime into a `ScanDetection`.
@@ -365,6 +392,8 @@ pub fn scan_bytes(
     let snapshot = database.snapshot();
     let mut detections = Vec::new();
     let mut diagnostics = Vec::new();
+    let mut structured_diagnostics: Vec<Diagnostic> = Vec::new();
+    let mut profiling: Vec<SignatureProfile> = Vec::new();
 
     // Detect the file format to determine which rule types to run.
     // With --alltypes, all file type rules are run (matching upstream
@@ -445,6 +474,7 @@ pub fn scan_bytes(
                 return Err(ScanError::Cancelled);
             }
 
+            let start = std::time::Instant::now();
             match runtime.evaluate_rule_source(&rule.path, &rule.source, cancel) {
                 Ok(results) => {
                     for result in results {
@@ -452,9 +482,20 @@ pub fn scan_bytes(
                     }
                 }
                 Err(e) => {
-                    diagnostics.push(format!("{}: {}", rule.path, e));
+                    let msg = format!("{}: {}", rule.path, e);
+                    diagnostics.push(msg.clone());
+                    structured_diagnostics.push(Diagnostic {
+                        file: rule.path.clone(),
+                        line: None,
+                        message: e.to_string(),
+                        kind: "error".to_string(),
+                    });
                 }
             }
+            profiling.push(SignatureProfile {
+                file: rule.path.clone(),
+                elapsed_ms: start.elapsed().as_millis() as u64,
+            });
         }
 
         runtime.shutdown();
@@ -469,6 +510,8 @@ pub fn scan_bytes(
         path: file_name.to_string(),
         detections,
         diagnostics,
+        structured_diagnostics,
+        profiling,
     })
 }
 
@@ -567,6 +610,8 @@ impl Scanner {
         let snapshot = self.database.snapshot();
         let mut detections = Vec::new();
         let mut diagnostics = Vec::new();
+        let mut structured_diagnostics: Vec<Diagnostic> = Vec::new();
+        let mut profiling: Vec<SignatureProfile> = Vec::new();
 
         // Detect the file format to determine which rule types to run.
         // With file_type override, only the specified type's rules are run.
@@ -639,6 +684,7 @@ impl Scanner {
                     return Err(ScanError::Cancelled);
                 }
 
+                let start = std::time::Instant::now();
                 match cached
                     .runtime
                     .evaluate_rule_source(&rule.path, &rule.source, cancel)
@@ -653,16 +699,31 @@ impl Scanner {
                         }
                     }
                     Err(e) => {
-                        diagnostics.push(format!("{}: {}", rule.path, e));
+                        let msg = format!("{}: {}", rule.path, e);
+                        diagnostics.push(msg.clone());
+                        structured_diagnostics.push(Diagnostic {
+                            file: rule.path.clone(),
+                            line: None,
+                            message: e.to_string(),
+                            kind: "error".to_string(),
+                        });
                         // A script exception does not corrupt the runtime;
                         // continue with the next rule. Only OOM/limit errors
                         // require eviction (checked below).
                         if matches!(e, diec_rules::error::RuleError::BudgetExceeded { .. }) {
                             runtime_error = true;
+                            profiling.push(SignatureProfile {
+                                file: rule.path.clone(),
+                                elapsed_ms: start.elapsed().as_millis() as u64,
+                            });
                             break;
                         }
                     }
                 }
+                profiling.push(SignatureProfile {
+                    file: rule.path.clone(),
+                    elapsed_ms: start.elapsed().as_millis() as u64,
+                });
             }
 
             // If the runtime hit a budget limit, evict it.
@@ -680,6 +741,8 @@ impl Scanner {
             path: file_name.to_string(),
             detections,
             diagnostics,
+            structured_diagnostics,
+            profiling,
         })
     }
 

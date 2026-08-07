@@ -143,6 +143,8 @@ fn harness_output_render(data: &[u8]) {
             path: "empty".to_string(),
             detections: vec![],
             diagnostics: vec![],
+            structured_diagnostics: vec![],
+            profiling: vec![],
         };
         let json = diec_output::render_json(&result);
         assert!(!json.is_empty(), "JSON output should be non-empty");
@@ -199,6 +201,8 @@ fn harness_output_render(data: &[u8]) {
         path,
         detections,
         diagnostics: vec!["fuzz diagnostic".to_string()],
+        structured_diagnostics: vec![],
+        profiling: vec![],
     };
     let json = diec_output::render_json(&result);
     assert!(!json.is_empty(), "JSON output should be non-empty");

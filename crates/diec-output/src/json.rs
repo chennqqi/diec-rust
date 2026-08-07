@@ -111,6 +111,40 @@ pub fn render_json(result: &ScanResult) -> String {
         out.push(']');
     }
 
+    if !result.structured_diagnostics.is_empty() {
+        out.push_str(",\"structured_diagnostics\":[");
+        for (i, diag) in result.structured_diagnostics.iter().enumerate() {
+            if i > 0 {
+                out.push(',');
+            }
+            out.push_str("{\"file\":\"");
+            out.push_str(&escape_json(&diag.file));
+            out.push_str("\",\"message\":\"");
+            out.push_str(&escape_json(&diag.message));
+            out.push_str("\",\"kind\":\"");
+            out.push_str(&escape_json(&diag.kind));
+            out.push('"');
+            if let Some(line) = diag.line {
+                out.push_str(&format!(",\"line\":{}", line));
+            }
+            out.push('}');
+        }
+        out.push(']');
+    }
+
+    if !result.profiling.is_empty() {
+        out.push_str(",\"profiling\":[");
+        for (i, prof) in result.profiling.iter().enumerate() {
+            if i > 0 {
+                out.push(',');
+            }
+            out.push_str("{\"file\":\"");
+            out.push_str(&escape_json(&prof.file));
+            out.push_str(&format!("\",\"elapsed_ms\":{}}}", prof.elapsed_ms));
+        }
+        out.push(']');
+    }
+
     out.push('}');
     out
 }

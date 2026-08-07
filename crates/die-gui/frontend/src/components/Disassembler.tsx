@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 
@@ -20,15 +20,29 @@ interface DisassemblyResult {
 type Syntax = "intel" | "gas" | "nasm";
 type Arch = "x86" | "x64" | "arm" | "arm64";
 
-export function Disassembler({ path }: { path: string }) {
+export function Disassembler({
+  path,
+  initialOffset,
+}: {
+  path: string;
+  initialOffset?: number | null;
+}) {
   const { t } = useTranslation();
   const [result, setResult] = useState<DisassemblyResult | null>(null);
-  const [offset, setOffset] = useState(0);
+  const [offset, setOffset] = useState(initialOffset ?? 0);
   const [arch, setArch] = useState<Arch>("x64");
   const [maxBytes, setMaxBytes] = useState(4096);
   const [syntax, setSyntax] = useState<Syntax>("intel");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // When initialOffset changes (e.g. from HexViewer "Follow in Disasm"),
+  // update offset and auto-disassemble.
+  useEffect(() => {
+    if (initialOffset != null && initialOffset !== offset) {
+      setOffset(initialOffset);
+    }
+  }, [initialOffset]);
 
   async function disasm() {
     if (!path) return;

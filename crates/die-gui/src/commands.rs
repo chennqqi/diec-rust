@@ -154,6 +154,22 @@ impl From<ScanDetection> for ScanDetectionDto {
     }
 }
 
+/// A structured diagnostic entry with file/line/kind separation.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct StructuredDiagnosticDto {
+    pub file: String,
+    pub line: Option<u32>,
+    pub message: String,
+    pub kind: String,
+}
+
+/// Per-signature profiling entry.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SignatureProfileDto {
+    pub file: String,
+    pub elapsed_ms: u64,
+}
+
 /// The result of scanning a single file, serializable for the frontend.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ScanResultDto {
@@ -163,6 +179,10 @@ pub struct ScanResultDto {
     pub detections: Vec<ScanDetectionDto>,
     /// Diagnostics (errors, warnings) encountered during scanning.
     pub diagnostics: Vec<String>,
+    /// Structured diagnostics with file/line/kind separation.
+    pub structured_diagnostics: Vec<StructuredDiagnosticDto>,
+    /// Per-signature profiling data (elapsed time per rule file).
+    pub profiling: Vec<SignatureProfileDto>,
     /// Scan time in milliseconds.
     pub scan_time_ms: u64,
 }
@@ -170,10 +190,30 @@ pub struct ScanResultDto {
 impl From<ScanResult> for ScanResultDto {
     fn from(r: ScanResult) -> Self {
         let detections = r.detections.into_iter().map(Into::into).collect();
+        let structured_diagnostics = r
+            .structured_diagnostics
+            .into_iter()
+            .map(|d| StructuredDiagnosticDto {
+                file: d.file,
+                line: d.line,
+                message: d.message,
+                kind: d.kind,
+            })
+            .collect();
+        let profiling = r
+            .profiling
+            .into_iter()
+            .map(|p| SignatureProfileDto {
+                file: p.file,
+                elapsed_ms: p.elapsed_ms,
+            })
+            .collect();
         Self {
             path: r.path,
             detections,
             diagnostics: r.diagnostics,
+            structured_diagnostics,
+            profiling,
             scan_time_ms: 0,
         }
     }
