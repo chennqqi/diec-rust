@@ -227,7 +227,6 @@ jobs:
             libayatana-appindicator3-dev \
             librsvg2-dev \
             libglib2.0-dev \
-            libgobject-2.0-dev \
             pkg-config \
             patchelf
 
