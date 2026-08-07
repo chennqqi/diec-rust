@@ -86,12 +86,11 @@ jobs:
         run: |
           set -euo pipefail
           duration="${{ inputs.duration || '300' }}"
-          cd fuzz
-          mkdir -p artifacts/${{ matrix.target }}
-          # cargo-fuzz runs each target for `duration` seconds against the
-          # committed seed corpus. `-max_total_time` caps wall-clock time.
+          mkdir -p fuzz/artifacts/${{ matrix.target }}
+          # cargo-fuzz finds fuzz/Cargo.toml automatically (marked with
+          # [package.metadata] cargo-fuzz = true). Run from repo root.
           cargo +nightly fuzz run ${{ matrix.target }} \
-            -- -max_total_time="${duration}" -artifact_prefix=artifacts/${{ matrix.target }}/
+            -- -max_total_time="${duration}" -artifact_prefix=fuzz/artifacts/${{ matrix.target }}/
 
       - name: Upload crash artifacts
         if: always()
