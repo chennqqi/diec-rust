@@ -33,6 +33,22 @@ pub struct DetectionResult {
     pub lang: String,
     /// Language version, if any.
     pub lang_version: String,
+    /// Optional unique identifier for nested tree building.
+    pub id: Option<String>,
+    /// Optional parent detection id for nested results.
+    pub parent_id: Option<String>,
+    /// Optional file part where the detection originated.
+    pub file_part: Option<String>,
+    /// Optional offset of the detected region.
+    pub offset: Option<u64>,
+    /// Optional size of the detected region.
+    pub size: Option<u64>,
+    /// Optional heuristic detection marker.
+    pub is_heuristic: Option<bool>,
+    /// Optional A-Heuristic detection marker.
+    pub is_a_heuristic: Option<bool>,
+    /// Optional original name for archive/container entries.
+    pub original_name: Option<String>,
 }
 
 /// A loaded rule ready for execution.
@@ -285,6 +301,14 @@ mod tests {
             options: "".into(),
             lang: "".into(),
             lang_version: "".into(),
+            id: None,
+            parent_id: None,
+            file_part: None,
+            offset: None,
+            size: None,
+            is_heuristic: None,
+            is_a_heuristic: None,
+            original_name: None,
         };
         assert_eq!(r.type_name, "packer");
         assert_eq!(r.name, "UPX");

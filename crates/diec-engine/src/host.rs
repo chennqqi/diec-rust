@@ -18,7 +18,7 @@ use std::sync::Arc;
 /// Scan options that control rule behavior (deep, heuristic, verbose, etc.).
 /// These map to upstream CLI flags: --deepscan, --heuristicscan, --verbose,
 /// --aggressivescan, --alltypes, --hideunknown.
-#[derive(Debug, Clone, Copy, Default)]
+#[derive(Debug, Clone, Default)]
 pub struct ScanFlags {
     /// Deep scan mode (--deepscan).
     pub deep: bool,
@@ -32,6 +32,10 @@ pub struct ScanFlags {
     pub all_types: bool,
     /// Hide unknown detections (--hideunknown).
     pub hide_unknown: bool,
+    /// Optional file type override. When `Some`, only rules for the specified
+    /// file type are run, bypassing automatic format detection. This maps to
+    /// the upstream `comboBoxType` file type selector in the GUI.
+    pub file_type: Option<String>,
 }
 
 /// A host API implementation backed by an in-memory byte buffer.

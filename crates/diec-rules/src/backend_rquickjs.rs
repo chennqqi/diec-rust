@@ -183,13 +183,33 @@ impl RquickjsRuntime {
                     version: String(version),
                     options: String(options),
                     lang: "",
-                    langVersion: ""
+                    langVersion: "",
+                    id: null,
+                    parentId: null,
+                    filePart: null,
+                    offset: null,
+                    size: null,
+                    isHeuristic: null,
+                    isAHeuristic: null,
+                    originalName: null
                 }});
             }}
             function _setLang(lang, langVersion) {{
                 if (__diec_results.length > 0) {{
                     __diec_results[__diec_results.length - 1].lang = String(lang);
                     __diec_results[__diec_results.length - 1].langVersion = String(langVersion || "");
+                }}
+            }}
+            function _setHeuristic(bIsHeuristic) {{
+                if (__diec_results.length > 0) {{
+                    __diec_results[__diec_results.length - 1].isHeuristic = bIsHeuristic ? true : null;
+                }}
+            }}
+            function _setFilePart(filePart, nOffset, nSize) {{
+                if (__diec_results.length > 0) {{
+                    __diec_results[__diec_results.length - 1].filePart = filePart ? String(filePart) : null;
+                    __diec_results[__diec_results.length - 1].offset = (nOffset !== undefined && nOffset !== null) ? Number(nOffset) : null;
+                    __diec_results[__diec_results.length - 1].size = (nSize !== undefined && nSize !== null) ? Number(nSize) : null;
                 }}
             }}
             function _error(msg) {{ throw new Error(msg); }}
@@ -357,6 +377,14 @@ impl RquickjsRuntime {
                 let options: String = obj.get("options").unwrap_or_default();
                 let lang: String = obj.get("lang").unwrap_or_default();
                 let lang_version: String = obj.get("langVersion").unwrap_or_default();
+                let id: Option<String> = obj.get("id").ok().flatten();
+                let parent_id: Option<String> = obj.get("parentId").ok().flatten();
+                let file_part: Option<String> = obj.get("filePart").ok().flatten();
+                let offset: Option<u64> = obj.get("offset").ok().flatten();
+                let size: Option<u64> = obj.get("size").ok().flatten();
+                let is_heuristic: Option<bool> = obj.get("isHeuristic").ok().flatten();
+                let is_a_heuristic: Option<bool> = obj.get("isAHeuristic").ok().flatten();
+                let original_name: Option<String> = obj.get("originalName").ok().flatten();
 
                 results.push(DetectionResult {
                     type_name,
@@ -365,6 +393,14 @@ impl RquickjsRuntime {
                     options,
                     lang,
                     lang_version,
+                    id,
+                    parent_id,
+                    file_part,
+                    offset,
+                    size,
+                    is_heuristic,
+                    is_a_heuristic,
+                    original_name,
                 });
             }
             Ok(results)

@@ -976,3 +976,10 @@
 - 不要直接用 GitHub Actions 做实验/试错，过多失败运行易触发封号
 - 须在本地（含 .ci-local 本地模拟脚本）通过后再 push 触发 GitHub Actions CI
 - 将此约定写入 AGENTS.md「完成与提交」章节
+[2026-08-07] 深入对比 die-gui 与上游 Qt GUI 的差异：(1) 同样功能展示的信息丰富度差异；(2) 不合理的设计（如反汇编、HEX 展示）；(3) 由于底层库不同导致的结果显示差异。要求设计调用程序查看实际结果，深入对比并更新 docs/research/gui-upstream-diff.md。
+
+## 2026-08-07: die-gui 上游对齐 Megaplan
+- 修复 gui-upstream-diff.md 中识别的全部 20 项 P1/P2/P3 差异
+- 三阶段顺序实现：P1 核心(7项) → P2 完整度(7项) → P3 对齐(6项)
+- 保持 GUI-CLI 差分 0 不匹配，FFI C ABI 向后兼容
+- 新增 ADR 0020-0026 记录架构决策

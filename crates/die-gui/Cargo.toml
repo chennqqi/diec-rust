@@ -27,7 +27,7 @@ tokio = { version = "1", features = ["rt-multi-thread", "sync"] }
 # 7B advanced features
 cpp_demangle = "0.4"
 rustc-demangle = "0.1"
-iced-x86 = { version = "1.21", default-features = false, features = ["std", "decoder", "intel", "gas", "nasm"] }
+iced-x86 = { version = "1.21", default-features = false, features = ["std", "decoder", "intel", "gas", "nasm", "instr_info"] }
 # 7C extended features
 yara-x = "1.19"
 # File info: hashes, entropy, PE/ELF/Mach-O parsing
@@ -37,6 +37,8 @@ md-5 = "0.10"
 hex = "0.4"
 goblin = { version = "0.9" }
 zip = { version = "8.6", default-features = false, features = ["deflate"] }
+yaxpeax-arm = "0.4.0"
+yaxpeax-arch = "0.3.2"
 
 [target.'cfg(windows)'.dependencies]
 winreg = "0.55"
@@ -44,6 +46,7 @@ winreg = "0.55"
 [dev-dependencies]
 diec-engine = { workspace = true }
 diec-core = { workspace = true }
+tempfile = "3.27.0"
 
 [build-dependencies]
 tauri-build = { version = "2", features = [] }

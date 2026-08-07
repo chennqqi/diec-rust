@@ -33,6 +33,14 @@ mod tests {
                 version: Some("0.4".into()),
                 options: None,
                 signature_path: None,
+                id: None,
+                parent_id: None,
+                file_part: None,
+                offset: None,
+                size: None,
+                is_heuristic: None,
+                is_a_heuristic: None,
+                original_name: None,
             }],
             diagnostics: vec![],
         }
@@ -77,5 +85,58 @@ mod tests {
         assert!(json.contains("\"detections\""));
         let text = render_text(&result);
         assert!(text.contains("empty.bin"));
+    }
+
+    /// Verify that Optional fields with `None` values do not appear in JSON
+    /// output. This is the compatibility guarantee: existing CLI JSON output
+    /// must remain byte-identical when no new fields are populated.
+    #[test]
+    fn json_none_fields_omitted() {
+        let result = sample_result();
+        let json = render_json(&result);
+        // None fields must not appear in the JSON output.
+        assert!(!json.contains("\"id\""));
+        assert!(!json.contains("\"parent_id\""));
+        assert!(!json.contains("\"file_part\""));
+        assert!(!json.contains("\"offset\""));
+        assert!(!json.contains("\"size\""));
+        assert!(!json.contains("\"is_heuristic\""));
+        assert!(!json.contains("\"is_a_heuristic\""));
+        assert!(!json.contains("\"original_name\""));
+    }
+
+    /// Verify that Optional fields with `Some` values do appear in JSON output.
+    #[test]
+    fn json_some_fields_present() {
+        let result = diec_engine::ScanResult {
+            path: "test.bin".into(),
+            detections: vec![ScanDetection {
+                file_type: "PE".into(),
+                type_name: "compiler".into(),
+                name: "TestCompiler".into(),
+                version: None,
+                options: None,
+                signature_path: None,
+                id: Some("abc-123".into()),
+                parent_id: None,
+                file_part: Some("Resource".into()),
+                offset: Some(0x260),
+                size: Some(0x14),
+                is_heuristic: Some(true),
+                is_a_heuristic: None,
+                original_name: None,
+            }],
+            diagnostics: vec![],
+        };
+        let json = render_json(&result);
+        assert!(json.contains("\"id\":\"abc-123\""));
+        assert!(json.contains("\"file_part\":\"Resource\""));
+        assert!(json.contains("\"offset\":608"));
+        assert!(json.contains("\"size\":20"));
+        assert!(json.contains("\"is_heuristic\":true"));
+        // None fields must still be omitted.
+        assert!(!json.contains("\"parent_id\""));
+        assert!(!json.contains("\"is_a_heuristic\""));
+        assert!(!json.contains("\"original_name\""));
     }
 }

@@ -261,6 +261,26 @@ pub struct ScanDetection {
     /// Path to the signature file that produced this detection (relative to db root).
     /// Used by the GUI Advanced mode to display the matching signature source.
     pub signature_path: Option<String>,
+    /// Optional unique identifier for this detection (used for nested tree building).
+    /// When `Some`, detections with `parent_id` matching this id are nested children.
+    pub id: Option<String>,
+    /// Optional parent detection id for building nested result trees.
+    /// When `Some`, this detection is a child of the detection with the matching id.
+    pub parent_id: Option<String>,
+    /// Optional file part where this detection originated.
+    /// Values: "Header", "Resource", "Overlay", "Archive", etc.
+    pub file_part: Option<String>,
+    /// Optional offset of the detected region within the file.
+    pub offset: Option<u64>,
+    /// Optional size of the detected region in bytes.
+    pub size: Option<u64>,
+    /// Optional heuristic detection marker.
+    /// When `Some(true)`, the detection was produced by a heuristic rule.
+    pub is_heuristic: Option<bool>,
+    /// Optional A-Heuristic (advanced heuristic) detection marker.
+    pub is_a_heuristic: Option<bool>,
+    /// Optional original name for archive/container entries.
+    pub original_name: Option<String>,
 }
 
 /// The result of scanning a single file.
@@ -272,6 +292,43 @@ pub struct ScanResult {
     pub detections: Vec<ScanDetection>,
     /// Diagnostics (errors, warnings) encountered during scanning.
     pub diagnostics: Vec<String>,
+}
+
+/// Convert a `DetectionResult` from the rule runtime into a `ScanDetection`.
+///
+/// This helper centralizes the mapping so that both `scan_bytes` and
+/// `Scanner::scan_bytes` produce identical detections. New optional fields
+/// are populated from the `DetectionResult` extended fields; when the rule
+/// runtime does not provide them, they default to `None`.
+fn detection_from_result(
+    file_type: &str,
+    rule_path: &str,
+    result: diec_rules::runtime::DetectionResult,
+) -> ScanDetection {
+    ScanDetection {
+        file_type: file_type.to_string(),
+        type_name: result.type_name,
+        name: result.name,
+        version: if result.version.is_empty() {
+            None
+        } else {
+            Some(result.version)
+        },
+        options: if result.options.is_empty() {
+            None
+        } else {
+            Some(result.options)
+        },
+        signature_path: Some(rule_path.to_string()),
+        id: result.id,
+        parent_id: result.parent_id,
+        file_part: result.file_part,
+        offset: result.offset,
+        size: result.size,
+        is_heuristic: result.is_heuristic,
+        is_a_heuristic: result.is_a_heuristic,
+        original_name: result.original_name,
+    }
 }
 
 /// Scan a single file against the database.
@@ -312,7 +369,10 @@ pub fn scan_bytes(
     // Detect the file format to determine which rule types to run.
     // With --alltypes, all file type rules are run (matching upstream
     // bIsAllTypesScan behavior: minimal PE32 also reports MSDOS).
-    let active_types = if flags.all_types {
+    // With file_type override, only the specified type's rules are run.
+    let active_types: Vec<&str> = if let Some(ref ft) = flags.file_type {
+        vec![ft.as_str()]
+    } else if flags.all_types {
         all_rule_types()
     } else {
         detect_rule_types(&data)
@@ -344,7 +404,9 @@ pub fn scan_bytes(
         };
 
         // Create a host with the file data and scan flags.
-        let host = Arc::new(BufferHost::new(data.clone(), file_name.to_string()).with_flags(flags));
+        let host = Arc::new(
+            BufferHost::new(data.clone(), file_name.to_string()).with_flags(flags.clone()),
+        );
         if let Err(e) = runtime.register_host_api(host.clone()) {
             diagnostics.push(format!("host API error for {file_type}: {e}"));
             continue;
@@ -386,22 +448,7 @@ pub fn scan_bytes(
             match runtime.evaluate_rule_source(&rule.path, &rule.source, cancel) {
                 Ok(results) => {
                     for result in results {
-                        detections.push(ScanDetection {
-                            file_type: rule.file_type.clone(),
-                            type_name: result.type_name,
-                            name: result.name,
-                            version: if result.version.is_empty() {
-                                None
-                            } else {
-                                Some(result.version)
-                            },
-                            options: if result.options.is_empty() {
-                                None
-                            } else {
-                                Some(result.options)
-                            },
-                            signature_path: Some(rule.path.clone()),
-                        });
+                        detections.push(detection_from_result(&rule.file_type, &rule.path, result));
                     }
                 }
                 Err(e) => {
@@ -522,7 +569,10 @@ impl Scanner {
         let mut diagnostics = Vec::new();
 
         // Detect the file format to determine which rule types to run.
-        let active_types = if flags.all_types {
+        // With file_type override, only the specified type's rules are run.
+        let active_types: Vec<&str> = if let Some(ref ft) = flags.file_type {
+            vec![ft.as_str()]
+        } else if flags.all_types {
             all_rule_types()
         } else {
             detect_rule_types(&data)
@@ -564,8 +614,9 @@ impl Scanner {
                 .expect("just inserted or existed");
 
             // Register the new file's host API, overwriting the previous one.
-            let host =
-                Arc::new(BufferHost::new(data.clone(), file_name.to_string()).with_flags(flags));
+            let host = Arc::new(
+                BufferHost::new(data.clone(), file_name.to_string()).with_flags(flags.clone()),
+            );
             if let Err(e) = cached.runtime.register_host_api(host.clone()) {
                 diagnostics.push(format!("host API error for {file_type}: {e}"));
                 // Evict the broken runtime so next scan creates a fresh one.
@@ -594,22 +645,11 @@ impl Scanner {
                 {
                     Ok(results) => {
                         for result in results {
-                            detections.push(ScanDetection {
-                                file_type: rule.file_type.clone(),
-                                type_name: result.type_name,
-                                name: result.name,
-                                version: if result.version.is_empty() {
-                                    None
-                                } else {
-                                    Some(result.version)
-                                },
-                                options: if result.options.is_empty() {
-                                    None
-                                } else {
-                                    Some(result.options)
-                                },
-                                signature_path: Some(rule.path.clone()),
-                            });
+                            detections.push(detection_from_result(
+                                &rule.file_type,
+                                &rule.path,
+                                result,
+                            ));
                         }
                     }
                     Err(e) => {
@@ -1028,7 +1068,7 @@ mod tests {
         // per file per file_type).
         let mut baseline_results: Vec<(String, ScanResult)> = Vec::new();
         for (name, data) in differential_samples() {
-            let result = scan_bytes(&database, name, data.clone(), flags, &cancel)
+            let result = scan_bytes(&database, name, data.clone(), flags.clone(), &cancel)
                 .expect("scan_bytes should not fail");
             baseline_results.push((name.to_string(), result));
         }
@@ -1037,7 +1077,7 @@ mod tests {
         let mut scanner = Scanner::new(database.clone());
         for (name, data) in differential_samples() {
             let result = scanner
-                .scan_bytes(name, data.clone(), flags, &cancel)
+                .scan_bytes(name, data.clone(), flags.clone(), &cancel)
                 .expect("Scanner::scan_bytes should not fail");
             // Find the baseline result for this sample.
             let baseline = baseline_results
@@ -1077,10 +1117,10 @@ mod tests {
         data.resize(64, 0);
 
         let result1 = scanner
-            .scan_bytes("test.7z", data.clone(), flags, &cancel)
+            .scan_bytes("test.7z", data.clone(), flags.clone(), &cancel)
             .unwrap();
         let result2 = scanner
-            .scan_bytes("test.7z", data.clone(), flags, &cancel)
+            .scan_bytes("test.7z", data.clone(), flags.clone(), &cancel)
             .unwrap();
 
         assert_eq!(
@@ -1110,7 +1150,7 @@ mod tests {
         // Baseline: no reuse.
         let mut baseline: Vec<(String, ScanResult)> = Vec::new();
         for (name, data) in &samples {
-            let r = scan_bytes(&database, name, data.clone(), flags, &cancel).unwrap();
+            let r = scan_bytes(&database, name, data.clone(), flags.clone(), &cancel).unwrap();
             baseline.push((name.to_string(), r));
         }
 
@@ -1118,7 +1158,7 @@ mod tests {
         let mut scanner = Scanner::new(database.clone());
         for (name, data) in &samples {
             let r = scanner
-                .scan_bytes(name, data.clone(), flags, &cancel)
+                .scan_bytes(name, data.clone(), flags.clone(), &cancel)
                 .unwrap();
             let b = baseline
                 .iter()
@@ -1134,7 +1174,7 @@ mod tests {
         // Scan again in REVERSE order to catch any order-dependent state.
         for (name, data) in samples.iter().rev() {
             let r = scanner
-                .scan_bytes(name, data.clone(), flags, &cancel)
+                .scan_bytes(name, data.clone(), flags.clone(), &cancel)
                 .unwrap();
             let b = baseline
                 .iter()
@@ -1164,7 +1204,7 @@ mod tests {
         let mut data = vec![0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C, 0x00, 0x04];
         data.resize(64, 0);
         let _ = scanner
-            .scan_bytes("test.7z", data.clone(), flags, &cancel)
+            .scan_bytes("test.7z", data.clone(), flags.clone(), &cancel)
             .unwrap();
 
         // Reset should clear the cache (no panic, no error).

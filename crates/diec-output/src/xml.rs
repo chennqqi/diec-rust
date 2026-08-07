@@ -55,6 +55,46 @@ pub fn render_xml(result: &ScanResult) -> String {
             out.push_str(&escape_xml(o));
             out.push_str("</Options>\n");
         }
+        if let Some(id) = &det.id {
+            out.push_str("      <Id>");
+            out.push_str(&escape_xml(id));
+            out.push_str("</Id>\n");
+        }
+        if let Some(pid) = &det.parent_id {
+            out.push_str("      <ParentId>");
+            out.push_str(&escape_xml(pid));
+            out.push_str("</ParentId>\n");
+        }
+        if let Some(fp) = &det.file_part {
+            out.push_str("      <FilePart>");
+            out.push_str(&escape_xml(fp));
+            out.push_str("</FilePart>\n");
+        }
+        if let Some(off) = det.offset {
+            out.push_str("      <Offset>");
+            out.push_str(&off.to_string());
+            out.push_str("</Offset>\n");
+        }
+        if let Some(sz) = det.size {
+            out.push_str("      <Size>");
+            out.push_str(&sz.to_string());
+            out.push_str("</Size>\n");
+        }
+        if let Some(h) = det.is_heuristic {
+            out.push_str("      <IsHeuristic>");
+            out.push_str(if h { "true" } else { "false" });
+            out.push_str("</IsHeuristic>\n");
+        }
+        if let Some(ah) = det.is_a_heuristic {
+            out.push_str("      <IsAHeuristic>");
+            out.push_str(if ah { "true" } else { "false" });
+            out.push_str("</IsAHeuristic>\n");
+        }
+        if let Some(on) = &det.original_name {
+            out.push_str("      <OriginalName>");
+            out.push_str(&escape_xml(on));
+            out.push_str("</OriginalName>\n");
+        }
         out.push_str("    </Detection>\n");
     }
     out.push_str("  </Detections>\n");

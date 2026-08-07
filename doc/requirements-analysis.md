@@ -195,3 +195,4 @@
 - 风险：直接 push 试错会反复触发 GitHub Actions 失败，可能被 GitHub 限流/封号
 - 决策：在「完成与提交」补充一条规则——本地验证（含 .ci-local 模拟）通过后再 push 触发 CI
 - 落点：AGENTS.md 第 95-106 行章节末尾追加
+[2026-08-07] 用户反馈 gui-upstream-diff.md 不够深入，三个维度需深挖：信息丰富度、不合理设计、底层库差异。计划：1) 编写对比脚本调用 diec.exe 获取多格式输出；2) 检索上游 ScanItemModel::createResultStringEx/createTypeString 源码确认上游展示格式；3) 检索 XHexView/XDisasmView 头文件确认功能差距；4) 检查 die-gui 后端模块（hex_viewer/disassembler/file_info）实现细节；5) 重写差异文档加入实际输出对比和源码证据。

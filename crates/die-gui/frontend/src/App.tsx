@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { invoke, Channel } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
@@ -59,6 +59,14 @@ interface ScanDetectionDto {
   version: string | null;
   options: string | null;
   signature_path: string | null;
+  id: string | null;
+  parent_id: string | null;
+  file_part: string | null;
+  offset: number | null;
+  size: number | null;
+  is_heuristic: boolean | null;
+  is_a_heuristic: boolean | null;
+  original_name: string | null;
 }
 
 interface ScanResultDto {
@@ -66,6 +74,31 @@ interface ScanResultDto {
   detections: ScanDetectionDto[];
   diagnostics: string[];
   scan_time_ms: number;
+}
+
+/** Database path info from list_database_paths IPC command. */
+interface DatabasePathInfo {
+  key: string;
+  path: string;
+  exists: boolean;
+}
+
+/**
+ * Resolve database paths for the scan_file command.
+ * When selection is "auto" or "all", returns null to let the backend
+ * auto-detect all available databases. When a specific database is
+ * selected, returns only that database's path.
+ */
+async function resolveDatabasePaths(selection: string): Promise<string[] | null> {
+  if (selection === "auto" || selection === "all") return null;
+  try {
+    const infos = await invoke<DatabasePathInfo[]>("list_database_paths");
+    const info = infos.find((i) => i.key === selection);
+    if (info && info.exists) return [info.path];
+  } catch {
+    // Fall back to auto-detection.
+  }
+  return null;
 }
 
 interface GuiError {
@@ -85,6 +118,8 @@ interface ScanFlagsDto {
   archives: boolean;
   first_wrapper_only: boolean;
   hide_unknown: boolean;
+  /** Optional file type override. When set, only rules for this type are run. */
+  file_type?: string | null;
 }
 
 interface AppSettings {
@@ -162,6 +197,7 @@ export default function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [settings, setSettings] = useState<AppSettings>(defaultSettings);
   const [flags, setFlags] = useState<ScanFlagsDto>(defaultFlags);
+  const [selectedDatabase, setSelectedDatabase] = useState<string>("main");
   const [dirProgress, setDirProgress] = useState<{ current: number; total: number } | null>(null);
   const [ctxMenuStatus, setCtxMenuStatus] = useState<"installed" | "not_installed" | "checking" | "unsupported">("checking");
   const [ctxMenuMsg, setCtxMenuMsg] = useState<string | null>(null);
@@ -360,7 +396,19 @@ export default function App() {
     setResult(null);
     setDirResults([]);
     try {
-      const res = await invoke<ScanResultDto>("scan_file", { path: filePath, flags });
+      // Build database paths from selectedDatabase. When "auto", pass null
+      // to let the backend auto-detect (db + db_extra + db_custom).
+      const dbPaths = await resolveDatabasePaths(selectedDatabase);
+      // Build flags with file_type override (null when "Auto").
+      const flagsWithFileType: ScanFlagsDto = {
+        ...flags,
+        file_type: flags.file_type && flags.file_type !== "Auto" ? flags.file_type : null,
+      };
+      const res = await invoke<ScanResultDto>("scan_file", {
+        path: filePath,
+        flags: flagsWithFileType,
+        databasePaths: dbPaths,
+      });
       setResult(res);
       // Auto-expand all group nodes.
       const groupMap: Record<string, ScanDetectionDto[]> = {};
@@ -417,7 +465,7 @@ export default function App() {
       setScanning(false);
       setDirProgress(null);
     }
-  }, [filePath, flags, dirProgress]);
+  }, [filePath, flags, selectedDatabase, dirProgress]);
 
   const stopScan = useCallback(async () => {
     try {
@@ -902,9 +950,11 @@ export default function App() {
                   <select
                     className="input py-0 px-1"
                     style={{ width: "80px", fontSize: "11px" }}
-                    defaultValue="main"
+                    value={selectedDatabase}
+                    onChange={(e) => setSelectedDatabase(e.target.value)}
                     title="Database selection"
                   >
+                    <option value="auto">Auto</option>
                     <option value="main">Main</option>
                     <option value="extra">Extra</option>
                     <option value="custom">Custom</option>
@@ -1108,6 +1158,99 @@ function DetectionTreeView({
   }
   const groupEntries = Object.entries(groupMap);
 
+  // Build a map of id → children for nested tree support.
+  // Detections with parent_id are rendered as children of their parent.
+  const childrenMap: Record<string, ScanDetectionDto[]> = {};
+  for (const d of result.detections) {
+    if (d.parent_id && d.id) {
+      if (!childrenMap[d.parent_id]) childrenMap[d.parent_id] = [];
+      childrenMap[d.parent_id].push(d);
+    }
+  }
+
+  /** Format heuristic marker prefix for a detection. */
+  function heuristicPrefix(d: ScanDetectionDto): string {
+    if (d.is_a_heuristic) return "(A-Heur) ";
+    if (d.is_heuristic) return "(Heur) ";
+    return "";
+  }
+
+  /** Format file part / offset / size suffix for a detection. */
+  function partInfo(d: ScanDetectionDto): string {
+    const parts: string[] = [];
+    if (d.file_part) parts.push(d.file_part);
+    if (d.offset != null) parts.push(`@0x${d.offset.toString(16)}`);
+    if (d.size != null) parts.push(`size=0x${d.size.toString(16)}`);
+    return parts.length > 0 ? ` [${parts.join(" ")}]` : "";
+  }
+
+  /** Render a detection row and its nested children recursively. */
+  function renderDetection(d: ScanDetectionDto, di: number, parentId: string, depth: number): ReactNode {
+    const nodeId = `${parentId}-${di}`;
+    const nodeExpanded = expandedNodes.has(nodeId);
+    const hasOptions = d.options && d.options.length > 0;
+    const hasChildren = d.id != null && (childrenMap[d.id]?.length ?? 0) > 0;
+    const isSelected =
+      selectedDetection?.name === d.name &&
+      selectedDetection?.type_name === d.type_name &&
+      selectedDetection?.file_type === d.file_type;
+    const indent = 20 + depth * 16;
+    return (
+      <div key={nodeId}>
+        <div
+          className={`tree-row text-xs ${isSelected ? "bg-accent-blue/20 border-l-2 border-accent-blue" : ""}`}
+          style={{ marginLeft: indent }}
+          onClick={() => {
+            onSelect(d);
+            if (hasOptions || hasChildren) onToggle(nodeId);
+          }}
+          onContextMenu={(e) => {
+            e.preventDefault();
+            onContextMenu(e.clientX, e.clientY, d);
+          }}
+        >
+          <span className="w-6 flex justify-center">
+            {hasOptions || hasChildren ? (
+              nodeExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />
+            ) : (
+              <div className="w-3" />
+            )}
+          </span>
+          <span className="flex-1" title={`${heuristicPrefix(d)}${d.name}${partInfo(d)}`}>
+            <span className="text-fg-secondary">{d.type_name}: </span>
+            {d.is_a_heuristic && <span className="text-orange-400 font-medium">(A-Heur) </span>}
+            {d.is_heuristic && !d.is_a_heuristic && <span className="text-yellow-400 font-medium">(Heur) </span>}
+            <span className="text-fg-primary">{d.name}</span>
+            {d.file_part && <span className="text-fg-muted text-[10px] ml-1">[{d.file_part}]</span>}
+            {d.offset != null && (
+              <span className="text-fg-muted text-[10px] ml-1">@0x{d.offset.toString(16)}</span>
+            )}
+          </span>
+          <span className="w-20 text-center text-fg-muted">{d.type_name}</span>
+          <span className="w-24 text-fg-secondary">{d.version ?? ""}</span>
+          <span className="w-32 text-fg-muted truncate" title={d.options ?? ""}>
+            {d.options ?? ""}
+          </span>
+        </div>
+        {nodeExpanded && hasOptions && (
+          <div className="tree-children mono text-xs text-fg-secondary">
+            {d.options!.split(",").map((opt, oi) => (
+              <div key={oi} className="tree-row">
+                <span className="w-6" />
+                <span className="flex-1">{opt.trim()}</span>
+              </div>
+            ))}
+          </div>
+        )}
+        {nodeExpanded && hasChildren && (
+          <div className="tree-children">
+            {childrenMap[d.id!].map((child, ci) => renderDetection(child, ci, nodeId, depth + 1))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="selectable p-1">
       {/* Header row */}
@@ -1125,6 +1268,9 @@ function DetectionTreeView({
       {groupEntries.map(([fileType, dets], gi) => {
         const groupId = `group-${gi}`;
         const expanded = expandedNodes.has(groupId);
+        // Filter out detections that have a parent_id — they are rendered as
+        // children of their parent, not at the top level.
+        const topLevelDets = dets.filter((d) => !d.parent_id);
         return (
           <div key={groupId}>
             <div
@@ -1140,58 +1286,7 @@ function DetectionTreeView({
               <span className="w-32" />
             </div>
             {expanded &&
-              dets.map((d, di) => {
-                const nodeId = `group-${gi}-${di}`;
-                const nodeExpanded = expandedNodes.has(nodeId);
-                const hasOptions = d.options && d.options.length > 0;
-                const isSelected =
-                  selectedDetection?.name === d.name &&
-                  selectedDetection?.type_name === d.type_name &&
-                  selectedDetection?.file_type === d.file_type;
-                return (
-                  <div key={nodeId}>
-                    <div
-                      className={`tree-row text-xs ${isSelected ? "bg-accent-blue/20 border-l-2 border-accent-blue" : ""}`}
-                      style={{ marginLeft: 20 }}
-                      onClick={() => {
-                        onSelect(d);
-                        if (hasOptions) onToggle(nodeId);
-                      }}
-                      onContextMenu={(e) => {
-                        e.preventDefault();
-                        onContextMenu(e.clientX, e.clientY, d);
-                      }}
-                    >
-                      <span className="w-6 flex justify-center">
-                        {hasOptions ? (
-                          nodeExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />
-                        ) : (
-                          <div className="w-3" />
-                        )}
-                      </span>
-                      <span className="flex-1">
-                        <span className="text-fg-secondary">{d.type_name}: </span>
-                        <span className="text-fg-primary">{d.name}</span>
-                      </span>
-                      <span className="w-20 text-center text-fg-muted">{d.type_name}</span>
-                      <span className="w-24 text-fg-secondary">{d.version ?? ""}</span>
-                      <span className="w-32 text-fg-muted truncate">
-                        {d.options ? `${d.options.split(",").length} options` : ""}
-                      </span>
-                    </div>
-                    {nodeExpanded && hasOptions && (
-                      <div className="tree-children mono text-xs text-fg-secondary">
-                        {d.options!.split(",").map((opt, oi) => (
-                          <div key={oi} className="tree-row">
-                            <span className="w-6" />
-                            <span className="flex-1">{opt.trim()}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+              topLevelDets.map((d, di) => renderDetection(d, di, groupId, 0))}
           </div>
         );
       })}
@@ -1357,7 +1452,12 @@ function AdvancedToolbar({
       style={{ background: "rgb(var(--bg-panel))" }}
     >
       <span className="text-fg-muted">{t("advancedToolbar.type")}</span>
-      <select className="input py-0.5 px-1.5" defaultValue="Auto" style={{ width: "90px" }}>
+      <select
+        className="input py-0.5 px-1.5"
+        value={flags.file_type ?? "Auto"}
+        onChange={(e) => onFlagsChange({ ...flags, file_type: e.target.value })}
+        style={{ width: "90px" }}
+      >
         {typeOptions.map((opt) => (
           <option key={opt.value} value={opt.value}>
             {opt.key ? t(opt.key) : opt.value}

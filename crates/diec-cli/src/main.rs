@@ -468,7 +468,7 @@ fn main() -> ExitCode {
 
     let scan_start = std::time::Instant::now();
     for file in &files {
-        match scan_once(&database, file, flags, &cancel) {
+        match scan_once(&database, file, flags.clone(), &cancel) {
             Ok(result) => results.push(result),
             Err(e) => {
                 eprintln!("error: scanning {file}: {e}");

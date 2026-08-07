@@ -43,6 +43,7 @@ impl From<ScanFlagsRequest> for diec_engine::ScanFlags {
             aggressive: req.aggressive,
             hide_unknown: req.hide_unknown,
             verbose: req.verbose,
+            file_type: None,
         }
     }
 }
@@ -68,6 +69,14 @@ pub struct DetectionResponse {
     pub name: String,
     pub version: Option<String>,
     pub options: Option<String>,
+    pub id: Option<String>,
+    pub parent_id: Option<String>,
+    pub file_part: Option<String>,
+    pub offset: Option<u64>,
+    pub size: Option<u64>,
+    pub is_heuristic: Option<bool>,
+    pub is_a_heuristic: Option<bool>,
+    pub original_name: Option<String>,
 }
 
 /// Database version info in the response.
@@ -208,6 +217,7 @@ pub async fn scan_bytes(
         aggressive: params.aggressive.unwrap_or(false),
         hide_unknown: params.hide_unknown.unwrap_or(false),
         verbose: params.verbose.unwrap_or(false),
+        file_type: None,
     };
 
     let file_name = params.name.unwrap_or_else(|| "uploaded.bin".to_string());
@@ -266,6 +276,14 @@ fn build_scan_response(
                 name: d.name,
                 version: d.version,
                 options: d.options,
+                id: d.id,
+                parent_id: d.parent_id,
+                file_part: d.file_part,
+                offset: d.offset,
+                size: d.size,
+                is_heuristic: d.is_heuristic,
+                is_a_heuristic: d.is_a_heuristic,
+                original_name: d.original_name,
             })
             .collect(),
         diagnostics: result.diagnostics,

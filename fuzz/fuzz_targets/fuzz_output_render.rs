@@ -71,6 +71,14 @@ fuzz_target!(|data: &[u8]| {
             version: Some("1.0".to_string()),
             options: None,
             signature_path: None,
+            id: None,
+            parent_id: None,
+            file_part: None,
+            offset: None,
+            size: None,
+            is_heuristic: None,
+            is_a_heuristic: None,
+            original_name: None,
         });
 
         offset = type_end;

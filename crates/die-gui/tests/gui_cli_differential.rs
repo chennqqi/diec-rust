@@ -100,10 +100,10 @@ fn gui_vs_cli_scan_results_match() {
             Ok(d) => d,
             Err(_) => continue,
         };
-        let cli_result = scan_bytes(&db, &file_name, cli_data, flags, &cancel);
+        let cli_result = scan_bytes(&db, &file_name, cli_data, flags.clone(), &cancel);
 
         // GUI path: scan_once (reads file internally).
-        let gui_result = scan_once(&db, &file_path.to_string_lossy(), flags, &cancel);
+        let gui_result = scan_once(&db, &file_path.to_string_lossy(), flags.clone(), &cancel);
 
         // Compare results.
         match (&cli_result, &gui_result) {

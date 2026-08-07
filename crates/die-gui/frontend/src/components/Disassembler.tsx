@@ -6,6 +6,9 @@ interface Instruction {
   address: string;
   bytes: string;
   mnemonic: string;
+  label: string | null;
+  comment: string | null;
+  jump_target: string | null;
 }
 
 interface DisassemblyResult {
@@ -15,12 +18,14 @@ interface DisassemblyResult {
 }
 
 type Syntax = "intel" | "gas" | "nasm";
+type Arch = "x86" | "x64" | "arm" | "arm64";
 
 export function Disassembler({ path }: { path: string }) {
   const { t } = useTranslation();
   const [result, setResult] = useState<DisassemblyResult | null>(null);
   const [offset, setOffset] = useState(0);
-  const [bitness, setBitness] = useState(64);
+  const [arch, setArch] = useState<Arch>("x64");
+  const [maxBytes, setMaxBytes] = useState(4096);
   const [syntax, setSyntax] = useState<Syntax>("intel");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -33,9 +38,9 @@ export function Disassembler({ path }: { path: string }) {
       const res = await invoke<DisassemblyResult>("disassemble", {
         path,
         offset,
-        maxBytes: 256,
-        bitness,
+        maxBytes,
         syntax,
+        arch,
       });
       setResult(res);
     } catch (e) {
@@ -49,27 +54,51 @@ export function Disassembler({ path }: { path: string }) {
 
   return (
     <div className="border border-border rounded p-3 mt-3">
-      <div className="flex items-center gap-2 mb-2">
+      {/* Toolbar */}
+      <div className="flex items-center gap-2 mb-2 flex-wrap">
         <h3 className="text-sm font-medium">{t("disasm.title")}</h3>
         <div className="flex-1" />
+
+        {/* Architecture selector */}
+        <span className="text-xs text-fg-muted">{t("disasm.arch")}</span>
         <select
-          value={bitness}
-          onChange={(e) => setBitness(Number(e.target.value))}
+          value={arch}
+          onChange={(e) => setArch(e.target.value as Arch)}
           className="text-xs border border-border rounded px-1 py-0.5"
         >
-          <option value={16}>16-bit</option>
-          <option value={32}>32-bit</option>
-          <option value={64}>64-bit</option>
+          <option value="x86">x86</option>
+          <option value="x64">x86-64</option>
+          <option value="arm">ARM</option>
+          <option value="arm64">ARM64</option>
         </select>
+
+        {/* Syntax selector (x86/x64 only) */}
+        {(arch === "x86" || arch === "x64") && (
+          <select
+            value={syntax}
+            onChange={(e) => setSyntax(e.target.value as Syntax)}
+            className="text-xs border border-border rounded px-1 py-0.5"
+          >
+            <option value="intel">{t("disasm.intel")}</option>
+            <option value="gas">{t("disasm.gas")}</option>
+            <option value="nasm">{t("disasm.nasm")}</option>
+          </select>
+        )}
+
+        {/* Max bytes */}
         <select
-          value={syntax}
-          onChange={(e) => setSyntax(e.target.value as Syntax)}
+          value={maxBytes}
+          onChange={(e) => setMaxBytes(Number(e.target.value))}
           className="text-xs border border-border rounded px-1 py-0.5"
         >
-          <option value="intel">{t("disasm.intel")}</option>
-          <option value="gas">{t("disasm.gas")}</option>
-          <option value="nasm">{t("disasm.nasm")}</option>
+          <option value={256}>256B</option>
+          <option value={1024}>1KB</option>
+          <option value={4096}>4KB</option>
+          <option value={16384}>16KB</option>
+          <option value={65536}>64KB</option>
         </select>
+
+        {/* Offset input */}
         <input
           type="text"
           value={offset.toString(16)}
@@ -77,6 +106,7 @@ export function Disassembler({ path }: { path: string }) {
           placeholder="0x0"
           className="w-20 text-xs border border-border rounded px-1 py-0.5 font-mono"
         />
+
         <button
           onClick={disasm}
           disabled={loading}
@@ -85,17 +115,50 @@ export function Disassembler({ path }: { path: string }) {
           {t("disasm.disassemble")}
         </button>
       </div>
+
       {error && <div className="text-xs text-red-600 mb-2">{error}</div>}
+
+      {/* Instruction count */}
       {result && (
-        <pre className="text-xs font-mono bg-muted p-2 rounded overflow-x-auto max-h-64 overflow-y-auto">
+        <div className="text-xs text-fg-muted mb-1">
+          {result.instruction_count} {t("disasm.instructions")}
+        </div>
+      )}
+
+      {/* Disassembly listing with label, address, bytes, mnemonic, comment columns */}
+      {result && (
+        <div
+          className="mono text-xs bg-muted/30 rounded overflow-y-auto"
+          style={{ maxHeight: "320px", overflowY: "auto" }}
+        >
+          {/* Header */}
+          <div className="flex gap-2 px-2 py-1 border-b border-border-c text-fg-secondary font-medium sticky top-0 bg-muted/80">
+            <span className="w-24">{t("disasm.label")}</span>
+            <span className="w-32">{t("disasm.address")}</span>
+            <span className="w-48">{t("disasm.bytes")}</span>
+            <span className="flex-1">{t("disasm.mnemonic")}</span>
+            <span className="w-40">{t("disasm.comment")}</span>
+          </div>
+
+          {/* Instructions */}
           {result.instructions.map((instr, i) => (
-            <div key={i} className="flex gap-2">
-              <span className="text-muted-foreground">{instr.address}</span>
-              <span className="text-blue-600">{instr.bytes}</span>
-              <span>{instr.mnemonic}</span>
+            <div
+              key={i}
+              className={`flex gap-2 px-2 hover:bg-accent-blue/10 ${instr.label ? "border-t border-border-c/30" : ""}`}
+              style={{ lineHeight: "18px" }}
+            >
+              <span className="w-24 text-orange-400 truncate">
+                {instr.label ?? ""}
+              </span>
+              <span className="w-32 text-fg-muted">{instr.address}</span>
+              <span className="w-48 text-blue-400 truncate">{instr.bytes}</span>
+              <span className="flex-1 text-fg-primary">{instr.mnemonic}</span>
+              <span className="w-40 text-fg-muted truncate">
+                {instr.comment ?? ""}
+              </span>
             </div>
           ))}
-        </pre>
+        </div>
       )}
     </div>
   );

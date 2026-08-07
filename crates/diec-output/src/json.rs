@@ -58,6 +58,42 @@ pub fn render_json(result: &ScanResult) -> String {
             out.push_str(&escape_json(o));
             out.push('"');
         }
+        if let Some(id) = &det.id {
+            out.push_str(",\"id\":\"");
+            out.push_str(&escape_json(id));
+            out.push('"');
+        }
+        if let Some(pid) = &det.parent_id {
+            out.push_str(",\"parent_id\":\"");
+            out.push_str(&escape_json(pid));
+            out.push('"');
+        }
+        if let Some(fp) = &det.file_part {
+            out.push_str(",\"file_part\":\"");
+            out.push_str(&escape_json(fp));
+            out.push('"');
+        }
+        if let Some(off) = det.offset {
+            out.push_str(",\"offset\":");
+            out.push_str(&off.to_string());
+        }
+        if let Some(sz) = det.size {
+            out.push_str(",\"size\":");
+            out.push_str(&sz.to_string());
+        }
+        if let Some(h) = det.is_heuristic {
+            out.push_str(",\"is_heuristic\":");
+            out.push_str(if h { "true" } else { "false" });
+        }
+        if let Some(ah) = det.is_a_heuristic {
+            out.push_str(",\"is_a_heuristic\":");
+            out.push_str(if ah { "true" } else { "false" });
+        }
+        if let Some(on) = &det.original_name {
+            out.push_str(",\"original_name\":\"");
+            out.push_str(&escape_json(on));
+            out.push('"');
+        }
         out.push('}');
     }
     out.push(']');

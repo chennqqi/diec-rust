@@ -81,6 +81,9 @@ pub struct ScanFlagsDto {
     pub first_wrapper_only: bool,
     /// Hide unknown detections.
     pub hide_unknown: bool,
+    /// Optional file type override (e.g. "PE", "ELF"). When set, only rules
+    /// for the specified file type are run, bypassing auto-detection.
+    pub file_type: Option<String>,
 }
 
 impl From<ScanFlagsDto> for ScanFlags {
@@ -92,6 +95,7 @@ impl From<ScanFlagsDto> for ScanFlags {
             aggressive: dto.aggressive,
             all_types: dto.alltypes,
             hide_unknown: dto.hide_unknown,
+            file_type: dto.file_type,
         }
     }
 }
@@ -111,6 +115,22 @@ pub struct ScanDetectionDto {
     pub options: Option<String>,
     /// Path to the signature file that produced this detection (relative to db root).
     pub signature_path: Option<String>,
+    /// Optional unique identifier for nested tree building.
+    pub id: Option<String>,
+    /// Optional parent detection id for nested results.
+    pub parent_id: Option<String>,
+    /// Optional file part where the detection originated.
+    pub file_part: Option<String>,
+    /// Optional offset of the detected region.
+    pub offset: Option<u64>,
+    /// Optional size of the detected region.
+    pub size: Option<u64>,
+    /// Optional heuristic detection marker.
+    pub is_heuristic: Option<bool>,
+    /// Optional A-Heuristic detection marker.
+    pub is_a_heuristic: Option<bool>,
+    /// Optional original name for archive/container entries.
+    pub original_name: Option<String>,
 }
 
 impl From<ScanDetection> for ScanDetectionDto {
@@ -122,6 +142,14 @@ impl From<ScanDetection> for ScanDetectionDto {
             version: d.version,
             options: d.options,
             signature_path: d.signature_path,
+            id: d.id,
+            parent_id: d.parent_id,
+            file_part: d.file_part,
+            offset: d.offset,
+            size: d.size,
+            is_heuristic: d.is_heuristic,
+            is_a_heuristic: d.is_a_heuristic,
+            original_name: d.original_name,
         }
     }
 }
@@ -351,6 +379,40 @@ fn resolve_db_paths() -> Vec<String> {
     paths
 }
 
+/// Database path info for the frontend Databases dropdown.
+#[derive(Debug, Clone, Serialize)]
+pub struct DatabasePathInfo {
+    /// Database key: "main", "extra", "custom".
+    pub key: String,
+    /// Absolute or relative path to the database directory.
+    pub path: String,
+    /// Whether the database directory exists.
+    pub exists: bool,
+}
+
+/// List available database paths for the frontend Databases dropdown.
+/// Returns info for main, extra, and custom databases.
+#[tauri::command]
+pub fn list_database_paths() -> Vec<DatabasePathInfo> {
+    let root = resolve_data_root();
+    let entries = [
+        ("main", "db"),
+        ("extra", "db_extra"),
+        ("custom", "db_custom"),
+    ];
+    entries
+        .iter()
+        .map(|(key, dir)| {
+            let p = root.join(dir);
+            DatabasePathInfo {
+                key: key.to_string(),
+                path: p.to_string_lossy().to_string(),
+                exists: p.is_dir(),
+            }
+        })
+        .collect()
+}
+
 /// Backward-compatible single-path resolver (used by commands that only
 /// need the main db path for source file reading).
 fn resolve_db_path() -> String {
@@ -358,13 +420,19 @@ fn resolve_db_path() -> String {
 }
 
 /// Scan a file by path.
+///
+/// `database_paths` is optional: when `None`, the auto-detected database
+/// paths (db + db_extra + db_custom) are used. When `Some`, only the
+/// specified paths are loaded, allowing the user to select specific
+/// databases via the GUI Databases dropdown.
 #[tauri::command]
 pub async fn scan_file(
     state: tauri::State<'_, AppState>,
     path: String,
     flags: ScanFlagsDto,
+    database_paths: Option<Vec<String>>,
 ) -> Result<ScanResultDto, GuiError> {
-    let db_paths = resolve_db_paths();
+    let db_paths = database_paths.unwrap_or_else(resolve_db_paths);
     let db = state
         .database(&db_paths)
         .map_err(|e| GuiError::new("DATABASE_LOAD_FAILED", e))?;
@@ -387,14 +455,18 @@ pub async fn scan_file(
 }
 
 /// Scan a byte buffer (for drag-and-drop or remote content).
+///
+/// `database_paths` is optional: when `None`, the auto-detected database
+/// paths are used. When `Some`, only the specified paths are loaded.
 #[tauri::command]
 pub async fn scan_bytes_cmd(
     state: tauri::State<'_, AppState>,
     file_name: String,
     data: Vec<u8>,
     flags: ScanFlagsDto,
+    database_paths: Option<Vec<String>>,
 ) -> Result<ScanResultDto, GuiError> {
-    let db_paths = resolve_db_paths();
+    let db_paths = database_paths.unwrap_or_else(resolve_db_paths);
     let db = state
         .database(&db_paths)
         .map_err(|e| GuiError::new("DATABASE_LOAD_FAILED", e))?;
@@ -615,8 +687,9 @@ pub async fn scan_directory(
         let db = Arc::clone(&db);
         let cancel = cancel.clone();
         let path_str = file_path.to_string_lossy().to_string();
+        let flags_for_file = engine_flags.clone();
         let scan_result =
-            tokio::task::spawn_blocking(move || scan_once(&db, &path_str, engine_flags, &cancel))
+            tokio::task::spawn_blocking(move || scan_once(&db, &path_str, flags_for_file, &cancel))
                 .await
                 .map_err(|e| GuiError::new("TASK_JOIN_FAILED", e.to_string()))?;
 
@@ -693,7 +766,33 @@ pub async fn read_hex(
         .map_err(|e| GuiError::new("HEX_READ_ERROR", e))
 }
 
+/// Search for a byte pattern in a file.
+///
+/// The pattern can be a hex string (e.g. "48 89 5C") or an ASCII string
+/// (e.g. "Hello"). Search starts at `start_offset` and returns up to
+/// `max_hits` matches (default 1000).
+#[tauri::command]
+pub async fn search_hex(
+    path: String,
+    pattern: String,
+    start_offset: Option<u64>,
+    max_hits: Option<usize>,
+) -> Result<crate::hex_viewer::SearchResult, GuiError> {
+    crate::hex_viewer::search_bytes(
+        &path,
+        &pattern,
+        start_offset.unwrap_or(0),
+        max_hits.unwrap_or(1000),
+    )
+    .map_err(|e| GuiError::new("HEX_SEARCH_ERROR", e))
+}
+
 /// Disassemble a byte range from a file.
+///
+/// `arch` selects the disassembler architecture (x86/x64/arm/arm64).
+/// `max_bytes` defaults to 4096 (not 256 — the old limit was too small).
+/// `bitness` is deprecated — use `arch` instead. When `arch` is not
+/// provided, `bitness` is used to infer x86 (32) or x64 (64).
 #[tauri::command]
 pub async fn disassemble(
     path: String,
@@ -701,11 +800,18 @@ pub async fn disassemble(
     max_bytes: Option<usize>,
     bitness: Option<u32>,
     syntax: Option<crate::disassembler::Syntax>,
+    arch: Option<crate::disassembler::Arch>,
 ) -> Result<crate::disassembler::DisassemblyResult, GuiError> {
-    let max = max_bytes.unwrap_or(256);
-    let bits = bitness.unwrap_or(64);
+    let max = max_bytes.unwrap_or(4096);
     let syn = syntax.unwrap_or(crate::disassembler::Syntax::Intel);
-    crate::disassembler::disassemble_file(&path, offset, max, bits, syn)
+    let architecture = arch.unwrap_or_else(|| {
+        // Backward compat: infer arch from bitness.
+        match bitness.unwrap_or(64) {
+            32 => crate::disassembler::Arch::X86,
+            _ => crate::disassembler::Arch::X64,
+        }
+    });
+    crate::disassembler::disassemble_file(&path, offset, max, architecture, syn)
         .map_err(|e| GuiError::new("DISASM_ERROR", e))
 }
 
