@@ -276,6 +276,11 @@ jobs:
         shell: bash
         run: cargo build -p die-gui --release --locked
 
+      - name: Install tauri-cli
+        shell: bash
+        run: |
+          cargo install tauri-cli --locked 2>&1 || echo "WARN: tauri-cli install failed"
+
       - name: Build GUI bundles (Windows)
         if: runner.os == 'Windows'
         shell: bash
@@ -332,7 +337,7 @@ jobs:
           for dir in db db_extra db_custom dbs_min dbs_special peid_rules yara_rules; do
             if [ -d "upstream/Detect-It-Easy/$dir" ]; then
               mkdir -p "$staging/$dir"
-              cp -r "upstream/Detect-It-Easy/$dir/"* "$staging/$dir/"
+              cp -r "upstream/Detect-It-Easy/$dir/." "$staging/$dir/" 2>/dev/null || true
             fi
           done
           cp README.md "$staging/"
