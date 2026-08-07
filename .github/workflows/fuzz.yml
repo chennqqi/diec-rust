@@ -89,7 +89,10 @@ jobs:
           mkdir -p fuzz/artifacts/${{ matrix.target }}
           # cargo-fuzz finds fuzz/Cargo.toml automatically (marked with
           # [package.metadata] cargo-fuzz = true). Run from repo root.
-          cargo +nightly fuzz run ${{ matrix.target }} \
+          # LeakSanitizer disabled: fuzz targets use OnceLock to cache
+          # resources (e.g. database handles) for the process lifetime,
+          # which is by design and not a real leak.
+          ASAN_OPTIONS=detect_leaks=0 cargo +nightly fuzz run ${{ matrix.target }} \
             -- -max_total_time="${duration}" -artifact_prefix=fuzz/artifacts/${{ matrix.target }}/
 
       - name: Upload crash artifacts
