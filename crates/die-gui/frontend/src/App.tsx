@@ -1068,7 +1068,7 @@ export default function App() {
         {result && <span className="text-fg-muted">| {result.scan_time_ms} ms</span>}
         {filePath && <span className="text-fg-muted selectable">| {fileName}</span>}
         <div className="flex-1" />
-        <span className="text-fg-muted">DIE v0.4.3</span>
+        <span className="text-fg-muted">DIE v0.4.4</span>
       </div>
     </div>
   );

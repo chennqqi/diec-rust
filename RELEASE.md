@@ -114,6 +114,16 @@ for diec-rust. Every item must be verified before publishing a release.
 
 ## Release Sign-off
 
+### v0.4.4 — 2026-08-07
+
+- **Tag**: `v0.4.4` (annotated)
+- **Tests**: 480 pass, 0 failures (unchanged from v0.4.0)
+- **Fuzz replay**: 7/7 pass (165 seeds)
+- **Fuzz libFuzzer**: 8/9 pass in v0.4.3, fixed fuzz_scan_ffi linking
+- **Fix**: diec-ffi dev-dependency → dependency for libFuzzer linking
+- **No code changes**: only fuzz Cargo.toml + version bump
+- **Artifacts**: identical to v0.4.0
+
 ### v0.4.3 — 2026-08-07
 
 - **Tag**: `v0.4.3` (annotated)

@@ -1,5 +1,37 @@
 # Release Notes
 
+## diec-rust v0.4.4
+
+Patch release fixing the last libFuzzer CI job (fuzz_scan_ffi)
+that failed due to diec-ffi not being linked as a regular dependency.
+
+### Fixes
+
+- **diec-ffi linking**: Moved `diec-ffi` from `[dev-dependencies]` to
+  `[dependencies]` in fuzz/Cargo.toml. The `fuzz_scan_ffi` target uses
+  `extern "C"` declarations referencing diec-ffi symbols, but
+  dev-dependencies are not linked into binary targets during
+  cargo-fuzz builds, causing "undefined symbol" linker errors.
+
+### CI Status (v0.4.3 → v0.4.4)
+
+| Job | v0.4.3 | v0.4.4 (expected) |
+| --- | --- | --- |
+| seed replay (ubuntu) | ✅ | ✅ |
+| seed replay (windows) | ✅ | ✅ |
+| seed replay (macos) | ✅ | ✅ |
+| libFuzzer (fuzz_byte_source) | ✅ | ✅ |
+| libFuzzer (fuzz_byte_view_subview) | ✅ | ✅ |
+| libFuzzer (fuzz_format_probe) | ✅ | ✅ |
+| libFuzzer (fuzz_output_render) | ✅ | ✅ |
+| libFuzzer (fuzz_scan_engine) | ✅ | ✅ |
+| libFuzzer (fuzz_scan_ffi) | ❌ undefined symbol | ✅ (fixed) |
+
+### No Functional Code Changes
+
+Only fuzz/Cargo.toml dependency placement + version bump.
+All features identical to v0.4.0.
+
 ## diec-rust v0.4.3
 
 Patch release fixing libFuzzer CI jobs that had been failing since
