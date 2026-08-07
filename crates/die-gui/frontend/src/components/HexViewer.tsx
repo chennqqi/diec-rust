@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { invoke } from "@tauri-apps/api/core";
 import { Search, ArrowRight, Copy, Check, Code } from "lucide-react";
@@ -31,9 +31,11 @@ const CHUNK_BYTES = LINE_BYTES * VISIBLE_LINES; // 480 bytes per chunk
 
 export function HexViewer({
   path,
+  initialOffset,
   onFollowInDisasm,
 }: {
   path: string;
+  initialOffset?: number | null;
   onFollowInDisasm?: (offset: number) => void;
 }) {
   const { t } = useTranslation();
@@ -48,13 +50,12 @@ export function HexViewer({
   const [jumpOffset, setJumpOffset] = useState("");
   const [copied, setCopied] = useState(false);
   const [selectedLine, setSelectedLine] = useState<number | null>(null);
+  const [elementMode, setElementMode] = useState<"byte" | "word" | "dword" | "qword">("byte");
   const [selectedByteOffset, setSelectedByteOffset] = useState<number | null>(null);
   const [inspectorBytes, setInspectorBytes] = useState<Uint8Array>(new Uint8Array(0));
-  const scrollRef = useRef<HTMLDivElement>(null);
 
   // Total number of lines in the file (for virtual scroll height).
   const totalLines = useMemo(() => Math.ceil(fileSize / LINE_BYTES), [fileSize]);
-  const totalHeight = totalLines * LINE_HEIGHT;
 
   // First visible line index based on scroll position.
   const firstVisibleLine = Math.floor(scrollTop / LINE_HEIGHT);
@@ -80,6 +81,15 @@ export function HexViewer({
         setLoading(false);
       });
   }, [path]);
+
+  // Scroll to initialOffset when it changes (e.g. from Disassembler "Follow in Hex").
+  useEffect(() => {
+    if (initialOffset != null && fileSize > 0 && initialOffset < fileSize) {
+      const lineIndex = Math.floor(initialOffset / LINE_BYTES);
+      setScrollTop(lineIndex * LINE_HEIGHT);
+      setSelectedLine(lineIndex);
+    }
+  }, [initialOffset, fileSize]);
 
   // Load visible chunks on demand.
   const loadChunk = useCallback(
@@ -259,7 +269,7 @@ export function HexViewer({
           onClick={() => handleLineClick(i, line)}
         >
           <span className="text-fg-muted w-24">{line.offset}</span>
-          <span className="text-fg-primary w-[360px]">{line.hex}</span>
+          <span className="text-fg-primary w-[360px]">{formatHexByMode(line.hex, elementMode)}</span>
           <span className="text-fg-muted">{line.ascii}</span>
         </div>,
       );
@@ -323,6 +333,19 @@ export function HexViewer({
             <Check size={12} /> {t("hex.copied")}
           </span>
         )}
+
+        {/* Element mode selector */}
+        <select
+          value={elementMode}
+          onChange={(e) => setElementMode(e.target.value as "byte" | "word" | "dword" | "qword")}
+          className="text-xs border border-border rounded px-1 py-0.5"
+          title={t("hex.elementMode")}
+        >
+          <option value="byte">Byte</option>
+          <option value="word">Word (16-bit)</option>
+          <option value="dword">DWord (32-bit)</option>
+          <option value="qword">QWord (64-bit)</option>
+        </select>
       </div>
 
       {/* Search results */}
@@ -478,6 +501,23 @@ export function HexViewer({
       )}
     </div>
   );
+}
+
+/** Reformat space-separated hex bytes into grouped elements (word/dword/qword). */
+function formatHexByMode(
+  hexStr: string,
+  mode: "byte" | "word" | "dword" | "qword",
+): string {
+  if (mode === "byte") return hexStr;
+  const bytes = hexStr.split(" ");
+  const groupSize = mode === "word" ? 2 : mode === "dword" ? 4 : 8;
+  const groups: string[] = [];
+  for (let i = 0; i < bytes.length; i += groupSize) {
+    const group = bytes.slice(i, i + groupSize);
+    // Reverse for little-endian display within each group.
+    groups.push(group.reverse().join(""));
+  }
+  return groups.join(" ");
 }
 
 /** Inspector row: label + value. */

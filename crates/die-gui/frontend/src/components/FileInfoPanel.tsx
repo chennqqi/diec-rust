@@ -303,15 +303,16 @@ function entropyColor(e: number): string {
 function EntropyView({ path, overall }: { path: string; overall: number }) {
   const [graph, setGraph] = useState<{ blocks: number[]; block_size: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [blockSize, setBlockSize] = useState(256);
 
   useEffect(() => {
     invoke<{ blocks: number[]; block_size: number; overall: number }>(
       "get_entropy_graph",
-      { path, blockSize: 256 }
+      { path, blockSize }
     )
       .then(setGraph)
       .catch((e) => setError(String(e)));
-  }, [path]);
+  }, [path, blockSize]);
 
   if (error) return <p className="text-accent-red text-xs">{error}</p>;
   if (!graph) return <p className="text-fg-muted text-xs">Computing entropy graph...</p>;
@@ -328,6 +329,18 @@ function EntropyView({ path, overall }: { path: string; overall: number }) {
         <div className="flex justify-between mb-1">
           <span className="text-fg-secondary">Overall entropy: <span className={entropyColor(overall)}>{overall.toFixed(4)}</span></span>
           <span className="text-fg-muted">{graph.blocks.length} blocks × {graph.block_size} bytes</span>
+          <select
+            value={blockSize}
+            onChange={(e) => setBlockSize(Number(e.target.value))}
+            className="text-xs border border-border rounded px-1 py-0.5"
+          >
+            <option value={64}>64B</option>
+            <option value={128}>128B</option>
+            <option value={256}>256B</option>
+            <option value={512}>512B</option>
+            <option value={1024}>1KB</option>
+            <option value={4096}>4KB</option>
+          </select>
         </div>
       </div>
       {/* Simple bar chart */}

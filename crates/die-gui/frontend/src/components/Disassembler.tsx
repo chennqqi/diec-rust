@@ -23,9 +23,11 @@ type Arch = "x86" | "x64" | "arm" | "arm64";
 export function Disassembler({
   path,
   initialOffset,
+  onFollowInHex,
 }: {
   path: string;
   initialOffset?: number | null;
+  onFollowInHex?: (offset: number) => void;
 }) {
   const { t } = useTranslation();
   const [result, setResult] = useState<DisassemblyResult | null>(null);
@@ -168,6 +170,17 @@ export function Disassembler({
         >
           {t("disasm.analyzeAll")}
         </button>
+
+        {/* Follow in Hex button — jump to hex view at current offset */}
+        {onFollowInHex && (
+          <button
+            onClick={() => onFollowInHex(offset)}
+            className="px-2 py-0.5 text-xs border border-border rounded"
+            title={t("disasm.followInHexTip")}
+          >
+            {t("disasm.followInHex")}
+          </button>
+        )}
       </div>
 
       {error && <div className="text-xs text-red-600 mb-2">{error}</div>}
@@ -181,6 +194,7 @@ export function Disassembler({
 
       {/* Disassembly listing with label, address, bytes, mnemonic, comment columns */}
       {result && (
+        <>
         <div
           className="mono text-xs bg-muted/30 rounded overflow-y-auto"
           style={{ maxHeight: "320px", overflowY: "auto" }}
@@ -242,6 +256,7 @@ export function Disassembler({
               })}
           </div>
         )}
+        </>
       )}
     </div>
   );

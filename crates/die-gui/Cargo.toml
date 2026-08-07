@@ -39,6 +39,7 @@ goblin = { version = "0.9" }
 zip = { version = "8.6", default-features = false, features = ["deflate"] }
 yaxpeax-arm = "0.4.0"
 yaxpeax-arch = "0.3.2"
+crc32fast = "1.5.0"
 
 [target.'cfg(windows)'.dependencies]
 winreg = "0.55"

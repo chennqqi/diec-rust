@@ -152,6 +152,7 @@ i18n.use(initReactI18next).init({
           invalidOffset: "Invalid offset",
           followInDisasm: "Follow in Disasm",
           inspector: "Data Inspector",
+          elementMode: "Element display mode",
         },
         disasm: {
           title: "Disassembler",
@@ -174,6 +175,8 @@ i18n.use(initReactI18next).init({
           analyzeAllTip: "Disassemble a larger range (64KB)",
           followJump: "Click to follow jump/call target",
           xrefs: "Cross-references",
+          followInHex: "Follow in Hex",
+          followInHexTip: "Jump to hex view at current offset",
         },
         demangle: {
           title: "Demangle",
@@ -401,6 +404,7 @@ i18n.use(initReactI18next).init({
           invalidOffset: "无效偏移",
           followInDisasm: "在反汇编中跟进",
           inspector: "数据检查器",
+          elementMode: "元素显示模式",
         },
         disasm: {
           title: "反汇编器",
@@ -423,6 +427,8 @@ i18n.use(initReactI18next).init({
           analyzeAllTip: "反汇编更大范围（64KB）",
           followJump: "点击跟进跳转/调用目标",
           xrefs: "交叉引用",
+          followInHex: "在 Hex 中跟进",
+          followInHexTip: "跳转到当前偏移的 Hex 视图",
         },
         demangle: {
           title: "Demangle",

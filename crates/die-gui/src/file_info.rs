@@ -4,7 +4,7 @@
 
 use serde::{Deserialize, Serialize};
 
-/// File hash digests (MD5, SHA1, SHA256).
+/// File hash digests (MD5, SHA1, SHA256, CRC32).
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FileHashes {
     /// MD5 hex digest.
@@ -13,6 +13,8 @@ pub struct FileHashes {
     pub sha1: String,
     /// SHA-256 hex digest.
     pub sha256: String,
+    /// CRC32 hex digest.
+    pub crc32: String,
 }
 
 /// Complete file information for the info panel.
@@ -108,13 +110,19 @@ fn format_size(bytes: u64) -> String {
     }
 }
 
-/// Compute MD5, SHA-1, and SHA-256 hashes of a file.
+/// Compute MD5, SHA-1, SHA-256, and CRC32 hashes of a file.
 fn compute_hashes(data: &[u8]) -> FileHashes {
     use md5::Digest as _;
     let md5 = hex::encode(md5::Md5::digest(data));
     let sha1 = hex::encode(sha1::Sha1::digest(data));
     let sha256 = hex::encode(sha2::Sha256::digest(data));
-    FileHashes { md5, sha1, sha256 }
+    let crc32 = format!("{:08X}", crc32fast::hash(data));
+    FileHashes {
+        md5,
+        sha1,
+        sha256,
+        crc32,
+    }
 }
 
 /// Detect the binary format from magic bytes.

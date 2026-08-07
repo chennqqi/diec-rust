@@ -217,6 +217,7 @@ export default function App() {
   const [ctxMenuMsg, setCtxMenuMsg] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabId>("scan");
   const [disasmJumpOffset, setDisasmJumpOffset] = useState<number | null>(null);
+  const [hexJumpOffset, setHexJumpOffset] = useState<number | null>(null);
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
   const [selectedDetection, setSelectedDetection] = useState<ScanDetectionDto | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -808,7 +809,7 @@ export default function App() {
               <label key={key} className="flex items-center gap-1.5 cursor-pointer hover:text-fg-primary">
                 <input
                   type="checkbox"
-                  checked={flags[key]}
+                  checked={Boolean(flags[key])}
                   onChange={(e) => setFlags({ ...flags, [key]: e.target.checked })}
                   className="accent-blue-500"
                 />
@@ -1051,6 +1052,7 @@ export default function App() {
         {activeTab === "hex" && filePath && (
           <HexViewer
             path={filePath}
+            initialOffset={hexJumpOffset}
             onFollowInDisasm={(off) => {
               setDisasmJumpOffset(off);
               setActiveTab("disasm");
@@ -1058,7 +1060,14 @@ export default function App() {
           />
         )}
         {activeTab === "disasm" && filePath && (
-          <Disassembler path={filePath} initialOffset={disasmJumpOffset} />
+          <Disassembler
+            path={filePath}
+            initialOffset={disasmJumpOffset}
+            onFollowInHex={(off) => {
+              setHexJumpOffset(off);
+              setActiveTab("hex");
+            }}
+          />
         )}
         {activeTab === "demangle" && <DemangleTool />}
         {activeTab === "sigs" && <SignatureBrowser />}

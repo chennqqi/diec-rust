@@ -1278,6 +1278,7 @@ name = "die-gui"
 version = "0.4.7"
 dependencies = [
  "cpp_demangle",
+ "crc32fast",
  "diec-core",
  "diec-engine",
  "diec-output",
