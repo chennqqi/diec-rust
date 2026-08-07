@@ -170,6 +170,10 @@ i18n.use(initReactI18next).init({
           bytes: "Bytes",
           mnemonic: "Mnemonic",
           comment: "Comment",
+          analyzeAll: "Analyze All",
+          analyzeAllTip: "Disassemble a larger range (64KB)",
+          followJump: "Click to follow jump/call target",
+          xrefs: "Cross-references",
         },
         demangle: {
           title: "Demangle",
@@ -415,6 +419,10 @@ i18n.use(initReactI18next).init({
           bytes: "字节",
           mnemonic: "指令",
           comment: "注释",
+          analyzeAll: "全部分析",
+          analyzeAllTip: "反汇编更大范围（64KB）",
+          followJump: "点击跟进跳转/调用目标",
+          xrefs: "交叉引用",
         },
         demangle: {
           title: "Demangle",

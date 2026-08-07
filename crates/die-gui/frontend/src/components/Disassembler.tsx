@@ -41,18 +41,20 @@ export function Disassembler({
   useEffect(() => {
     if (initialOffset != null && initialOffset !== offset) {
       setOffset(initialOffset);
+      // Auto-disassemble when jumped from HexViewer.
+      setTimeout(() => doDisasm(initialOffset, maxBytes), 0);
     }
   }, [initialOffset]);
 
-  async function disasm() {
+  async function doDisasm(off: number, max: number) {
     if (!path) return;
     setLoading(true);
     setError(null);
     try {
       const res = await invoke<DisassemblyResult>("disassemble", {
         path,
-        offset,
-        maxBytes,
+        offset: off,
+        maxBytes: max,
         syntax,
         arch,
       });
@@ -61,6 +63,34 @@ export function Disassembler({
       setError(String(e));
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function disasm() {
+    await doDisasm(offset, maxBytes);
+  }
+
+  /** Analyze All: disassemble a larger range (16KB) from the current offset. */
+  async function analyzeAll() {
+    const largeMax = 65536;
+    setMaxBytes(largeMax);
+    await doDisasm(offset, largeMax);
+  }
+
+  /** Find all instructions that reference the given target address. */
+  function findXrefs(targetAddr: string): Instruction[] {
+    if (!result) return [];
+    return result.instructions.filter(
+      (i) => i.jump_target === targetAddr,
+    );
+  }
+
+  /** Jump to a target address (click on a jump/call instruction). */
+  async function jumpToTarget(target: string) {
+    const off = parseInt(target, 16);
+    if (!isNaN(off)) {
+      setOffset(off);
+      await doDisasm(off, maxBytes);
     }
   }
 
@@ -128,6 +158,16 @@ export function Disassembler({
         >
           {t("disasm.disassemble")}
         </button>
+
+        {/* Analyze All button — disassemble a larger range */}
+        <button
+          onClick={analyzeAll}
+          disabled={loading}
+          className="px-2 py-0.5 text-xs border border-border rounded disabled:opacity-50"
+          title={t("disasm.analyzeAllTip")}
+        >
+          {t("disasm.analyzeAll")}
+        </button>
       </div>
 
       {error && <div className="text-xs text-red-600 mb-2">{error}</div>}
@@ -168,11 +208,40 @@ export function Disassembler({
               <span className="w-48 text-blue-400 truncate">{instr.bytes}</span>
               <span className="flex-1 text-fg-primary">{instr.mnemonic}</span>
               <span className="w-40 text-fg-muted truncate">
-                {instr.comment ?? ""}
+                {instr.comment ? (
+                  <span
+                    className="cursor-pointer hover:text-accent-blue"
+                    onClick={() => instr.jump_target && jumpToTarget(instr.jump_target)}
+                    title={t("disasm.followJump")}
+                  >
+                    {instr.comment}
+                  </span>
+                ) : (
+                  ""
+                )}
               </span>
             </div>
           ))}
         </div>
+
+        {/* Cross-reference summary: show xref counts for labeled addresses */}
+        {result.instructions.some((i) => i.label) && (
+          <div className="mt-2 text-xs text-fg-muted">
+            <span className="font-medium">{t("disasm.xrefs")}: </span>
+            {result.instructions
+              .filter((i) => i.label)
+              .map((i) => {
+                const count = findXrefs(i.address).length;
+                return count > 0 ? (
+                  <span key={i.address} className="mr-2">
+                    <span className="text-orange-400">{i.label}</span>
+                    {" ← "}
+                    <span className="text-fg-secondary">{count}</span>
+                  </span>
+                ) : null;
+              })}
+          </div>
+        )}
       )}
     </div>
   );

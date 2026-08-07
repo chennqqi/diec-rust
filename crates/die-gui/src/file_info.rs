@@ -150,6 +150,13 @@ fn detect_format(data: &[u8]) -> String {
             _ => "ELF".to_string(),
         };
     }
+    // Mach-O FAT (Universal Binary): 0xCAFEBABE (big-endian) or
+    // 0xBEBAFECA (little-endian). Contains multiple architecture slices.
+    let magic_be = u32::from_be_bytes([data[0], data[1], data[2], data[3]]);
+    if magic_be == 0xCAFEBABE || magic_be == 0xBEBAFECA {
+        return "Mach-O FAT".to_string();
+    }
+
     // Mach-O: 0xFEEDFACE/0xFEEDFACF (32/64-bit big-endian)
     //         0xCEFAEDFE/0xCFFAEDFE (32/64-bit little-endian)
     let magic = u32::from_be_bytes([data[0], data[1], data[2], data[3]]);
@@ -167,7 +174,7 @@ fn detect_format(data: &[u8]) -> String {
     }
 }
 
-/// Parse PE sections and symbols using goblin.
+/// Parse PE sections, imports, and exports using goblin.
 fn parse_pe_sections(data: &[u8]) -> (Vec<SectionInfo>, Vec<SymbolInfo>) {
     let mut sections = Vec::new();
     let mut symbols = Vec::new();
@@ -192,6 +199,7 @@ fn parse_pe_sections(data: &[u8]) -> (Vec<SectionInfo>, Vec<SymbolInfo>) {
                 entropy: shannon_entropy(sec_data),
             });
         }
+        // Exports
         for export in &pe.exports {
             if let Some(ref name) = export.name {
                 symbols.push(SymbolInfo {
@@ -201,6 +209,15 @@ fn parse_pe_sections(data: &[u8]) -> (Vec<SectionInfo>, Vec<SymbolInfo>) {
                     kind: "export".to_string(),
                 });
             }
+        }
+        // Imports — goblin provides PE imports as (DLL name, import name, RVA)
+        for import in &pe.imports {
+            symbols.push(SymbolInfo {
+                name: format!("{}.{}", import.dll, import.name),
+                address: import.offset as u64,
+                size: 0,
+                kind: "import".to_string(),
+            });
         }
     }
 
@@ -357,4 +374,68 @@ pub fn compute_entropy_graph(path: &str, block_size: Option<u64>) -> Result<Entr
         blocks,
         overall,
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_detect_format_macho_fat_be() {
+        // FAT Mach-O magic (big-endian): 0xCAFEBABE
+        let data = [0xCA, 0xFE, 0xBA, 0xBE, 0, 0, 0, 0];
+        assert_eq!(detect_format(&data), "Mach-O FAT");
+    }
+
+    #[test]
+    fn test_detect_format_macho_fat_le() {
+        // FAT Mach-O magic (little-endian): 0xBEBAFECA
+        let data = [0xBE, 0xBA, 0xFE, 0xCA, 0, 0, 0, 0];
+        assert_eq!(detect_format(&data), "Mach-O FAT");
+    }
+
+    #[test]
+    fn test_detect_format_macho_64() {
+        // Mach-O 64-bit magic (big-endian): 0xFEEDFACF
+        let data = [0xFE, 0xED, 0xFA, 0xCF, 0, 0, 0, 0];
+        assert_eq!(detect_format(&data), "Mach-O 64");
+    }
+
+    #[test]
+    fn test_detect_format_pe32() {
+        // Minimal PE32: MZ header + e_lfanew pointing to PE signature
+        let mut data = vec![0u8; 0x80];
+        data[0] = b'M';
+        data[1] = b'Z';
+        // e_lfanew at 0x3c = 0x40
+        data[0x3c] = 0x40;
+        // PE signature at 0x40
+        data[0x40] = b'P';
+        data[0x41] = b'E';
+        data[0x42] = 0;
+        data[0x43] = 0;
+        // Machine type at 0x44 = 0x14c (i386)
+        data[0x44] = 0x4c;
+        data[0x45] = 0x01;
+        assert_eq!(detect_format(&data), "PE32");
+    }
+
+    #[test]
+    fn test_detect_format_elf64() {
+        // ELF 64-bit
+        let data = [0x7f, b'E', b'L', b'F', 2, 0, 0, 0];
+        assert_eq!(detect_format(&data), "ELF64");
+    }
+
+    #[test]
+    fn test_detect_format_unknown() {
+        let data = [0x00, 0x01, 0x02, 0x03];
+        assert_eq!(detect_format(&data), "Unknown");
+    }
+
+    #[test]
+    fn test_detect_format_too_short() {
+        let data = [0x00, 0x01];
+        assert_eq!(detect_format(&data), "Unknown");
+    }
 }
