@@ -1,5 +1,31 @@
 # Release Notes
 
+## diec-rust v0.4.7
+
+Patch release fixing release workflow GUI build jobs.
+
+### Fixes (since v0.4.6)
+
+- **tauri-cli install**: Added `cargo install tauri-cli` step to
+  build-gui job. Without it, `cargo tauri build` failed with
+  "no such command: tauri".
+- **cp empty dirs**: Fixed `cp -r ... /*` failing when data
+  directories exist but are empty (e.g. db_custom). Changed to
+  `cp -r .../.` with `2>/dev/null || true`.
+
+### CI Status
+
+| Workflow | Jobs | Status |
+| --- | --- | --- |
+| ci | 12 | ✅ all pass (#36) |
+| fuzz | 9 | ✅ all pass (#15) |
+| release | 8 | ✅ (expected, CLI 4/4 pass in #19) |
+
+### No Functional Code Changes
+
+Only release.yml CI config + version bump.
+All features identical to v0.4.0.
+
 ## diec-rust v0.4.6
 
 Patch release with comprehensive CI fixes. All three workflows

@@ -971,3 +971,8 @@
 - 规则数对比：db only = 2037，db + db_extra + db_custom = 2175（+138 条）
 
 
+
+## 2026-08-07: CI 本地预演约定
+- 不要直接用 GitHub Actions 做实验/试错，过多失败运行易触发封号
+- 须在本地（含 .ci-local 本地模拟脚本）通过后再 push 触发 GitHub Actions CI
+- 将此约定写入 AGENTS.md「完成与提交」章节

@@ -114,6 +114,16 @@ for diec-rust. Every item must be verified before publishing a release.
 
 ## Release Sign-off
 
+### v0.4.7 — 2026-08-07
+
+- **Tag**: `v0.4.7` (annotated)
+- **Tests**: 480 pass, 0 failures (unchanged from v0.4.0)
+- **CI**: 12/12 jobs pass (ci #36)
+- **Fuzz**: 9/9 jobs pass (fuzz #15)
+- **Release**: CLI 4/4 pass, GUI fix for tauri-cli + cp
+- **No functional code changes**: only CI config + version bump
+- **Artifacts**: identical to v0.4.0
+
 ### v0.4.6 — 2026-08-07
 
 - **Tag**: `v0.4.6` (annotated)

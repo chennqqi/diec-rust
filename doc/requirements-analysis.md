@@ -189,3 +189,9 @@
 - UI：当前仅 Tailwind 裸元素堆砌，缺深色主题/图标/TreeView/状态栏/进度条
 - 功能差距：对比上游 die 完整GUI，缺熵/哈希/区段/符号表/可视化/提取器/Advanced模式/Recent Files/快捷键等
 - 策略：UI+功能并行推进，参考 docs/research/upstream-gui-analysis.md
+
+## 2026-08-07: CI 本地预演约定
+- 现状：AGENTS.md「完成与提交」章节无本地预演要求，仅有提交前 cargo fmt/clippy/test 清单
+- 风险：直接 push 试错会反复触发 GitHub Actions 失败，可能被 GitHub 限流/封号
+- 决策：在「完成与提交」补充一条规则——本地验证（含 .ci-local 模拟）通过后再 push 触发 CI
+- 落点：AGENTS.md 第 95-106 行章节末尾追加
