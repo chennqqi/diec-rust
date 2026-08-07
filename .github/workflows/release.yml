@@ -61,12 +61,15 @@ jobs:
       - name: Build CLI and FFI (release)
         shell: bash
         run: |
-          cargo build --workspace --release --locked --target ${{ matrix.target }}
+          # Exclude die-gui (Tauri) — built separately in build-gui job.
+          # Requires GTK system libs on Linux which are installed there.
+          cargo build --workspace --exclude die-gui --release --locked --target ${{ matrix.target }}
 
       - name: Run tests (native target only)
         if: matrix.cross_compile == false
         shell: bash
-        run: cargo test --workspace --all-features --locked --target ${{ matrix.target }}
+        run: |
+          cargo test --workspace --exclude die-gui --all-features --locked --target ${{ matrix.target }}
 
       - name: Prepare release artifacts (Unix)
         if: runner.os != 'Windows'
