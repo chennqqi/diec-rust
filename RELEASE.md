@@ -114,6 +114,18 @@ for diec-rust. Every item must be verified before publishing a release.
 
 ## Release Sign-off
 
+### v0.4.6 — 2026-08-07
+
+- **Tag**: `v0.4.6` (annotated)
+- **Tests**: 480 pass, 0 failures (unchanged from v0.4.0)
+- **CI**: 12/12 jobs pass (ci), 9/9 pass (fuzz)
+- **Fuzz replay**: 7/7 pass (165 seeds)
+- **Fuzz libFuzzer**: 6/6 targets compile and run
+- **Fixes**: comprehensive CI config fixes (GTK deps, data dirs,
+  cargo-fuzz metadata, linker, MSRV, cfg attribute)
+- **No functional code changes**: only CI + fuzz config + version bump
+- **Artifacts**: identical to v0.4.0
+
 ### v0.4.5 — 2026-08-07
 
 - **Tag**: `v0.4.5` (annotated)

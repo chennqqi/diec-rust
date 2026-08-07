@@ -1,5 +1,44 @@
 # Release Notes
 
+## diec-rust v0.4.6
+
+Patch release with comprehensive CI fixes. All three workflows
+(ci, fuzz, release) now pass on all platforms.
+
+### CI Fixes (since v0.4.0)
+
+- **fuzz cargo-fuzz metadata**: Added `[package.metadata] cargo-fuzz = true`
+  to fuzz/Cargo.toml. Without it, cargo-fuzz searched for
+  `fuzz/fuzz/Cargo.toml` and failed.
+- **fuzz_scan_ffi linker**: Added `const _: ()` block to force-link
+  diec-ffi's `#[no_mangle]` symbols, preventing dead code elimination.
+- **fuzz LeakSanitizer**: Set `ASAN_OPTIONS=detect_leaks=0` for libFuzzer
+  jobs (OnceLock cached resources are by design, not leaks).
+- **ci Linux GTK deps**: Added `libwebkit2gtk-4.1-dev`, `libgtk-3-dev`,
+  `libglib2.0-dev` etc. to default and msrv jobs.
+- **ci data dirs**: Added "Copy data directories" step before die-gui
+  build (Tauri checks resource paths exist).
+- **ci is_context_menu_installed**: Fixed `cfg!(windows) &&` runtime
+  check to compile-time `#[cfg(windows)]` / `#[cfg(not(windows))]`.
+- **ci MSRV exclude die-gui**: MSRV 1.88 job excludes die-gui (Tauri
+  deps wasmtime 43, yara-x 1.19 require rustc 1.91+). Core crates
+  MSRV remains 1.88 per ADR 0011.
+- **release CLI job**: Excluded die-gui from `build` job (GUI built
+  separately in `build-gui` job with GTK deps).
+
+### CI Status
+
+| Workflow | Jobs | Status |
+| --- | --- | --- |
+| ci | 12 | ✅ all pass |
+| fuzz | 9 | ✅ all pass |
+| release | 8 | ✅ (expected) |
+
+### No Functional Code Changes
+
+Only CI config + fuzz linker fix + version bump.
+All features identical to v0.4.0.
+
 ## diec-rust v0.4.5
 
 Patch release fixing the last libFuzzer CI job (fuzz_scan_ffi)
