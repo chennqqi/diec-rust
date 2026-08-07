@@ -14,6 +14,21 @@ use libfuzzer_sys::fuzz_target;
 use std::ffi::c_void;
 use std::sync::OnceLock;
 
+// Force the linker to retain diec-ffi's #[no_mangle] symbols.
+// Without direct Rust references, dead code elimination removes
+// them from the rlib, causing "undefined symbol" errors when the
+// extern "C" block below tries to resolve them at link time.
+const _: () = {
+    let _ = diec_ffi::scan::diec_v1_database_builder_new;
+    let _ = diec_ffi::scan::diec_v1_database_builder_add_path_utf8;
+    let _ = diec_ffi::scan::diec_v1_database_builder_build;
+    let _ = diec_ffi::scan::diec_v1_database_builder_free;
+    let _ = diec_ffi::scan::diec_v1_database_free;
+    let _ = diec_ffi::scan::diec_v1_scan_bytes;
+    let _ = diec_ffi::scan::diec_v1_result_free;
+    let _ = diec_ffi::scan::diec_v1_error_free;
+};
+
 /// Opaque database handle type (matches diec_v1_database).
 type DiecDatabaseHandle = *mut c_void;
 type DiecResultHandle = *mut c_void;
