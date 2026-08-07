@@ -53,10 +53,8 @@ diec-core = { path = "../crates/diec-core" }
 diec-formats = { path = "../crates/diec-formats" }
 diec-engine = { path = "../crates/diec-engine" }
 diec-output = { path = "../crates/diec-output" }
-serde_json = "1.0"
-
-[dev-dependencies]
 diec-ffi = { path = "../crates/diec-ffi" }
+serde_json = "1.0"
 
 [features]
 default = ["libfuzzer"]
