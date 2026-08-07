@@ -1,5 +1,39 @@
 # Release Notes
 
+## diec-rust v0.4.5
+
+Patch release fixing the last libFuzzer CI job (fuzz_scan_ffi)
+that failed due to dead code elimination removing diec-ffi's
+#[no_mangle] symbols from the rlib.
+
+### Fixes
+
+- **Force-link diec-ffi symbols**: fuzz_scan_ffi.rs uses `extern "C"`
+  to declare diec-ffi's C ABI functions, but the Rust linker removes
+  unreferenced `#[no_mangle]` symbols during dead code elimination.
+  Added a `const _: ()` block that references `diec_ffi::scan::`
+  functions to force the linker to retain them, allowing the
+  `extern "C"` declarations to resolve at link time.
+
+### CI Status (v0.4.4 → v0.4.5)
+
+| Job | v0.4.4 | v0.4.5 (expected) |
+| --- | --- | --- |
+| seed replay (all 3 platforms) | ✅ | ✅ |
+| libFuzzer (5 other targets) | ✅ | ✅ |
+| libFuzzer (fuzz_scan_ffi) | ❌ undefined symbol | ✅ (fixed) |
+
+### Verification (Docker CI simulation)
+
+- ubuntu:24.04 + nightly Rust + cargo-fuzz v0.13.2
+- `cargo +nightly fuzz build fuzz_scan_ffi`: compiles successfully
+- Seed replay: 7/7 pass (165 seeds)
+
+### No Functional Code Changes
+
+Only fuzz_scan_ffi.rs linker fix + version bump.
+All features identical to v0.4.0.
+
 ## diec-rust v0.4.4
 
 Patch release fixing the last libFuzzer CI job (fuzz_scan_ffi)
