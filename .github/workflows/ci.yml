@@ -146,7 +146,6 @@ jobs:
         shell: bash
         run: |
           cargo +1.88.0 test --workspace --exclude die-gui --all-targets --locked
-        run: cargo +1.88.0 test --workspace --all-features --locked
 
       - name: cargo +1.88.0 clippy
         shell: bash
