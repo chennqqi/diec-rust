@@ -430,6 +430,73 @@ DIE-engine 规则与 host API 变化，并保持发布物健康度。
 
 **退出条件全部达成 (2026-08-06)。**
 
+## Phase 9：GUI 上游对齐增强 — DONE
+
+Phase 8 GUI 发布后，对照 `docs/research/gui-upstream-diff.md` 中识别的差异，
+分三个优先级批次完成与上游 DIE-engine GUI 的深度对齐。
+
+### Phase 9.1 P1 核心修复（7 项）— DONE
+
+- ~~**ScanDetection 扩展可选字段**~~：已完成。新增 id/parentId/file_part/offset/
+  size/is_heuristic/is_a_heuristic/original_name 字段，贯穿 scanner.rs、runtime.rs、
+  backend_rquickjs.rs、json.rs、xml.rs、handlers.rs、commands.rs 及前端
+- ~~**数据库选择接线**~~：已完成。scan_file 接收 database_paths 参数，
+  新增 list_database_paths IPC 命令，前端 Databases 下拉框生效
+- ~~**文件类型覆盖接线**~~：已完成。scan_file 接收 file_type override，
+  前端 Type 下拉框生效
+- ~~**options 直接显示**~~：已完成。检测树中直接显示 options 字符串，
+  不再仅显示计数
+- ~~**启发式标记**~~：已完成。检测名称中显示 `(Heur)` / `(A-Heur)` 标记
+- ~~**嵌套结果树**~~：已完成。基于 id/parentId 构建嵌套树，
+  显示 file_part/offset/size
+- ~~**Hex viewer 重写**~~：已完成。虚拟滚动、hex/ASCII 模式搜索、
+  jump-to-offset、复制功能。新增 search_bytes/read_hex_range 函数 + 9 个测试
+- ~~**Disassembler 修复**~~：已完成。移除 break-on-Ret，多架构支持
+  （x86/x64 via iced-x86 instr_info、ARM/ARM64 via yaxpeax），arch 参数，
+  默认 max_bytes 提升至 4096，label/comment/jump_target 字段 + 8 个测试
+
+### Phase 9.2 P2 完整度增强（7 项）— DONE
+
+- ~~**9.2.1 Hex 数据检查器 + Follow in Disasm**~~：已完成。点击 hex 行加载 32 字节
+  到数据检查器面板（uint8/16/32/64、int8/16/32/64、float32/64、ASCII），
+  "Follow in Disasm" 按钮跳转到反汇编标签页
+- ~~**9.2.2 Disasm 交叉引用视图 + Analyze All**~~：已完成。跳转/调用注释可点击跟进，
+  交叉引用摘要显示标签地址的 xref 计数，"Analyze All" 按钮反汇编 64KB 范围
+- ~~**9.2.3 PE 解析增强**~~：已完成。parse_pe_sections 新增 imports 提取
+  （goblin pe.imports），导入符号以 "DLL.function" 格式显示
+- ~~**9.2.4 Mach-O FAT 支持**~~：已完成。detect_format 识别 0xCAFEBABE /
+  0xBEBAFECA magic，返回 "Mach-O FAT" + 7 个格式检测单元测试
+- ~~**9.2.5 诊断信息结构化**~~：已完成。新增 Diagnostic 结构（file/line/message/kind），
+  JSON/XML 输出包含结构化诊断，前端以表格展示（file/kind/line/message 列）
+- ~~**9.2.6 Profiling 数据**~~：已完成。新增 SignatureProfile 结构（file/elapsed_ms），
+  Scanner 用 Instant::now() 跟踪每规则耗时，JSON/XML/前端均展示
+- ~~**9.2.7 符号表虚拟滚动**~~：已完成。移除 .slice(0, 500) 限制，
+  可滚动容器 + 粘性表头（maxHeight 400px），显示完整符号总数
+
+### Phase 9.3 P3 对齐扩展（6 项）— DONE
+
+- ~~**9.3.1 扫描进度事件**~~：已完成。scan_file/scan_bytes_cmd 接收
+  tauri::AppHandle，emit "scan_progress" 事件（loading_database/scanning/complete），
+  前端监听并显示阶段化进度文案
+- ~~**9.3.2 多语言**~~：Phase 8 已覆盖 en/zh-CN/ru/de/fr，无需扩展
+- ~~**9.3.3 Hex 数据类型切换**~~：已完成。HexViewer 新增 element mode 下拉
+  （Byte/Word/DWord/QWord），formatHexByMode 按小端序重分组字节
+- ~~**9.3.4 Disasm Follow in Hex**~~：已完成。Disassembler 新增 "Follow in Hex"
+  按钮，HexViewer 接收 initialOffset 并滚动到对应行，实现 Hex ↔ Disasm 双向联动
+- ~~**9.3.5 CRC32 哈希**~~：已完成。新增 crc32fast 依赖，FileHashes 增加 crc32 字段
+  （8 位大写 hex）
+- ~~**9.3.6 熵块大小可配置**~~：已完成。EntropyView 新增块大小下拉
+  （64B/128B/256B/512B/1KB/4KB），切换时重新获取熵图数据
+
+### 退出条件
+
+- `cargo fmt --check` + `cargo clippy --workspace --all-targets --all-features -- -D warnings` 通过 — ✅
+- `cargo test --workspace --all-features` 通过 — ✅ 506 个测试全部通过
+- 前端 `tsc --noEmit` + `vite build` 通过 — ✅
+- GUI-CLI 差分测试 2/2 通过 — ✅
+
+**退出条件全部达成。**
+
 ## 后续改进项
 
 ### Host API 完善（差分兼容性）

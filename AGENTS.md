@@ -13,6 +13,7 @@
 - Phase 5 C ABI 与语言集成于 2026-08-01 关闭（35 个 FFI 测试、Go/cgo 绑定、Python ctypes 绑定、411 个测试全部通过）。
 - Phase 6 兼容性、性能与发布准备于 2026-08-05 关闭（v0.3.0 已发布，477 个测试，规则加载 100%，差分 0 引擎不匹配，database_load ~510ms）。
 - Phase 8 GUI（Tauri v2）于 2026-08-06 关闭（480 个测试，三平台 CI，GUI-CLI 差分 0 不匹配，ADR 0019 deferred）。
+- Phase 9 GUI 上游对齐增强于 2026-08-07 关闭（506 个测试，9.1 P1 核心修复 7 项 + 9.2 P2 完整度增强 7 项 + 9.3 P3 对齐扩展 6 项，详见 ROADMAP.md Phase 9 节）。
 
 Phase 7 在不破坏兼容基线的前提下持续跟进上游 DIE-engine 规则与 host API 变化，
 保持发布物健康度。当前进展：
