@@ -12,7 +12,7 @@ for diec-rust. Every item must be verified before publishing a release.
 - [x] All `unsafe` blocks have safety documentation and tests
 
 ### Testing
-- [x] `cargo test --workspace --all-features --locked` passes (477 tests)
+- [x] `cargo test --workspace --all-features --locked` passes (506 tests)
 - [x] Corpus differential tests pass (31 baseline + 20 edge samples)
 - [x] FFI tests pass (unit + integration + sanitizer)
 - [x] Edge corpus tests pass (no-crash, no-spurious, no-hang)
@@ -99,10 +99,10 @@ for diec-rust. Every item must be verified before publishing a release.
 - [x] Changelog / release notes drafted (`RELEASE_NOTES.md`)
 
 ## Version and Tag
-- [x] Version bumped in `Cargo.toml` (workspace.package.version = 0.3.0)
-- [x] Git tag created: `v0.3.0`
+- [x] Version bumped in `Cargo.toml` (workspace.package.version = 0.5.0)
+- [x] Git tag created: `v0.5.0`
 - [x] Tag is annotated (`git cat-file -t v0.3.0` => `tag`)
-- [x] Tag message includes release summary ("v0.3.0 - died scan service + runtime reuse")
+- [x] Tag message includes release summary ("v0.5.0 - Phase 9 GUI upstream alignment")
 
 ## Post-Release
 - [x] Release notes published (`RELEASE_NOTES.md` committed)
@@ -113,6 +113,23 @@ for diec-rust. Every item must be verified before publishing a release.
 ---
 
 ## Release Sign-off
+
+### v0.5.0 — 2026-08-08
+
+- **Tag**: `v0.5.0` (annotated)
+- **Tests**: 506 pass, 0 failures (up from 480 in v0.4.7)
+- **Phase 9 GUI upstream alignment** (20 items):
+  - 9.1 P1 core fixes (7): ScanDetection optional fields, DB/type selection wiring,
+    options display, heuristic markers, nested result tree, hex viewer rewrite,
+    disassembler multi-arch + no break-on-Ret
+  - 9.2 P2 completeness (7): hex data inspector + follow-in-disasm, symbol virtual
+    scroll, structured diagnostics, profiling data, disasm xrefs + analyze all,
+    PE imports, Mach-O FAT support
+  - 9.3 P3 alignment (6): scan progress events, hex element mode, follow-in-hex,
+    CRC32 hash, entropy block size configurable, i18n (already covered)
+- **New dependency**: crc32fast 1.5.0
+- **Frontend**: tsc --noEmit + vite build pass
+- **ROADMAP.md**: Phase 9 section added with full item list and exit conditions
 
 ### v0.4.7 — 2026-08-07
 

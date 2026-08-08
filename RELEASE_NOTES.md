@@ -1,5 +1,78 @@
 # Release Notes
 
+## diec-rust v0.5.0
+
+Phase 9 GUI upstream alignment release — 20 items aligning die-gui with
+the upstream DIE-engine Qt GUI, based on `docs/research/gui-upstream-diff.md`.
+
+### Phase 9.1 P1 Core Fixes (7 items)
+
+- **ScanDetection optional fields**: Added id, parentId, file_part, offset,
+  size, is_heuristic, is_a_heuristic, original_name across the full stack
+  (scanner → runtime → backend → JSON/XML → server → GUI → frontend)
+- **Database selection wiring**: scan_file accepts database_paths parameter;
+  new list_database_paths IPC command; frontend Databases dropdown is live
+- **File type override wiring**: scan_file accepts file_type override;
+  frontend Type dropdown is live
+- **Options direct display**: Detection tree shows options string directly
+  instead of just a count
+- **Heuristic markers**: Detection names show `(Heur)` / `(A-Heur)` markers
+- **Nested result tree**: Built from id/parentId, showing file_part/offset/size
+- **Hex viewer rewrite**: Virtual scrolling, hex/ASCII pattern search,
+  jump-to-offset, copy. New search_bytes + read_hex_range functions (+9 tests)
+- **Disassembler fix**: Removed break-on-Ret, multi-arch support (x86/x64 via
+  iced-x86 instr_info, ARM/ARM64 via yaxpeax), arch parameter, default
+  max_bytes raised to 4096, label/comment/jump_target fields (+8 tests)
+
+### Phase 9.2 P2 Completeness Enhancements (7 items)
+
+- **Hex data inspector + Follow in Disasm**: Click hex line → 32-byte inspector
+  panel (uint8/16/32/64, int8/16/32/64, float32/64, ASCII); "Follow in Disasm"
+  button jumps to disassembly tab at selected offset
+- **Symbol table virtual scrolling**: Removed .slice(0, 500) limit; scrollable
+  container with sticky header, shows total symbol count
+- **Structured diagnostics**: New Diagnostic struct (file/line/message/kind);
+  JSON/XML output includes structured_diagnostics; frontend table display
+- **Profiling data**: New SignatureProfile struct (file/elapsed_ms); per-rule
+  timing via Instant::now(); JSON/XML/frontend display
+- **Disasm cross-references + Analyze All**: Jump/call comments clickable to
+  follow target; xref summary shows counts for labeled addresses; "Analyze All"
+  button disassembles 64KB range
+- **PE imports**: parse_pe_sections now extracts imports via goblin pe.imports;
+  import symbols shown as "DLL.function" with kind="import"
+- **Mach-O FAT support**: detect_format recognizes 0xCAFEBABE / 0xBEBAFECA
+  magic; returns "Mach-O FAT" for universal binaries (+7 format detection tests)
+
+### Phase 9.3 P3 Alignment Extensions (6 items)
+
+- **Scan progress events**: scan_file/scan_bytes_cmd emit "scan_progress" Tauri
+  events (loading_database → scanning → complete); frontend shows phase-specific
+  progress text
+- **Hex element mode**: Dropdown to switch byte grouping (Byte/Word/DWord/QWord);
+  formatHexByMode re-groups bytes in little-endian multi-byte elements
+- **Disasm Follow in Hex**: "Follow in Hex" button in Disassembler; HexViewer
+  accepts initialOffset and scrolls to line; bidirectional Hex ↔ Disasm navigation
+- **CRC32 hash**: Added crc32fast dependency; FileHashes includes crc32 field
+  (8-digit uppercase hex)
+- **Entropy block size configurable**: EntropyView dropdown (64B–4KB); re-fetches
+  entropy graph on block size change
+- **Multi-language**: Already covered by Phase 8 i18n (en/zh-CN/ru/de/fr)
+
+### Stats
+
+| Metric | v0.4.7 | v0.5.0 |
+| --- | --- | --- |
+| Tests | 480 | 506 (+26) |
+| Phase 9 items | 0 | 20/20 |
+| New dependencies | — | crc32fast 1.5.0 |
+
+### Compatibility
+
+- Rule loading: 1186/1186 = 100% (unchanged)
+- GUI-CLI differential: 2/2 pass, 0 mismatches (unchanged)
+- cargo fmt/clippy: clean
+- Frontend: tsc --noEmit + vite build pass
+
 ## diec-rust v0.4.7
 
 Patch release fixing release workflow GUI build jobs.

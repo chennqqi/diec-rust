@@ -19,6 +19,8 @@ __pycache__/
 
 # Temporary commit message files
 /COMMIT_MSG_*.txt
+# Temporary probe output and scripts
+/tmp/
 
 # Playwright MCP test artifacts (screenshots, snapshots, console logs)
 /.playwright-mcp/
