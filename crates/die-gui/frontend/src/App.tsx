@@ -132,6 +132,7 @@ interface ScanFlagsDto {
   archives: boolean;
   first_wrapper_only: boolean;
   hide_unknown: boolean;
+  no_dedup: boolean;
   /** Optional file type override. When set, only rules for this type are run. */
   file_type?: string | null;
 }
@@ -173,6 +174,7 @@ const defaultFlags: ScanFlagsDto = {
   archives: true,
   first_wrapper_only: false,
   hide_unknown: false,
+  no_dedup: false,
 };
 
 const defaultSettings: AppSettings = {
@@ -1620,6 +1622,15 @@ function AdvancedToolbar({
           className="accent-blue-500"
         />
         {t("advancedToolbar.allTypes")}
+      </label>
+      <label className="flex items-center gap-1 cursor-pointer hover:text-fg-primary">
+        <input
+          type="checkbox"
+          checked={flags.no_dedup}
+          onChange={(e) => onFlagsChange({ ...flags, no_dedup: e.target.checked })}
+          className="accent-blue-500"
+        />
+        {t("advancedToolbar.noDedup")}
       </label>
     </div>
   );

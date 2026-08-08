@@ -82,6 +82,8 @@ pub struct ScanFlagsDto {
     pub first_wrapper_only: bool,
     /// Hide unknown detections.
     pub hide_unknown: bool,
+    /// Disable result deduplication (--no-dedup).
+    pub no_dedup: bool,
     /// Optional file type override (e.g. "PE", "ELF"). When set, only rules
     /// for the specified file type are run, bypassing auto-detection.
     pub file_type: Option<String>,
@@ -96,6 +98,7 @@ impl From<ScanFlagsDto> for ScanFlags {
             aggressive: dto.aggressive,
             all_types: dto.alltypes,
             hide_unknown: dto.hide_unknown,
+            no_dedup: dto.no_dedup,
             file_type: dto.file_type,
         }
     }

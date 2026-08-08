@@ -77,6 +77,8 @@ pub struct ScanFlagDefaults {
     pub archives: bool,
     pub first_wrapper_only: bool,
     pub hide_unknown: bool,
+    /// Disable result deduplication (--no-dedup).
+    pub no_dedup: bool,
 }
 
 /// Database path settings (upstream `XOptions::ID_SCAN_DIE_DATABASE_*`).
@@ -138,6 +140,7 @@ impl Default for AppSettings {
                     archives: true,
                     first_wrapper_only: false,
                     hide_unknown: false,
+                    no_dedup: false,
                 },
             },
             database: DatabaseSettings {

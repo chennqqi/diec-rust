@@ -242,6 +242,7 @@ i18n.use(initReactI18next).init({
           heuristic: "Heuristic",
           aggressive: "Aggressive",
           allTypes: "All Types",
+          noDedup: "No Dedup",
           auto: "Auto",
         },
         sigSource: {
@@ -497,6 +498,7 @@ i18n.use(initReactI18next).init({
           heuristic: "启发式",
           aggressive: "激进",
           allTypes: "所有类型",
+          noDedup: "不去重",
           auto: "自动",
         },
         sigSource: {

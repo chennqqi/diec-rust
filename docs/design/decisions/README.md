@@ -63,3 +63,7 @@
 - [`0019-defer-gui-auto-update.md`](0019-defer-gui-auto-update.md)：
   将 tauri-plugin-updater 自动更新功能 deferred 到 Phase 8 之后，
   理由：属于发布基础设施而非核心 GUI 功能，需签名密钥管理（Accepted, 2026-08-06）。
+- [`0027-result-deduplication.md`](0027-result-deduplication.md)：
+  `--alltypes` 模式默认结果层去重，去重键排除 `file_type`，
+  `--no-dedup` / `DIEC_SCAN_FLAG_NO_DEDUP=0x40` 可关闭以匹配上游行为
+  （Accepted, 2026-08-08）。

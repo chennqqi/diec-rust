@@ -32,6 +32,9 @@ pub struct ScanFlagsRequest {
     /// Enable verbose output.
     #[serde(default)]
     pub verbose: bool,
+    /// Disable result deduplication (--no-dedup).
+    #[serde(default)]
+    pub no_dedup: bool,
 }
 
 impl From<ScanFlagsRequest> for diec_engine::ScanFlags {
@@ -43,6 +46,7 @@ impl From<ScanFlagsRequest> for diec_engine::ScanFlags {
             aggressive: req.aggressive,
             hide_unknown: req.hide_unknown,
             verbose: req.verbose,
+            no_dedup: req.no_dedup,
             file_type: None,
         }
     }
@@ -237,6 +241,7 @@ pub async fn scan_bytes(
         aggressive: params.aggressive.unwrap_or(false),
         hide_unknown: params.hide_unknown.unwrap_or(false),
         verbose: params.verbose.unwrap_or(false),
+        no_dedup: false,
         file_type: None,
     };
 

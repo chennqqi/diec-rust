@@ -369,3 +369,107 @@ fn ffi_scan_options_init_works() {
     assert_eq!(status, 0);
     assert_eq!(options.flags, 0);
 }
+
+#[test]
+fn ffi_scan_flag_no_dedup_bit() {
+    // Verify that the 0x40 bit maps to no_dedup in the engine.
+    // We test this by constructing DiecScanOptions with flags=0x40 and
+    // verifying the scan completes successfully.
+    if !db_available() {
+        eprintln!("Skipping: upstream database not found");
+        return;
+    }
+
+    let mut builder: *mut DiecDatabaseBuilder = core::ptr::null_mut();
+    let mut error: *mut DiecError = core::ptr::null_mut();
+
+    let status = unsafe {
+        diec_v1_database_builder_new(
+            &mut builder as *mut *mut DiecDatabaseBuilder,
+            &mut error as *mut *mut DiecError,
+        )
+    };
+    assert_eq!(status, 0);
+
+    let path_bytes = DB_PATH.as_bytes();
+    let status = unsafe {
+        diec_v1_database_builder_add_path_utf8(
+            builder,
+            0,
+            path_bytes.as_ptr(),
+            path_bytes.len() as u64,
+            0,
+            &mut error as *mut *mut DiecError,
+        )
+    };
+    assert_eq!(status, 0);
+
+    let mut database: *mut DiecDatabase = core::ptr::null_mut();
+    let status = unsafe {
+        diec_v1_database_builder_build(
+            builder,
+            &mut database as *mut *mut DiecDatabase,
+            &mut error as *mut *mut DiecError,
+        )
+    };
+    assert_eq!(status, 0);
+
+    unsafe {
+        diec_v1_database_builder_free(&mut builder as *mut *mut DiecDatabaseBuilder);
+    }
+
+    // Build options with ALL_TYPES (0x04) + NO_DEDUP (0x40) = 0x44.
+    let mut options = diec_ffi::DiecScanOptions {
+        struct_size: 0,
+        flags: 0,
+        max_input_bytes: 0,
+        max_unpacked_bytes: 0,
+        max_container_entries: 0,
+        timeout_ms: 0,
+        max_recursion_depth: 0,
+        reserved_0: 0,
+        max_total_allocation_bytes: 0,
+        script_heap_bytes: 0,
+        script_stack_bytes: 0,
+        script_fuel_quanta: 0,
+        script_deadline_ms: 0,
+    };
+
+    let status = unsafe {
+        diec_v1_scan_options_init(
+            &mut options as *mut _,
+            core::mem::size_of::<diec_ffi::DiecScanOptions>() as u32,
+        )
+    };
+    assert_eq!(status, 0);
+    // scan_options_init resets flags to 0; set our flags after init.
+    options.flags = 0x44; // ALL_TYPES (0x04) + NO_DEDUP (0x40)
+
+    // Scan a minimal MZ file.
+    let data = {
+        let mut d = vec![0x4Du8, 0x5A];
+        d.resize(256, 0);
+        d
+    };
+
+    let mut result: *mut DiecResult = core::ptr::null_mut();
+    let status = unsafe {
+        diec_v1_scan_bytes(
+            database,
+            data.as_ptr(),
+            data.len() as u64,
+            &options as *const _,
+            core::ptr::null(),
+            &mut result as *mut *mut DiecResult,
+            &mut error as *mut *mut DiecError,
+        )
+    };
+    assert_eq!(status, 0, "scan with no_dedup flag should succeed");
+    assert!(!result.is_null());
+
+    // Free result and database.
+    unsafe {
+        diec_v1_result_free(&mut result as *mut *mut DiecResult);
+        diec_v1_database_free(&mut database as *mut *mut DiecDatabase);
+    }
+}

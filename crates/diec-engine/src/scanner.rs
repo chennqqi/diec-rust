@@ -218,6 +218,35 @@ impl std::fmt::Display for ScanError {
 
 impl std::error::Error for ScanError {}
 
+/// Remove duplicate detections by (type_name, name, version, options, offset, size).
+///
+/// Keeps the first occurrence, discarding subsequent duplicates. This is
+/// used in `--alltypes` mode where multiple file_type rule groups can
+/// produce identical detections (e.g., PE and MSDOS both output "MS-DOS").
+/// See ADR 0027.
+fn dedup_detections(detections: &mut Vec<ScanDetection>) {
+    use std::collections::HashSet;
+    type DedupKey = (
+        String,
+        String,
+        Option<String>,
+        Option<String>,
+        Option<u64>,
+        Option<u64>,
+    );
+    let mut seen: HashSet<DedupKey> = HashSet::new();
+    detections.retain(|d| {
+        seen.insert((
+            d.type_name.clone(),
+            d.name.clone(),
+            d.version.clone(),
+            d.options.clone(),
+            d.offset,
+            d.size,
+        ))
+    });
+}
+
 /// Return all known rule file types for --alltypes mode.
 /// This matches upstream bIsAllTypesScan behavior where all format
 /// rules are evaluated regardless of detected format.
@@ -506,6 +535,12 @@ pub fn scan_bytes(
         detections.retain(|d| !d.name.is_empty() && d.name != "Unknown");
     }
 
+    // Apply result deduplication (ADR 0027). Default: dedup on.
+    // --no-dedup disables it to match upstream behavior.
+    if !flags.no_dedup {
+        dedup_detections(&mut detections);
+    }
+
     Ok(ScanResult {
         path: file_name.to_string(),
         detections,
@@ -735,6 +770,12 @@ impl Scanner {
         // Apply --hideunknown filter.
         if flags.hide_unknown {
             detections.retain(|d| !d.name.is_empty() && d.name != "Unknown");
+        }
+
+        // Apply result deduplication (ADR 0027). Default: dedup on.
+        // --no-dedup disables it to match upstream behavior.
+        if !flags.no_dedup {
+            dedup_detections(&mut detections);
         }
 
         Ok(ScanResult {

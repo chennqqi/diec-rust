@@ -32,6 +32,12 @@ pub struct ScanFlags {
     pub all_types: bool,
     /// Hide unknown detections (--hideunknown).
     pub hide_unknown: bool,
+    /// Disable result deduplication (--no-dedup).
+    ///
+    /// When `false` (default), duplicate detections from `--alltypes` mode
+    /// are removed. When `true`, all detections are kept (matching upstream
+    /// behavior). See ADR 0027.
+    pub no_dedup: bool,
     /// Optional file type override. When `Some`, only rules for the specified
     /// file type are run, bypassing automatic format detection. This maps to
     /// the upstream `comboBoxType` file type selector in the GUI.

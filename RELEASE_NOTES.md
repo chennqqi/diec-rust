@@ -2,8 +2,23 @@
 
 ## diec-rust v0.5.0
 
-Phase 9 GUI upstream alignment release — 20 items aligning die-gui with
-the upstream DIE-engine Qt GUI, based on `docs/research/gui-upstream-diff.md`.
+Phase 9 GUI upstream alignment + Phase 10 known issues fix release —
+23 items total (20 GUI alignment + 3 known issues fix), aligning die-gui
+with the upstream DIE-engine Qt GUI and cleaning up documentation.
+
+### Phase 10 Known Issues Fix (3 items)
+
+- **Documentation cleanup (getDisasmString)**: Removed getDisasmString from
+  "Known Limitations" — Capstone 0.14.0 integration completed in Phase 6,
+  fully functional with thread-local caching and VA→file offset conversion
+- **Documentation cleanup (rule version differences)**: Moved rule version
+  differences from "Known Limitations" to new "Known Differences (Non-Defects)"
+  section; 4 corpus samples detect more due to newer vendored rules (NOT engine bugs)
+- **Result deduplication**: ADR 0027 accepted; `--alltypes` mode now deduplicates
+  results by default using key `(type_name, name, version, options, offset, size)`;
+  `--no-dedup` flag provides escape hatch for upstream-exact differential testing;
+  propagated through all 6 layers (ScanFlags → scanner → CLI → FFI → server → GUI);
+  5 new dedup tests added (511 total tests)
 
 ### Phase 9.1 P1 Core Fixes (7 items)
 

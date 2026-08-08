@@ -30,15 +30,16 @@ multi-language bindings.
 
 ## Known Limitations
 
-- ~~`getDisasmString` returns empty string (Capstone not integrated)~~
-  — **Fixed in Phase 6**: Capstone 0.14.0 integrated, see
-  `COMPATIBILITY.md` § Host API. (Phase 10 will update this doc.)
-- ~~Some detection names/versions differ from upstream due to rule
-  version differences~~ — **Documented, not an engine bug**: 4 rule-version
-  diffs (newer rules detect more), see `COMPATIBILITY.md` § Mismatch Details.
-  (Phase 10 will update this doc.)
-- `format` type detections may produce duplicate entries when using
-  `--alltypes` flag — **Phase 10 will add result-level deduplication**
+None at this time.
+
+## Known Differences (Non-Defects)
+
+- **Rule version differences**: 4 corpus samples detect more than upstream
+  DIE 3.21 because the vendored rule database is newer. See
+  `COMPATIBILITY.md` § Mismatch Details. These are NOT engine bugs.
+- **Result deduplication**: `--alltypes` mode deduplicates results by default
+  (upstream does not). Use `--no-dedup` to match upstream behavior. See
+  ADR 0027.
 
 ## Benchmark
 

@@ -37,6 +37,7 @@ fn print_usage() {
     eprintln!("  --aggressivescan, -a      Enable aggressive scan mode");
     eprintln!("  --alltypes                Scan all format types");
     eprintln!("  --hideunknown             Hide unknown detections");
+    eprintln!("  --no-dedup                Disable result deduplication (default: dedup on)");
     eprintln!("  --format                  Format the output result (spacing)");
     eprintln!("  --profiling               Profile signatures during scan");
     eprintln!("  --messages                Display scan messages and warnings");
@@ -158,6 +159,9 @@ fn main() -> ExitCode {
             }
             "--hideunknown" => {
                 flags.hide_unknown = true;
+            }
+            "--no-dedup" => {
+                flags.no_dedup = true;
             }
             "--format" => {
                 format_result = true;

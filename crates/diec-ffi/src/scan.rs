@@ -154,6 +154,9 @@ fn options_to_flags(options: Option<&DiecScanOptions>) -> ScanFlags {
         if opts.flags & 0x20 != 0 {
             flags.verbose = true;
         }
+        if opts.flags & 0x40 != 0 {
+            flags.no_dedup = true;
+        }
     }
     flags
 }

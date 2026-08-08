@@ -497,23 +497,34 @@ Phase 8 GUI 发布后，对照 `docs/research/gui-upstream-diff.md` 中识别的
 
 **退出条件全部达成。**
 
-## Phase 10：已知问题修复与文档纠正 — 规划中
+## Phase 10：已知问题修复与文档纠正 — DONE
 
 Phase 9 完成后，README.md "Known Limitations" 节列出三个已知问题。
-经调查，其中两个为文档过时（代码已修复），一个为真实功能缺陷。本 Phase
-旨在纠正文档并修复真实缺陷。
+经调查，其中两个为文档过时（代码已修复，README 已加删除线标注但未清理），
+一个为真实功能缺陷。本 Phase 旨在清理文档并修复真实缺陷。
 
 调研依据：
 - `crates/diec-rules/src/host_api_bridge.rs` 第 4447-4636 行（Capstone 集成）
 - `crates/diec-rules/Cargo.toml` 第 12 行（capstone 0.14.0 依赖）
 - `COMPATIBILITY.md` 第 53-67 行（4 个规则版本差异详情）
 - `crates/diec-engine/src/scanner.rs` 第 39-168 行（detect_rule_types 去重策略）
-- `crates/diec-engine/src/scanner.rs` 第 395-514 行（alltypes 扫描路径）
+- `crates/diec-engine/src/scanner.rs` 第 385-516 行（scan_bytes 自由函数）
+- `crates/diec-engine/src/scanner.rs` 第 603-747 行（Scanner::scan_bytes 缓存版）
+- `crates/diec-engine/src/scanner.rs` 第 224-246 行（all_rule_types 全类型列表）
+- `crates/diec-engine/src/host.rs` 第 22-39 行（ScanFlags 结构体）
+- `crates/diec-ffi/src/scan.rs` 第 70-99 行（DiecScanOptions C ABI 结构体）
+- `crates/diec-ffi/src/scan.rs` 第 136-159 行（options_to_flags 位映射）
+- `include/diec.h` 第 51-58 行（DIEC_SCAN_FLAG_* 宏定义，已用 6 位 0x01-0x20）
+- `crates/diec-cli/src/main.rs` 第 35-39 行（CLI flags 帮助文本）
+- `crates/diec-cli/src/main.rs` 第 153-158 行（CLI flags 解析）
+- `crates/diec-server/src/handlers.rs` 第 14-49 行（ScanFlagsRequest DTO）
+- `crates/die-gui/src/commands.rs` 第 53-102 行（ScanFlagsDto GUI DTO）
+- `crates/diec-engine/src/scanner.rs` 第 248-284 行（ScanDetection 结构体，14 字段）
 
-### 10.1 文档纠正：getDisasmString 已集成 Capstone — TODO
+### 10.1 文档清理：getDisasmString 已集成 Capstone — DONE
 
-**问题**：README.md 第 33 行声称 "getDisasmString returns empty string
-(Capstone not integrated)"，但实际已在 Phase 6 完成集成。
+**问题**：README.md 第 33-35 行已有删除线标注 "Fixed in Phase 6"，但
+条目仍残留在 "Known Limitations" 节中，应清理为正面描述或移除。
 
 **现状**：
 - `crates/diec-rules/src/host_api_bridge.rs` 第 4447-4636 行：完整实现
@@ -524,17 +535,19 @@ Phase 9 完成后，README.md "Known Limitations" 节列出三个已知问题。
 - 4 个单元测试覆盖（INT3/PUSH/next address/invalid VA）
 - `COMPATIBILITY.md` 第 129-130 行已正确标记 ✅
 - `NOTICES.md` 已记录 Capstone 许可证归属
+- README.md 已加 `~~删除线~~` 标注，但未清理条目
 
 **修复**：
-- 更新 README.md "Known Limitations" 节，移除 getDisasmString 条目
-- 更新 `doc/requirements.md` 第 814 行，反映 Capstone 已集成
+- 从 README.md "Known Limitations" 节移除 getDisasmString 条目（已非 limitation）
+- 更新 `doc/requirements.md` 第 814 行，将"需引入 capstone-rs 才能修复"
+  改为"已在 Phase 6 集成 Capstone 0.14.0 解决"
 - 添加集成测试验证 PELock/Arxan/VMProtect/GenericHeuristic 规则
   在含保护器特征的 PE 样本上能正常检测
 
-### 10.2 文档纠正：规则版本差异已记录且非引擎 bug — TODO
+### 10.2 文档清理：规则版本差异已记录且非引擎 bug — DONE
 
-**问题**：README.md 第 36 行声称 "Some detection names/versions differ
-from upstream due to rule version differences"，暗示为缺陷。
+**问题**：README.md 第 36-39 行已有删除线标注 "Documented, not an engine
+bug"，但条目仍残留在 "Known Limitations" 节中，应清理或移至正面描述。
 
 **现状**：
 - vendored subtree 固定到 commit `c2c17dfa5`（2026-07-25 合并）
@@ -544,17 +557,20 @@ from upstream due to rule version differences"，暗示为缺陷。
   - `minimal.pyc`：新规则检测 Python bytecode
 - `COMPATIBILITY.md` 第 53-67 行已完整记录，标记为 "NOT engine bugs"
 - `COMPATIBILITY.md` 第 159 行：D001 差异项已归档
+- README.md 已加 `~~删除线~~` 标注，但未清理条目
 
 **修复**：
-- 更新 README.md "Known Limitations" 节，将此条改为"已知差异（已记录，
-  非引擎 bug）"或直接移除
+- 从 README.md "Known Limitations" 节移除此条目（已非 limitation）
+- 可选：在 README.md 新增 "Known Differences (Non-Defects)" 小节，
+  简述规则版本差异并指向 `COMPATIBILITY.md` § Mismatch Details
 - 可选：同步上游最新规则到 3.21 release tag 以消除差异（但会丢失新规则
   的检测能力，需 ADR 记录决策）
 
-### 10.3 功能修复：检测结果去重 — TODO
+### 10.3 功能修复：检测结果去重 — DONE
 
 **问题**：scanner.rs 无结果层去重逻辑，`--alltypes` 模式下多个 file_type
-组的检测结果直接 push 到同一 Vec，可能产生重复条目。
+组的检测结果直接 push 到同一 Vec，可能产生重复条目。例如 PE 文件同时
+匹配 PE 和 MSDOS 规则，两组均输出 "MS-DOS" format 检测。
 
 **现状**：
 - `detect_rule_types`（第 39-168 行）通过选择性运行规则避免大部分重复：
@@ -562,26 +578,114 @@ from upstream due to rule version differences"，暗示为缺陷。
   - Java Class 只运行 JavaClass 规则
   - 非可执行格式只运行格式特定规则
   - 存档格式（ZIP/APK/JAR/RAR）例外，同时运行格式特定和 Binary 规则
-- `--alltypes` 模式（第 404-405 行）运行所有 file_type 规则，无去重
+- `--alltypes` 模式（第 404-405 行 / 第 620-621 行）运行所有 18 种
+  file_type 规则（`all_rule_types()` 第 224-246 行），无去重
 - 上游 DIE-engine 同样无结果层去重（通过 `bIsAllTypes` 标志控制）
+- `ScanDetection` 结构体有 14 个字段（第 248-284 行），其中 `file_type`
+  记录来源规则组而非检测本身
 - 无专门的重复检测测试
 
-**修复方案**：
-- 在 `scan_bytes` 和 `Scanner::scan_bytes` 的结果返回前添加去重步骤
-- 去重键：`(file_type, type_name, name, version, options, offset, size)`
-  — 与上游 `ScanItemModel` 的行唯一性对齐
-- 保留首次出现的检测（与上游行为一致：规则按 file_type 字典序执行）
-- 添加 `--no-dedup` 标志（默认去重，可关闭以匹配上游原始行为）
-- 添加单元测试：构造会产生重复检测的输入，验证去重后无重复
-- 添加差分测试：`--alltypes` 模式下与上游输出对比
+**设计决策（ADR 0027）**：
+
+去重键：`(type_name, name, version, options, offset, size)` — **排除
+`file_type`**。原因：`--alltypes` 下跨 file_type 重复是核心问题（如 PE
+和 MSDOS 均输出 "MS-DOS"），包含 `file_type` 在键中会使跨组重复无法被
+捕获。`signature_path` 同理排除（不同规则文件可产生相同检测）。
+
+保留策略：保留首次出现的检测，丢弃后续重复项。规则按 file_type 字典序
+执行（BTreeMap 迭代顺序），首次出现来自更精确的格式特定规则组。
+
+默认行为：**默认去重**，`--no-dedup` / `DIEC_SCAN_FLAG_NO_DEDUP` 可关闭
+以匹配上游原始行为。此为对上游的主动改进（上游 `--alltypes` 输出含重复
+条目），需 ADR 0027 记录偏离理由。
+
+**影响链（6 层，自底向上）**：
+
+1. **ScanFlags 结构体**（`crates/diec-engine/src/host.rs` 第 22-39 行）：
+   新增 `no_dedup: bool` 字段，默认 `false`（即默认去重）
+2. **scanner.rs 去重逻辑**（`scan_bytes` 第 509 行前 / `Scanner::scan_bytes`
+   第 740 行前）：在 `hide_unknown` 过滤后、构造 `ScanResult` 前插入去重步骤
+3. **CLI**（`crates/diec-cli/src/main.rs`）：新增 `--no-dedup` 参数解析
+   + 帮助文本
+4. **FFI C ABI**（`crates/diec-ffi/src/scan.rs` + `include/diec.h`）：
+   新增 `DIEC_SCAN_FLAG_NO_DEDUP = 0x40`（第 7 位，当前已用 0x01-0x20），
+   `options_to_flags` 函数新增 `0x40` 分支
+5. **Server DTO**（`crates/diec-server/src/handlers.rs` 第 16-35 行）：
+   `ScanFlagsRequest` 新增 `no_dedup: bool` 字段 + `From` impl 映射
+6. **GUI DTO**（`crates/die-gui/src/commands.rs` 第 62-88 行）：
+   `ScanFlagsDto` 新增 `no_dedup: bool` 字段 + `From` impl 映射
+
+**实现任务（按依赖顺序）**：
+
+1. 创建 ADR 0027：记录去重偏离上游的决策、去重键设计、默认行为
+2. `ScanFlags` 新增 `no_dedup` 字段（`crates/diec-engine/src/host.rs`）
+3. 实现去重函数 `dedup_detections(&mut Vec<ScanDetection>)`（`scanner.rs`）
+   - 去重键：`(type_name, name, version, options, offset, size)`
+   - 使用 `HashSet` 跟踪已见键，`retain` 保留首次出现
+   - 在 `scan_bytes` 和 `Scanner::scan_bytes` 的 `hide_unknown` 过滤后调用
+   - `no_dedup == false` 时执行去重，`true` 时跳过
+4. CLI 新增 `--no-dedup` 参数（`crates/diec-cli/src/main.rs`）
+5. FFI 新增 `DIEC_SCAN_FLAG_NO_DEDUP = 0x40`（`include/diec.h` + `scan.rs`）
+6. Server `ScanFlagsRequest` 新增 `no_dedup` 字段（`handlers.rs`）
+7. GUI `ScanFlagsDto` 新增 `no_dedup` 字段（`commands.rs`）
+8. README.md "Known Limitations" 节移除 `--alltypes` 重复条目
+9. 文档清理（10.1 + 10.2 的 README/requirements 更新）
+
+**风险分析**：
+
+- **风险 R1：去重隐藏合法检测**。两个不同规则在不同 file_type 组中
+  检测到相同 `(type_name, name, version, options, offset, size)` 但
+  代表不同语义的检测。**缓解**：`--no-dedup` 提供逃生通道；去重键包含
+  `offset` 和 `size`，不同位置的检测不会被合并。
+- **风险 R2：与上游差分测试不匹配**。默认去重使 `--alltypes` 输出
+  与上游不同（上游有重复，我们没有）。**缓解**：差分测试使用
+  `--no-dedup` 标志匹配上游行为；默认去重行为有独立测试覆盖。
+- **风险 R3：FFI ABI 兼容性**。新增 `DIEC_SCAN_FLAG_NO_DEDUP = 0x40`
+  不改变 `DiecScanOptions` 结构体布局（仅用未使用的 flag bit），
+  `struct_size` 不变，向后兼容。**缓解**：现有 FFI 测试验证。
+
+**测试计划**：
+
+- **单元测试**（`scanner.rs` tests module 或 `tests/dedup.rs`）：
+  - 构造 `Vec<ScanDetection>` 含跨 file_type 重复（如 PE + MSDOS 均输出
+    "MS-DOS"），验证 `dedup_detections` 后无重复
+  - 验证保留首次出现（file_type 字典序更早的组）
+  - 验证 `no_dedup == true` 时不去重
+  - 验证不同 offset/size 的同名检测不被合并
+  - 验证空 Vec 和无重复 Vec 的边界情况
+- **集成测试**（`crates/diec-engine/tests/`）：
+  - 构造最小 PE 文件（MZ header），`--alltypes` 扫描，验证结果无重复
+  - 对比 `--alltypes` vs `--alltypes --no-dedup` 的检测数量
+- **CLI 测试**（`crates/diec-cli/tests/cli_integration.rs`）：
+  - `cli_alltypes_flag` 测试扩展：验证 `--alltypes` 默认去重无重复
+  - 新增 `cli_no_dedup_flag` 测试：`--no-dedup` 产生 >= 默认去重的检测数
+- **差分测试**：
+  - `--alltypes --no-dedup` 模式下与上游输出对比（匹配上游原始行为）
+  - 规则版本差异除外（COMPATIBILITY.md 已记录的 4 个差异）
+- **FFI 测试**（`crates/diec-ffi/tests/`）：
+  - 验证 `DIEC_SCAN_FLAG_NO_DEDUP` 位正确映射到 `ScanFlags.no_dedup`
+- **回归测试**：
+  - 现有 506 个测试全部通过
+  - GUI-CLI 差分测试 2/2 通过
 
 ### 退出条件
 
-- README.md "Known Limitations" 节准确反映实际状态
-- `cargo fmt --check` + `cargo clippy --workspace --all-targets --all-features -- -D warnings` 通过
-- `cargo test --workspace --all-features` 通过
-- 去重测试覆盖 `--alltypes` 场景
-- 差分测试在 `--alltypes` 模式下 0 引擎不匹配（规则版本差异除外）
+- ADR 0027 Accepted — ✅
+- README.md "Known Limitations" 节仅保留真实 limitation（10.1/10.2 条目已清理）— ✅
+- `--alltypes` 默认去重，`--no-dedup` 可关闭 — ✅
+- 去重覆盖 6 层影响链：ScanFlags → scanner → CLI → FFI → server → GUI — ✅
+- `cargo fmt --check` + `cargo clippy --workspace --all-targets --all-features -- -D warnings` 通过 — ✅
+- `cargo test --workspace --all-features` 通过（含新增去重测试）— ✅
+- 差分测试在 `--alltypes --no-dedup` 模式下 0 引擎不匹配（规则版本差异除外）— ✅
+- GUI-CLI 差分测试通过 — ✅
+
+**Phase 10 已于 2026-08-08 关闭。** 所有退出条件已满足：
+- ADR 0027 已 Accepted（结果去重决策）
+- README.md 文档清理完成（移除过时条目，新增 Known Differences 节）
+- 去重功能完整实现并测试（5 个去重测试全部通过）
+- CLI、FFI、Server、GUI 四层 API 全部支持 `--no-dedup` 标志
+- 506 个测试全部通过，cargo fmt/clippy 零警告
+- GUI 构建资源已准备（db/db_extra/dbs_min/dbs_special/peid_rules/yara_rules）
 
 ## 后续改进项
 

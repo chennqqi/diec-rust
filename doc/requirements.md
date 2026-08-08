@@ -811,7 +811,7 @@
   3. PE.isSigned未实现: Authenticode签名检测缺失 -> 检查security directory(索引4)非零
 - diec.exe差分: 修复前2/5匹配, 修复后5/5完全匹配(含版本号)
 - 6个大文件(0.5-61MB)差分: 全部完全匹配, 性能<2.5s
-- 上游getDisasmString用Capstone反汇编器实现, 我们返回空字符串 -> 4个protector规则(PELock/Arxan/VMProtect/GenericHeuristic)漏检测, 需引入capstone-rs才能修复
+- 上游getDisasmString用Capstone反汇编器实现, 我们已在Phase 6集成Capstone 0.14.0解决, 4个protector规则(PELock/Arxan/VMProtect/GenericHeuristic)正常检测
 - corpus差分: 28文件中15匹配, 13差异(主要是规则版本差异: 上游3.21有CFBF目录我们没有, 名称/版本号差异)
 - 435个测试全部通过
 
@@ -983,3 +983,15 @@
 - 三阶段顺序实现：P1 核心(7项) → P2 完整度(7项) → P3 对齐(6项)
 - 保持 GUI-CLI 差分 0 不匹配，FFI C ABI 向后兼容
 - 新增 ADR 0020-0026 记录架构决策
+
+## 2026-08-08: Phase 10 已完成
+- Phase 10 已完成：已知问题修复与文档纠正
+- 10.1 文档清理：getDisasmString 已集成 Capstone（README 已清理条目）
+- 10.2 文档清理：规则版本差异已记录且非引擎 bug（README 已移至 Known Differences）
+- 10.3 功能修复：--alltypes 模式检测结果去重
+  - 去重键 (type_name, name, version, options, offset, size)，排除 file_type
+  - 默认去重，--no-dedup / DIEC_SCAN_FLAG_NO_DEDUP=0x40 可关闭
+  - 影响 6 层：ScanFlags → scanner → CLI → FFI → server → GUI
+  - ADR 0027 已 Accepted，记录偏离上游决策
+- 511 个测试全部通过（+5 去重测试）
+- 项目已具备发布 v0.5.0 条件

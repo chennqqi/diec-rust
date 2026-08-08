@@ -370,6 +370,43 @@ fn cli_alltypes_flag() {
 }
 
 #[test]
+fn cli_no_dedup_flag() {
+    if !std::path::Path::new(&db_root()).is_dir() {
+        eprintln!("Skipping: upstream database not found");
+        return;
+    }
+    if !std::path::Path::new(&diec_binary()).exists() {
+        eprintln!("Skipping: diec binary not built");
+        return;
+    }
+
+    // Use a minimal PE file: --alltypes --no-dedup should produce >= detections
+    // than --alltypes alone (dedup removes cross-group duplicates by default).
+    let mut data = vec![0x4D, 0x5A]; // MZ header
+    data.resize(256, 0);
+    let path = write_temp_file("test_cli_no_dedup.exe", &data);
+
+    let (_success, stdout_dedup, _) =
+        run_diec(&["--db", &db_root(), "--output", "json", "--alltypes", &path]);
+    let (_success, stdout_no_dedup, _) = run_diec(&[
+        "--db",
+        &db_root(),
+        "--output",
+        "json",
+        "--alltypes",
+        "--no-dedup",
+        &path,
+    ]);
+
+    let dedup_count = stdout_dedup.matches("\"name\"").count();
+    let no_dedup_count = stdout_no_dedup.matches("\"name\"").count();
+    assert!(
+        no_dedup_count >= dedup_count,
+        "--no-dedup should produce >= detections than default dedup: dedup={dedup_count}, no_dedup={no_dedup_count}"
+    );
+}
+
+#[test]
 fn cli_invalid_output_format() {
     if !std::path::Path::new(&diec_binary()).exists() {
         eprintln!("Skipping: diec binary not built");

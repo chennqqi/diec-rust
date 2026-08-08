@@ -196,3 +196,25 @@
 - 决策：在「完成与提交」补充一条规则——本地验证（含 .ci-local 模拟）通过后再 push 触发 CI
 - 落点：AGENTS.md 第 95-106 行章节末尾追加
 [2026-08-07] 用户反馈 gui-upstream-diff.md 不够深入，三个维度需深挖：信息丰富度、不合理设计、底层库差异。计划：1) 编写对比脚本调用 diec.exe 获取多格式输出；2) 检索上游 ScanItemModel::createResultStringEx/createTypeString 源码确认上游展示格式；3) 检索 XHexView/XDisasmView 头文件确认功能差距；4) 检查 die-gui 后端模块（hex_viewer/disassembler/file_info）实现细节；5) 重写差异文档加入实际输出对比和源码证据。
+
+## 2026-08-08: Phase 10 完成分析
+
+### 实施结果
+- Phase 10 已完成：已知问题修复与文档纠正
+- 10.1 文档清理：getDisasmString 已从 README.md "Known Limitations" 移除，Capstone 0.14.0 集成完成
+- 10.2 文档清理：规则版本差异已移至 README.md "Known Differences (Non-Defects)" 节
+- 10.3 功能修复：检测结果去重已完整实现
+  - ADR 0027 已 Accepted（去重决策记录）
+  - 去重键 (type_name, name, version, options, offset, size)，排除 file_type
+  - 默认去重，--no-dedup / DIEC_SCAN_FLAG_NO_DEDUP=0x40 可关闭
+  - 影响 6 层：ScanFlags → scanner → CLI → FFI → server → GUI
+  - 5 个去重测试全部通过（511 总测试数）
+
+### 验证结果
+- cargo test --workspace --all-features --exclude die-gui: 511 tests pass
+- cargo fmt --check: 通过
+- cargo clippy --workspace --all-targets --all-features --exclude die-gui -- -D warnings: 通过
+- GUI 构建资源已准备（db/db_extra/dbs_min/dbs_special/peid_rules/yara_rules）
+- ROADMAP.md Phase 10 标记为 DONE
+- AGENTS.md 更新当前阶段描述
+- RELEASE.md 和 RELEASE_NOTES.md 更新 v0.5.0 发布信息
