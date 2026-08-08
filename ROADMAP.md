@@ -497,6 +497,92 @@ Phase 8 GUI 发布后，对照 `docs/research/gui-upstream-diff.md` 中识别的
 
 **退出条件全部达成。**
 
+## Phase 10：已知问题修复与文档纠正 — 规划中
+
+Phase 9 完成后，README.md "Known Limitations" 节列出三个已知问题。
+经调查，其中两个为文档过时（代码已修复），一个为真实功能缺陷。本 Phase
+旨在纠正文档并修复真实缺陷。
+
+调研依据：
+- `crates/diec-rules/src/host_api_bridge.rs` 第 4447-4636 行（Capstone 集成）
+- `crates/diec-rules/Cargo.toml` 第 12 行（capstone 0.14.0 依赖）
+- `COMPATIBILITY.md` 第 53-67 行（4 个规则版本差异详情）
+- `crates/diec-engine/src/scanner.rs` 第 39-168 行（detect_rule_types 去重策略）
+- `crates/diec-engine/src/scanner.rs` 第 395-514 行（alltypes 扫描路径）
+
+### 10.1 文档纠正：getDisasmString 已集成 Capstone — TODO
+
+**问题**：README.md 第 33 行声称 "getDisasmString returns empty string
+(Capstone not integrated)"，但实际已在 Phase 6 完成集成。
+
+**现状**：
+- `crates/diec-rules/src/host_api_bridge.rs` 第 4447-4636 行：完整实现
+  `disasm_at_va` 函数，使用 Capstone 0.14.0 反汇编 x86/x64 指令
+- Thread-local 缓存 Capstone 实例（32/64 位分别缓存）
+- 支持 Intel 语法输出
+- 完整的 VA → 文件偏移转换逻辑（PE section 映射）
+- 4 个单元测试覆盖（INT3/PUSH/next address/invalid VA）
+- `COMPATIBILITY.md` 第 129-130 行已正确标记 ✅
+- `NOTICES.md` 已记录 Capstone 许可证归属
+
+**修复**：
+- 更新 README.md "Known Limitations" 节，移除 getDisasmString 条目
+- 更新 `doc/requirements.md` 第 814 行，反映 Capstone 已集成
+- 添加集成测试验证 PELock/Arxan/VMProtect/GenericHeuristic 规则
+  在含保护器特征的 PE 样本上能正常检测
+
+### 10.2 文档纠正：规则版本差异已记录且非引擎 bug — TODO
+
+**问题**：README.md 第 36 行声称 "Some detection names/versions differ
+from upstream due to rule version differences"，暗示为缺陷。
+
+**现状**：
+- vendored subtree 固定到 commit `c2c17dfa5`（2026-07-25 合并）
+- 上游 DIE 3.21 发布于 2026-04-22（`upstream/Detect-It-Easy/changelog.txt`）
+- 4 个差异均为"新规则检测到更多"而非"引擎行为不同"：
+  - `minimal.apk` / `minimal.jar` / `payload.zip`：新规则检测 archive:Zip:2.0
+  - `minimal.pyc`：新规则检测 Python bytecode
+- `COMPATIBILITY.md` 第 53-67 行已完整记录，标记为 "NOT engine bugs"
+- `COMPATIBILITY.md` 第 159 行：D001 差异项已归档
+
+**修复**：
+- 更新 README.md "Known Limitations" 节，将此条改为"已知差异（已记录，
+  非引擎 bug）"或直接移除
+- 可选：同步上游最新规则到 3.21 release tag 以消除差异（但会丢失新规则
+  的检测能力，需 ADR 记录决策）
+
+### 10.3 功能修复：检测结果去重 — TODO
+
+**问题**：scanner.rs 无结果层去重逻辑，`--alltypes` 模式下多个 file_type
+组的检测结果直接 push 到同一 Vec，可能产生重复条目。
+
+**现状**：
+- `detect_rule_types`（第 39-168 行）通过选择性运行规则避免大部分重复：
+  - PE/ELF/MACH 只运行格式特定规则，不运行 Binary 规则
+  - Java Class 只运行 JavaClass 规则
+  - 非可执行格式只运行格式特定规则
+  - 存档格式（ZIP/APK/JAR/RAR）例外，同时运行格式特定和 Binary 规则
+- `--alltypes` 模式（第 404-405 行）运行所有 file_type 规则，无去重
+- 上游 DIE-engine 同样无结果层去重（通过 `bIsAllTypes` 标志控制）
+- 无专门的重复检测测试
+
+**修复方案**：
+- 在 `scan_bytes` 和 `Scanner::scan_bytes` 的结果返回前添加去重步骤
+- 去重键：`(file_type, type_name, name, version, options, offset, size)`
+  — 与上游 `ScanItemModel` 的行唯一性对齐
+- 保留首次出现的检测（与上游行为一致：规则按 file_type 字典序执行）
+- 添加 `--no-dedup` 标志（默认去重，可关闭以匹配上游原始行为）
+- 添加单元测试：构造会产生重复检测的输入，验证去重后无重复
+- 添加差分测试：`--alltypes` 模式下与上游输出对比
+
+### 退出条件
+
+- README.md "Known Limitations" 节准确反映实际状态
+- `cargo fmt --check` + `cargo clippy --workspace --all-targets --all-features -- -D warnings` 通过
+- `cargo test --workspace --all-features` 通过
+- 去重测试覆盖 `--alltypes` 场景
+- 差分测试在 `--alltypes` 模式下 0 引擎不匹配（规则版本差异除外）
+
 ## 后续改进项
 
 ### Host API 完善（差分兼容性）

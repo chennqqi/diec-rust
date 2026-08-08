@@ -30,12 +30,15 @@ multi-language bindings.
 
 ## Known Limitations
 
-- `getDisasmString` returns empty string (Capstone not integrated);
-  protector rules relying on disassembly (PELock, Arxan, VMProtect,
-  GenericHeuristicAnalysis) will miss detections
-- Some detection names/versions differ from upstream due to rule
-  version differences (submodule rules vs upstream 3.21 bundled rules)
-- `format` type detections may produce duplicate entries in some cases
+- ~~`getDisasmString` returns empty string (Capstone not integrated)~~
+  — **Fixed in Phase 6**: Capstone 0.14.0 integrated, see
+  `COMPATIBILITY.md` § Host API. (Phase 10 will update this doc.)
+- ~~Some detection names/versions differ from upstream due to rule
+  version differences~~ — **Documented, not an engine bug**: 4 rule-version
+  diffs (newer rules detect more), see `COMPATIBILITY.md` § Mismatch Details.
+  (Phase 10 will update this doc.)
+- `format` type detections may produce duplicate entries when using
+  `--alltypes` flag — **Phase 10 will add result-level deduplication**
 
 ## Benchmark
 
