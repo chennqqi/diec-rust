@@ -994,4 +994,4 @@
   - 影响 6 层：ScanFlags → scanner → CLI → FFI → server → GUI
   - ADR 0027 已 Accepted，记录偏离上游决策
 - 511 个测试全部通过（+5 去重测试）
-- 项目已具备发布 v0.5.0 条件
+- 项目已具备发布 v0.6.0 条件

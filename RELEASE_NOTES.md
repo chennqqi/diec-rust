@@ -1,10 +1,9 @@
 # Release Notes
 
-## diec-rust v0.5.0
+## diec-rust v0.6.0
 
-Phase 9 GUI upstream alignment + Phase 10 known issues fix release —
-23 items total (20 GUI alignment + 3 known issues fix), aligning die-gui
-with the upstream DIE-engine Qt GUI and cleaning up documentation.
+Phase 10 known issues fix and documentation cleanup release —
+3 items fixing known limitations and cleaning up documentation.
 
 ### Phase 10 Known Issues Fix (3 items)
 
@@ -19,6 +18,24 @@ with the upstream DIE-engine Qt GUI and cleaning up documentation.
   `--no-dedup` flag provides escape hatch for upstream-exact differential testing;
   propagated through all 6 layers (ScanFlags → scanner → CLI → FFI → server → GUI);
   5 new dedup tests added (511 total tests)
+
+### GUI Enhancements
+
+- **no_dedup checkbox**: Added to Advanced Toolbar with i18n support (en/zh-CN)
+- **ScanFlagsDto**: Added no_dedup field and From impl mapping
+- **Settings**: Added no_dedup field to AppSettings with default false
+
+### Documentation Updates
+
+- **ROADMAP.md**: Phase 10 marked as DONE with completion summary
+- **AGENTS.md**: Updated current phase description to include Phase 10
+- **README.md**: Cleaned up Known Limitations, added Known Differences section
+- **docs/design/decisions/README.md**: Added ADR 0027 reference
+
+## diec-rust v0.5.0
+
+Phase 9 GUI upstream alignment release — 20 items aligning die-gui with
+the upstream DIE-engine Qt GUI, based on `docs/research/gui-upstream-diff.md`.
 
 ### Phase 9.1 P1 Core Fixes (7 items)
 

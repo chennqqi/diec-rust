@@ -217,4 +217,5 @@
 - GUI 构建资源已准备（db/db_extra/dbs_min/dbs_special/peid_rules/yara_rules）
 - ROADMAP.md Phase 10 标记为 DONE
 - AGENTS.md 更新当前阶段描述
-- RELEASE.md 和 RELEASE_NOTES.md 更新 v0.5.0 发布信息
+- RELEASE.md 和 RELEASE_NOTES.md 更新 v0.6.0 发布信息
+- Cargo.toml 版本号更新为 0.6.0

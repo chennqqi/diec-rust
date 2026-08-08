@@ -13,7 +13,7 @@
 
 ### Workspace 骨架
 - 8 crate 按 architecture.md section 5 落位：diec-core(无依赖)/formats(+core)/rules(+core)/engine(+core+formats+rules)/output(+core)/cli(+engine+output)/ffi(+engine+output, staticlib+rlib)/xtask(工具, 不在 runtime graph)
-- 根 Cargo.toml 用 workspace.dependencies 集中内部版本；edition 2024, rust-version 1.97.1 (ADR 0011)
+- 根 Cargo.toml 用 workspace.dependencies 集中内部版本；edition 2024, rust-version 1.88 (ADR 0011)
 - 所有 crate #![forbid(unsafe_code)]，core/output/formats/rules/engine/ffi 加 #![warn(missing_docs)]
 
 ### 结果模型冻结 (diec-core)

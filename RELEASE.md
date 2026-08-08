@@ -99,10 +99,10 @@ for diec-rust. Every item must be verified before publishing a release.
 - [x] Changelog / release notes drafted (`RELEASE_NOTES.md`)
 
 ## Version and Tag
-- [x] Version bumped in `Cargo.toml` (workspace.package.version = 0.5.0)
-- [ ] Git tag created: `v0.5.0`
-- [ ] Tag is annotated (`git cat-file -t v0.5.0` => `tag`)
-- [ ] Tag message includes release summary ("v0.5.0 - Phase 9 GUI upstream alignment + Phase 10 known issues fix")
+- [x] Version bumped in `Cargo.toml` (workspace.package.version = 0.6.0)
+- [ ] Git tag created: `v0.6.0`
+- [ ] Tag is annotated (`git cat-file -t v0.6.0` => `tag`)
+- [ ] Tag message includes release summary ("v0.6.0 - Phase 10 known issues fix and documentation cleanup")
 
 ## Post-Release
 - [x] Release notes published (`RELEASE_NOTES.md` committed)
@@ -113,6 +113,19 @@ for diec-rust. Every item must be verified before publishing a release.
 ---
 
 ## Release Sign-off
+
+### v0.6.0 — 2026-08-08
+
+- **Tag**: `v0.6.0` (annotated)
+- **Tests**: 511 pass, 0 failures (up from 506 in v0.5.0, +5 dedup tests)
+- **Phase 10 known issues fix** (3 items):
+  - 10.1 Documentation cleanup: getDisasmString integrated with Capstone (removed from Known Limitations)
+  - 10.2 Documentation cleanup: rule version differences documented as non-defects (moved to Known Differences)
+  - 10.3 Result deduplication: ADR 0027, --alltypes default dedup + --no-dedup escape hatch
+- **New ADR**: ADR 0027 (result deduplication decision)
+- **GUI**: Added no_dedup checkbox and i18n support (en/zh-CN)
+- **ROADMAP.md**: Phase 10 marked as DONE
+- **GUI build resources**: db/db_extra/dbs_min/dbs_special/peid_rules/yara_rules bundled
 
 ### v0.5.0 — 2026-08-08
 
